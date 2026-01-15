@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NINE CREW · 剧组管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 中文字体优先加载 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== VINCI黑白简约风格 ===== */
+        :root {
+            /* 黑白灰色系 */
+            --black: #000000;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #999999;
+            --lighter-gray: #CCCCCC;
+            --lightest-gray: #F5F5F5;
+            --white: #FFFFFF;
+            
+            /* 功能色（最小化使用） */
+            --primary: #000000;
+            --accent: #666666;
+            
+            /* 间距系统 */
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* 圆角 */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            /* 阴影 */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            font-size: 16px;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 88px;
+            min-height: 100vh;
+        }
+        
+        /* 状态栏（模拟原生） */
+        .status-bar {
+            padding: 12px var(--space-md) 8px;
+            background: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--dark-gray);
+            font-size: 14px;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--lightest-gray);
+        }
+        
+        .status-time {
+            font-weight: 600;
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 品牌区域 */
+        .brand-section {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .brand-logo {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: var(--space-xs);
+            color: var(--black);
+        }
+        
+        .brand-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            font-weight: 400;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .brand-est {
+            font-size: 12px;
+            color: var(--light-gray);
+            letter-spacing: 0.5px;
+        }
+        
+        /* 欢迎区域 */
+        .welcome-section {
+            margin-bottom: var(--space-xl);
+        }
+        
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            color: var(--black);
+        }
+        
+        .welcome-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-bottom: var(--space-md);
+        }
+        
+        .welcome-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: var(--space-xs) 0;
+            border-bottom: 1px solid var(--black);
+        }
+        
+        .welcome-link i {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .welcome-link:hover i {
+            transform: translateX(2px);
+        }
+        
+        /* 功能网格（类似VINCI的3列布局） */
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .function-card {
+            background: var(--white);
+            border: 1px solid var(--lightest-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg) var(--space-md);
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .function-card:hover {
+            border-color: var(--lighter-gray);
+            transform: translateY(-2px);
+        }
+        
+        .function-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--space-sm);
+            background: var(--lightest-gray);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .function-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+        }
+        
+        .function-desc {
+            font-size: 11px;
+            color: var(--medium-gray);
+            line-height: 1.4;
+        }
+        
+        /* 图片占位区域 */
+        .image-section {
+            margin: var(--space-xl) 0;
+            position: relative;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+            border: 2px dashed var(--lighter-gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .image-placeholder:hover {
+            border-color: var(--medium-gray);
+            color: var(--medium-gray);
+        }
+        
+        .image-placeholder i {
+            font-size: 32px;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .image-placeholder span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .image-hint {
+            font-size: 11px;
+            color: var(--light-gray);
+            margin-top: var(--space-xs);
+            text-align: center;
+        }
+        
+        /* 分组展示区域 */
+        .groups-section {
+            margin: var(--space-xl) 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+        }
+        
+        .section-link {
+            font-size: 12px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+        
+        .group-card {
+            background: var(--white);
+            border: 1px solid var(--lightest-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+        
+        .group-card:hover {
+            border-color: var(--lighter-gray);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .group-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-sm);
+            font-size: 18px;
+            color: var(--dark-gray);
+        }
+        
+        .group-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+        }
+        
+        .group-desc {
+            font-size: 11px;
+            color: var(--medium-gray);
+            line-height: 1.4;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--lightest-gray);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .nav-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin: 0 auto 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--light-gray);
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--black);
+        }
+        
+        /* 中间加号按钮特殊样式 */
+        .nav-item:nth-child(3) .nav-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--black);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 20px;
+            margin-top: -20px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            color: var(--light-gray);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active .nav-label {
+            color: var(--black);
+            font-weight: 600;
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+            z-index: 1000;
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--black);
+        }
+        
+        .nav-item:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 375px) {
+            html { font-size: 14px; }
+            .container { padding: 0 var(--space-sm); }
+            .functions-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+            .groups-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="status-time">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi" style="margin: 0 8px;"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+    
+    <!-- 主内容 -->
+    <main class="container">
+        <!-- 品牌区域 -->
+        <section class="brand-section">
+            <h1 class="brand-logo">NINE CREW</h1>
+            <p class="brand-subtitle">百分百自由 可以自由组织 支持自己发布 团员当家做主</p>
+            <p class="brand-est">剧组是大家的，共同维护Nine大家庭</p>
+        </section>
+        
+        <!-- 欢迎区域 -->
+        <section class="welcome-section">
+            <h2 class="welcome-title">Welcome</h2>
+            <p class="welcome-subtitle">欢迎来到光遇最有趣的剧组-Nine</p>
+            <a href="#" class="welcome-link">
+                我要申请加入Nine剧组！ <i class="fas fa-arrow-right"></i>
+            </a>
+        </section>
+        
+        <!-- 核心功能网格 -->
+        <section class="functions-grid">
+            <div class="function-card" onclick="openFeature('申请')">
+                <div class="function-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3 class="function-title">成员申请</h3>
+                <p class="function-desc">在线提交 · 加入我们</p>
+            </div>
+            
+            <div class="function-card" onclick="openFeature('分组')">
+                <div class="function-icon">
+                    <i class="fas fa-sitemap"></i>
+                </div>
+                <h3 class="function-title">分组管理</h3>
+                <p class="function-desc">8大分组 · 自由加入</p>
+            </div>
+            
+            <div class="function-card" onclick="openFeature('活动')">
+                <div class="function-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="function-title">活动组织</h3>
+                <p class="function-desc">参与活动 · 自动积分</p>
+            </div>
+        </section>
+        
+        <!-- 图片占位区域 1 -->
+        <section class="image-section">
+            <div class="image-placeholder" onclick="changeImage('banner')">
+                <i class="fas fa-image"></i>
+                <span>点击添加剧组合照</span>
+            </div>
+            <p class="image-hint">持续更新，组织拍摄优秀作品都有概率入选！</p>
+        </section>
+        
+        <!-- 分组展示 -->
+        <section class="groups-section">
+            <div class="section-header">
+                <h2 class="section-title">专业分组</h2>
+                <a href="#" class="section-link">
+                    查看全部 <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+            
+            <div class="groups-grid">
+                <div class="group-card">
+                    <div class="group-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <h3 class="group-name">编剧组</h3>
+                    <p class="group-desc">剧本创作 · 故事开发 · 文案策划</p>
+                </div>
+                
+                <div class="group-card">
+                    <div class="group-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="group-name">导演组</h3>
+                    <p class="group-desc">现场指导 · 艺术把控 · 演员调度</p>
+                </div>
+                
+                <div class="group-card">
+                    <div class="group-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="group-name">摄影组</h3>
+                    <p class="group-desc">镜头设计 · 画面构图 · 画质要求</p>
+                </div>
+                
+                <div class="group-card">
+                    <div class="group-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3 class="group-name">后期组</h3>
+                    <p class="group-desc">剪辑调色 · 特效制作 · 需要审核</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 图片占位区域 2：作品展示 -->
+        <section class="image-section">
+            <div class="image-placeholder" onclick="changeImage('works')">
+                <i class="fas fa-photo-video"></i>
+                <span>点击添加作品展示</span>
+            </div>
+            <p class="image-hint">相亲相爱一家人</p>
+        </section>
+        
+        <!-- 系统信息 -->
+        <section class="welcome-section" style="margin-top: var(--space-xxl);">
+            <p class="welcome-subtitle" style="text-align: center; font-size: 12px; color: var(--light-gray);">
+                NINE CREW 剧组管理系统 · 版本 1.0.0<br>
+                基于 Vercel + Supabase 构建 · 完美适配移动端
+            </p>
+        </section>
+    </main>
+    
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="nav-label">首页</div>
+            <div class="tooltip">首页</div>
+        </div>
+        
+        <div class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-compass"></i>
+            </div>
+            <div class="nav-label">发现</div>
+            <div class="tooltip">浏览内容</div>
+        </div>
+        
+        <div class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-plus"></i>
+            </div>
+            <div class="nav-label">发布</div>
+            <div class="tooltip">创建内容</div>
+        </div>
+        
+        <div class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="nav-label">通知</div>
+            <div class="tooltip">消息通知</div>
+        </div>
+        
+        <div class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="nav-label">我的</div>
+            <div class="tooltip">个人中心</div>
+        </div>
+    </nav>
+    
+    <script>
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎬 NINE CREW 系统初始化');
+            
+            // 更新时间
+            function updateTime() {
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+                document.querySelector('.status-time').textContent = timeStr;
+            }
+            
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // 底部导航交互
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有active状态
+                    navItems.forEach(i => i.classList.remove('active'));
+                    
+                    // 添加当前active状态
+                    this.classList.add('active');
+                    
+                    // 如果是加号按钮，显示发布菜单
+                    if (this.querySelector('.fa-plus')) {
+                        showPublishMenu();
+                        return;
+                    }
+                    
+                    // 获取页面标题
+                    const pageName = this.querySelector('.nav-label').textContent;
+                    showLoading(pageName);
+                });
+            });
+            
+            // 卡片点击效果
+            const cards = document.querySelectorAll('.function-card
