@@ -684,12 +684,14 @@
             <div style="margin-bottom:20px;">
                 <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">性别 *</label>
                 <div style="display:flex; gap:10px;">
-                    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        <input type="radio" name="gender" value="男" required style="display:none;"> 男生
-                    </label>
-                    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        <input type="radio" name="gender" value="女" required style="display:none;"> 女生
-                    </label>
+    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;"
+           onclick="this.style.borderColor='#000'; this.style.background='#f5f5f5'; document.querySelector('label[for=gender2]').style.borderColor='#ddd'; document.querySelector('label[for=gender2]').style.background='#fff'; document.getElementById('gender1').checked=true;">
+        <input type="radio" id="gender1" name="gender" value="男" required style="display:none;"> 男生
+    </label>
+    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;"
+           onclick="this.style.borderColor='#000'; this.style.background='#f5f5f5'; document.querySelector('label[for=gender1]').style.borderColor='#ddd'; document.querySelector('label[for=gender1]').style.background='#fff'; document.getElementById('gender2').checked=true;">
+        <input type="radio" id="gender2" name="gender" value="女" required style="display:none;"> 女生
+    </label>
                 </div>
             </div>
             
@@ -704,15 +706,19 @@
                 <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
                 <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
                     <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
                         <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
                     </label>
                     <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
                         <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
                     </label>
                     <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
                         <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
                     </label>
                     <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
                         <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
                     </label>
                 </div>
