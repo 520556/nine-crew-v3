@@ -745,6 +745,48 @@
 <!-- 3. 表单交互逻辑 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ==========【修复开始】单选/复选框点击样式 ==========
+// 初始化样式函数
+function initOptionStyles() {
+    // 处理所有单选和复选框
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        const parent = input.parentElement; // 获取包裹的label标签
+        
+        // 1. 设置初始样式
+        if (input.checked) {
+            parent.style.borderColor = '#000000';
+            parent.style.backgroundColor = '#f5f5f5';
+        } else {
+            parent.style.borderColor = '#dddddd';
+            parent.style.backgroundColor = '#ffffff';
+        }
+        
+        // 2. 绑定点击事件
+        input.addEventListener('change', function() {
+            // 如果是“性别”单选组，先清除同组其他选项的样式
+            if (this.type === 'radio') {
+                const radioName = this.getAttribute('name');
+                document.querySelectorAll(`input[name="${radioName}"]`).forEach(radio => {
+                    radio.parentElement.style.borderColor = '#dddddd';
+                    radio.parentElement.style.backgroundColor = '#ffffff';
+                });
+            }
+            
+            // 设置当前选中项的样式
+            if (this.checked) {
+                parent.style.borderColor = '#000000';
+                parent.style.backgroundColor = '#f5f5f5';
+            } else {
+                parent.style.borderColor = '#dddddd';
+                parent.style.backgroundColor = '#ffffff';
+            }
+        });
+    });
+}
+
+// 页面加载后立即执行
+initOptionStyles();
+// ==========【修复结束】==========
     // 打开报名弹窗的函数
     window.openApplicationModal = function() {
         document.getElementById('applicationModal').style.display = 'flex';
