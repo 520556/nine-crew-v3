@@ -659,12 +659,6 @@
         key: 'sb_publishable_TdJ3rHkcP--bGZ9f5Anu8A_b_Okudzj'
     };
     const supabase = window.supabase.createClient(window.supabaseConfig.url, window.supabaseConfig.key);
-    
-    // 打开报名弹窗的函数 (供页面上的链接调用)
-    window.openApplicationModal = function() {
-        document.getElementById('applicationModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    };
 </script>
 
 <!-- 2. 报名弹窗HTML结构 -->
@@ -750,6 +744,12 @@
 
 <!-- 3. 表单交互逻辑 -->
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 打开报名弹窗的函数
+    window.openApplicationModal = function() {
+        document.getElementById('applicationModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
 // 动态显示推荐人字段
 document.getElementById('findMethod').addEventListener('change', function(e) {
     document.getElementById('referrerField').style.display = 
