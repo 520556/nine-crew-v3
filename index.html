@@ -680,19 +680,18 @@
                 <input type="text" id="skyName" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="你的光遇游戏昵称">
             </div>
             
-            <!-- 性别 -->
-            <div style="margin-bottom:20px;">
-                <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">性别 *</label>
-                <div style="display:flex; gap:10px;">
-    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;"
-           onclick="this.style.borderColor='#000'; this.style.background='#f5f5f5'; document.querySelector('label[for=gender2]').style.borderColor='#ddd'; document.querySelector('label[for=gender2]').style.background='#fff'; document.getElementById('gender1').checked=true;">
-        <input type="radio" id="gender1" name="gender" value="男" required style="display:none;"> 男生
-    </label>
-    <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;"
-           onclick="this.style.borderColor='#000'; this.style.background='#f5f5f5'; document.querySelector('label[for=gender1]').style.borderColor='#ddd'; document.querySelector('label[for=gender1]').style.background='#fff'; document.getElementById('gender2').checked=true;">
-        <input type="radio" id="gender2" name="gender" value="女" required style="display:none;"> 女生
-    </label>
-                </div>
+         <!-- 性别 -->
+<div style="margin-bottom:20px;">
+    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">性别 *</label>
+    <div style="display:flex; gap:10px;">
+        <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="radio" name="gender" value="男" required style="display:none;"> 男生
+        </label>
+        <label style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="radio" name="gender" value="女" required style="display:none;"> 女生
+        </label>
+    </div>
+</div>
             </div>
             
             <!-- 年龄 -->
@@ -701,27 +700,36 @@
                 <input type="text" id="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
             </div>
             
-            <!-- 意向分组 -->
-            <div style="margin-bottom:20px;">
-                <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
-                <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-                    <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
-                        <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
-                    </label>
-                    <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
-                        <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
-                    </label>
-                    <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
-                        <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
-                    </label>
-                    <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
-                        onclick="var cb=this.querySelector('input'); cb.checked=!cb.checked; this.style.borderColor=cb.checked?'#000':'#ddd'; this.style.background=cb.checked?'#f5f5f5':'#fff';"
-                        <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
-                    </label>
-                </div>
+     <!-- 意向分组 -->
+<div style="margin-bottom:20px;">
+    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选，仅作意向调查）</label>
+    <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="演员组" style="display:none;"> 演员组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="配音组" style="display:none;"> 配音组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="宣传组" style="display:none;"> 宣传组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="气氛组" style="display:none;"> 气氛组
+        </label>
+        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+            <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
+        </label>
+    </div>
+</div>
             </div>
             
             <!-- 如何找到我们 -->
@@ -751,6 +759,34 @@
 <!-- 3. 表单交互逻辑 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ===== 【修复代码开始】 =====
+// 修复性别单选
+const genderRadios = document.querySelectorAll('input[name="gender"]');
+genderRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+        genderRadios.forEach(r => {
+            r.parentElement.style.borderColor = '#ddd';
+            r.parentElement.style.backgroundColor = '#fff';
+        });
+        this.parentElement.style.borderColor = '#000';
+        this.parentElement.style.backgroundColor = '#f5f5f5';
+    });
+});
+
+// 修复分组多选
+const groupChecks = document.querySelectorAll('input[name="interestGroups"]');
+groupChecks.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            this.parentElement.style.borderColor = '#000';
+            this.parentElement.style.backgroundColor = '#f5f5f5';
+        } else {
+            this.parentElement.style.borderColor = '#ddd';
+            this.parentElement.style.backgroundColor = '#fff';
+        }
+    });
+});
+// ===== 【修复代码结束】 =====
     // ==========【修复开始】单选/复选框点击样式 ==========
 // 初始化样式函数
 function initOptionStyles() {
