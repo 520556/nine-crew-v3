@@ -839,6 +839,68 @@ document.getElementById('applicationModal').addEventListener('click', function(e
     }
 });
 </script>
+    <script>
+// 强制绑定申请链接点击事件
+(function() {
+    // 等待页面完全加载
+    window.addEventListener('load', function() {
+        console.log('页面加载完成，开始绑定事件...');
+        
+        // 找到所有可能有问题的链接
+        const allLinks = document.querySelectorAll('a');
+        let targetLink = null;
+        
+        // 通过文字内容找到那个特定的链接
+        allLinks.forEach(link => {
+            if (link.textContent.includes('我要申请加入Nine剧组')) {
+                targetLink = link;
+                console.log('找到申请链接:', link);
+            }
+        });
+        
+        if (!targetLink) {
+            console.error('错误：未找到申请链接！');
+            return;
+        }
+        
+        // 完全移除旧的事件监听器
+        const newLink = targetLink.cloneNode(true);
+        targetLink.parentNode.replaceChild(newLink, targetLink);
+        
+        // 绑定新的事件
+        newLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('✅ 链接被点击！');
+            
+            // 显示弹窗
+            const modal = document.getElementById('applicationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                console.log('弹窗已显示');
+            } else {
+                console.error('错误：未找到弹窗元素！');
+                alert('页面加载中，请稍后重试。');
+            }
+            
+            return false;
+        });
+        
+        // 也绑定到全局函数（双重保险）
+        window.openApplicationModal = function() {
+            console.log('通过全局函数调用');
+            const modal = document.getElementById('applicationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        };
+        
+        console.log('✅ 申请链接事件绑定完成！');
+    });
+})();
+    </script>
 </body>
 </html>
 <!-- ==================== 模块结束 ==================== -->
