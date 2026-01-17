@@ -609,6 +609,9 @@
             <div class="tooltip">个人中心</div>
         </div>
     </nav>
+    
+    <!-- 弹窗 -->
+<div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:red; z-index:9999;"></div>
 
     <!-- ==================== 报名弹窗模块 ==================== -->
     <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
@@ -768,13 +771,23 @@
             initFormInteraction();
         });
         
-        // 打开报名弹窗
-        window.openApplicationModal = function() {
-            document.getElementById('applicationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            // 初始化表单交互
-            initFormInteraction();
-        };
+        // 打开报名弹窗 - 修复版
+window.openApplicationModal = function() {
+    console.log('🟢 开始打开弹窗');
+    var modal = document.getElementById('applicationModal');
+    console.log('弹窗元素:', modal);
+    
+    if (!modal) {
+        alert('错误：找不到弹窗！请检查HTML代码');
+        return;
+    }
+    
+    // 显示一个简单的测试弹窗
+    modal.style.display = 'block';
+    modal.innerHTML = '<div style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:40px; border-radius:15px; text-align:center; box-shadow:0 0 30px rgba(0,0,0,0.3);"><h2 style="color:green;">✅ 弹窗正常！</h2><p>这说明弹窗功能已经修复</p><button onclick="document.getElementById(\'applicationModal\').style.display=\'none\'" style="margin-top:20px; padding:10px 20px; background:black; color:white; border:none; border-radius:8px; cursor:pointer;">关闭弹窗</button></div>';
+    
+    console.log('✅ 弹窗已显示');
+};
         
         // 修复表单交互
         function initFormInteraction() {
