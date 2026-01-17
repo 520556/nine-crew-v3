@@ -1,82 +1,82 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NINE CREW · 剧组管理系统</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 中文字体优先加载 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<!文档类型html >
+" https://fonts.googleapis.com "
+" https://fonts.googleapis.com "超文本标记语言html 语言="zh-CN"“zh-CN”>
+" https://fonts.googleapis.com "
+自指的meta http-equiv= "内容类型"内容= " text/html；charset=utf-8 " "文本/html；charset=utf-8 "
+自指的自指的名字="视窗"内容= "宽度=设备宽度，初始比例=1.0，最大比例=1.0，用户可缩放=否"宽度=设备宽度,初始比例=1.0,最大比例=1.0,用户可扩展=否
+标题标题>九名船员剧组管理系统</标题>
+环环能量损耗率="样式表" href=" https://cdnjs。云层耀斑。com/Ajax/libs/font-awesome/6。4 .0/CSS/all。量滴CSS " >
+" https://fonts.gstatic.com "<!-- 中文字体优先加载 -->
+    <环 能量损耗率="预连接" href=《https://fonts.googleapis.com》
+    环环 能量损耗率="预连接" href=《https://fonts.gstatic.com》 交叉起源>
+    环link href="https://fonts.googleapis.com/css2？family = Noto+Sans+SC:wght @ 300；400;500;600;700 & family = Inter:wght @ 300；400;500;600;700&显示=交换" 能量损耗率="样式表">
+    风格style>
         /* ===== VINCI黑白简约风格 ===== */
-        :root {
+        :根 {
             /* 黑白灰色系 */
-            --black: #000000;
-            --dark-gray: #333333;
-            --medium-gray: #666666;
-            --light-gray: #999999;
-            --lighter-gray: #CCCCCC;
-            --lightest-gray: #F5F5F5;
-            --white: #FFFFFF;
+            -黑色: #000000;
+            深灰色: #333333;
+            -中灰色: #666666;
+            浅灰色: #999999;
+            -浅灰色:# CCCCCC；
+            最浅灰色:# F5F5F5
+            -白色:# FFFFFF
             
             /* 功能色（最小化使用） */
-            --primary: #000000;
-            --accent: #666666;
+            -初级: #000000;
+            -口音: #666666;
             
             /* 间距系统 */
-            --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-xxl: 48px;
+            -空格-xs: 8像素;
+            -太空sm: 像素px;
+            -空间-md: 像素px;
+            -太空-lg: 像素px;
+            - space-xl: 像素px;
+            -空间-xxl: 像素px;
             
             /* 圆角 */
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
+-radius-sm:8px；--radius-sm: 8px;
+-半径-MD:12px；--radius-md: 12px;
+-radius-LG:16px；--radius-lg: 16px;
             
             /* 阴影 */
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+-暗影-sm: 0 2px 8px rgba(0，0，0，0.05)；--shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+-暗影-md: 0 4px 12px rgba(0，0，0，0.08)；--shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+-暗影-lg: 0 8px 24px rgba(0，0，0，0.1)；--shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
         
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+边距:0；margin: 0;
+字体粗细:500；font-weight: 500;
+框大小：边框-框；框大小:边框-框；
+-网络工具包-点击-高亮-颜色：透明；-WebKit-tap-高亮-颜色:透明；
         }
         
-        html {
-            font-size: 16px;
+html {html {
+字体大小:16px font-size:16px；
         }
         
-        body {
-            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background-color: var(--white);
-            color: var(--black);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding-bottom: 88px;
-            min-height: 100vh;
+正文{body {
+font-family: 'Noto Sans SC '，' Inter '，-apple-system，BlinkMacSystemFont，' Segoe UI '，'方平SC '，'微软雅黑，无衬线；font-family: 'Noto Sans SC '，' Inter '，-apple-system，BlinkMacSystemFont，' Segoe UI '，'方平SC '，'微软雅黑'，Sans-serif；
+背景色:var( -白色);背景色:var( -白色)；
+颜色:var( -黑色);颜色:var( -黑色)；
+行高:1.5;行高:1.5；
+-WebKit-字体-平滑:抗锯齿；-webkit-font-smoothing:抗锯齿；
+-moz-osx-font-smoothing:灰度；-moz-osx-font-smoothing:灰度；
+填充-底部:88pxpadding-bottom:88px；
+最小高度:100 VH min-身高:100vh
         }
         
         /* 状态栏（模拟原生） */
-        .status-bar {
-            padding: 12px var(--space-md) 8px;
-            background: var(--white);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--dark-gray);
-            font-size: 14px;
-            font-weight: 500;
+。状态栏{状态栏{
+填充:12px var(-space-MD)8px；填充:12px var(-space-MD)8px；
+背景:var( -白色);背景:var( -白色)；
+显示器:flex display:flex；
+justify-content:space-between；justify-content:space-between；
+对齐-项目：居中；对齐-项目:居中；
+颜色:var( -深灰);颜色:var( -深灰)；
+字体大小:14px font-size:14px；
+字体粗细:500;字体粗细:500；
             position: sticky;
             top: 0;
             z-index: 100;
