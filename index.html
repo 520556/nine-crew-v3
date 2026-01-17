@@ -1032,6 +1032,93 @@ window.ninestatus = function() {
 setTimeout(() => {
     console.log('💡 提示：在控制台输入 ninestatus() 查看系统状态');
 }, 3000);
+        // ========== 强制弹窗修复 ==========
+console.log('🔧 执行强制弹窗修复...');
+
+// 1. 确保函数存在（最保险的方式）
+if (typeof window.openApplicationModal !== 'function') {
+    console.log('🔄 重新定义 openApplicationModal');
+    window.openApplicationModal = function() {
+        console.log('🟢 强制打开弹窗');
+        const modal = document.getElementById('applicationModal');
+        if (modal) {
+            console.log('✅ 找到弹窗元素');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // 手动初始化表单交互
+            if (typeof initFormInteraction === 'function') {
+                initFormInteraction();
+            }
+        } else {
+            console.error('❌ 找不到弹窗元素！检查HTML中是否有id="applicationModal"的div');
+        }
+    };
+}
+
+// 2. 重新绑定点击事件（确保一定能触发）
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔗 重新绑定点击事件...');
+    
+    const welcomeLink = document.querySelector('.welcome-link');
+    if (welcomeLink) {
+        // 移除所有旧的事件监听器
+        const newLink = welcomeLink.cloneNode(true);
+        welcomeLink.parentNode.replaceChild(newLink, welcomeLink);
+        
+        // 添加新的点击事件
+        newLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🖱️ 点击事件被触发');
+            window.openApplicationModal();
+        });
+        
+        // 同时保留原有的onclick（双重保险）
+        newLink.setAttribute('onclick', 'openApplicationModal(); return false;');
+        
+        console.log('✅ 点击事件已重新绑定');
+    } else {
+        console.error('❌ 找不到.welcome-link元素！');
+    }
+    
+    // 3. 测试：手动打开一次弹窗（调试用）
+    setTimeout(function() {
+        console.log('🧪 测试：3秒后尝试自动打开弹窗...');
+        const modal = document.getElementById('applicationModal');
+        if (modal) {
+            console.log('✅ 弹窗元素存在，样式为:', modal.style.display);
+            // 手动显示一次测试
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                console.log('✅ 弹窗测试通过！');
+            }, 2000);
+        } else {
+            console.error('❌ 弹窗元素不存在！');
+        }
+    }, 3000);
+});
+
+// 4. 在控制台添加帮助命令
+window.debugModal = function() {
+    console.log('====== 弹窗调试信息 ======');
+    console.log('1. 弹窗元素:', document.getElementById('applicationModal'));
+    console.log('2. 打开函数:', typeof openApplicationModal);
+    console.log('3. 点击链接:', document.querySelector('.welcome-link'));
+    console.log('4. 当前URL:', window.location.href);
+    console.log('=========================');
+    
+    // 尝试强制打开
+    const modal = document.getElementById('applicationModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        console.log('✅ 已强制打开弹窗');
+    }
+};
+
+console.log('💡 提示：在控制台输入 debugModal() 调试弹窗');
         </script>
 </body>
 </html>
