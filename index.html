@@ -931,6 +931,53 @@
         function showLoading(pageName) {
             console.log('正在加载: ' + pageName);
         }
+        <script>
+// ========== 强制修复弹窗问题 ==========
+console.log('🔧 加载弹窗修复...');
+
+// 1. 确保弹窗打开函数存在
+if (typeof openApplicationModal === 'undefined') {
+    window.openApplicationModal = function() {
+        console.log('🟢 打开弹窗');
+        const modal = document.getElementById('applicationModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } else {
+            console.error('❌ 找不到弹窗元素！');
+        }
+    };
+}
+
+// 2. 重新绑定点击事件
+document.addEventListener('DOMContentLoaded', function() {
+    const link = document.querySelector('.welcome-link');
+    if (link) {
+        // 移除旧的事件，绑定新的
+        link.setAttribute('onclick', 'openApplicationModal()');
+        link.style.cursor = 'pointer';
+        console.log('✅ 已修复点击链接');
+    }
+    
+    // 3. 测试：点击能打开吗？
+    console.log('💡 测试：在控制台输入 openApplicationModal() 应该能打开弹窗');
+});
+
+// 4. 添加推荐人字段动态显示
+document.addEventListener('DOMContentLoaded', function() {
+    const findMethod = document.getElementById('findMethod');
+    if (findMethod) {
+        findMethod.addEventListener('change', function() {
+            const referrerField = document.getElementById('referrerField');
+            if (referrerField) {
+                referrerField.style.display = 
+                    (this.value === '剧组招人(有推荐人)') ? 'block' : 'none';
+            }
+        });
+        console.log('✅ 已修复推荐人字段显示');
+    }
+});
+</script>
     </script>
 </body>
 </html>
