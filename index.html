@@ -700,32 +700,32 @@
                 <input type="text" id="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
             </div>
             
-     <!-- 意向分组 -->
+<!-- 意向分组 -->
 <div style="margin-bottom:20px;">
-    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选，仅作意向调查）</label>
+    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="演员组" style="display:none;"> 演员组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="配音组" style="display:none;"> 配音组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="宣传组" style="display:none;"> 宣传组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="气氛组" style="display:none;"> 气氛组
         </label>
-        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
+        <label class="option-label" data-type="checkbox" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;">
             <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
         </label>
     </div>
@@ -838,6 +838,75 @@ initOptionStyles();
 document.getElementById('findMethod').addEventListener('change', function(e) {
     document.getElementById('referrerField').style.display = 
         (e.target.value === '剧组招人(有推荐人)') ? 'block' : 'none';
+    // ========== 修复单选/复选框点击反馈 ==========
+// 弹窗打开时初始化
+document.getElementById('applicationModal').addEventListener('click', function(e) {
+    if (e.target.id === 'applicationModal') {
+        this.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// 为弹窗内的选项添加点击事件（动态绑定）
+document.addEventListener('click', function(e) {
+    const optionLabel = e.target.closest('.option-label');
+    if (optionLabel) {
+        const input = optionLabel.querySelector('input');
+        const isCheckbox = optionLabel.dataset.type === 'checkbox';
+        const isRadio = optionLabel.dataset.type === 'radio';
+        
+        if (isCheckbox) {
+            input.checked = !input.checked;
+        } else if (isRadio) {
+            // 如果是单选，先取消同组其他选项
+            const radioName = input.name;
+            document.querySelectorAll(`input[name="${radioName}"]`).forEach(radio => {
+                radio.checked = false;
+                radio.parentElement.style.borderColor = '#ddd';
+                radio.parentElement.style.background = '#fff';
+            });
+            input.checked = true;
+        }
+        
+        // 更新视觉反馈
+        if (input.checked) {
+            optionLabel.style.borderColor = '#000';
+            optionLabel.style.background = '#f5f5f5';
+        } else {
+            optionLabel.style.borderColor = '#ddd';
+            optionLabel.style.background = '#fff';
+        }
+    }
+});
+
+// 修复性别选项的点击反馈
+document.querySelectorAll('input[name="gender"]').forEach(input => {
+    input.addEventListener('change', function() {
+        // 重置所有性别选项样式
+        document.querySelectorAll('input[name="gender"]').forEach(radio => {
+            const parent = radio.parentElement;
+            if (radio.checked) {
+                parent.style.borderColor = '#000';
+                parent.style.background = '#f5f5f5';
+            } else {
+                parent.style.borderColor = '#ddd';
+                parent.style.background = '#fff';
+            }
+        });
+    });
+});
+
+// 为已有的性别选项添加点击事件
+document.querySelectorAll('input[name="gender"]').forEach(input => {
+    input.parentElement.addEventListener('click', function() {
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) {
+            radio.checked = true;
+            // 触发change事件
+            radio.dispatchEvent(new Event('change'));
+        }
+    });
+});
 });
 
 // 美化选项选择
