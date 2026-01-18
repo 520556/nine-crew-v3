@@ -2,18 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NINE CREW · 剧组管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 中文字体优先加载 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ===== VINCI黑白简约风格 ===== */
         :root {
-            /* 黑白灰色系 */
             --black: #000000;
             --dark-gray: #333333;
             --medium-gray: #666666;
@@ -21,53 +16,32 @@
             --lighter-gray: #CCCCCC;
             --lightest-gray: #F5F5F5;
             --white: #FFFFFF;
-            
-            /* 功能色（最小化使用） */
-            --primary: #000000;
-            --accent: #666666;
-            
-            /* 间距系统 */
             --space-xs: 8px;
             --space-sm: 12px;
             --space-md: 16px;
             --space-lg: 24px;
             --space-xl: 32px;
             --space-xxl: 48px;
-            
-            /* 圆角 */
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            
-            /* 阴影 */
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        html {
-            font-size: 16px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--white);
             color: var(--black);
             line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             padding-bottom: 88px;
             min-height: 100vh;
         }
         
-        /* 状态栏（模拟原生） */
+        /* 状态栏 */
         .status-bar {
             padding: 12px var(--space-md) 8px;
             background: var(--white);
@@ -83,16 +57,10 @@
             border-bottom: 1px solid var(--lightest-gray);
         }
         
-        .status-time {
-            font-weight: 600;
-        }
+        .status-time { font-weight: 600; }
         
         /* 主容器 */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 var(--space-md);
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 var(--space-md); }
         
         /* 品牌区域 */
         .brand-section {
@@ -122,9 +90,7 @@
         }
         
         /* 欢迎区域 */
-        .welcome-section {
-            margin-bottom: var(--space-xl);
-        }
+        .welcome-section { margin-bottom: var(--space-xl); }
         
         .welcome-title {
             font-size: 24px;
@@ -152,16 +118,7 @@
             cursor: pointer;
         }
         
-        .welcome-link i {
-            font-size: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .welcome-link:hover i {
-            transform: translateX(2px);
-        }
-        
-        /* 功能网格（类似VINCI的3列布局） */
+        /* 功能网格 */
         .functions-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -176,8 +133,6 @@
             padding: var(--space-lg) var(--space-md);
             text-align: center;
             transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
             cursor: pointer;
         }
         
@@ -213,10 +168,7 @@
         }
         
         /* 图片占位区域 */
-        .image-section {
-            margin: var(--space-xl) 0;
-            position: relative;
-        }
+        .image-section { margin: var(--space-xl) 0; }
         
         .image-placeholder {
             width: 100%;
@@ -230,22 +182,6 @@
             color: var(--light-gray);
             border: 2px dashed var(--lighter-gray);
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .image-placeholder:hover {
-            border-color: var(--medium-gray);
-            color: var(--medium-gray);
-        }
-        
-        .image-placeholder i {
-            font-size: 32px;
-            margin-bottom: var(--space-sm);
-        }
-        
-        .image-placeholder span {
-            font-size: 14px;
-            font-weight: 500;
         }
         
         .image-hint {
@@ -255,10 +191,8 @@
             text-align: center;
         }
         
-        /* 分组展示区域 */
-        .groups-section {
-            margin: var(--space-xl) 0;
-        }
+        /* 分组展示 */
+        .groups-section { margin: var(--space-xl) 0; }
         
         .section-header {
             display: flex;
@@ -294,12 +228,6 @@
             border: 1px solid var(--lightest-gray);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
-            transition: all 0.2s;
-        }
-        
-        .group-card:hover {
-            border-color: var(--lighter-gray);
-            box-shadow: var(--shadow-sm);
         }
         
         .group-icon {
@@ -328,7 +256,7 @@
             line-height: 1.4;
         }
         
-        /* 底部导航栏 */
+        /* 底部导航 */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -340,8 +268,6 @@
             justify-content: space-around;
             padding: 14px 0 20px;
             z-index: 100;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
         
         .nav-item {
@@ -359,14 +285,8 @@
             justify-content: center;
             font-size: 18px;
             color: var(--light-gray);
-            transition: all 0.2s;
         }
         
-        .nav-item.active .nav-icon {
-            color: var(--black);
-        }
-        
-        /* 中间加号按钮特殊样式 */
         .nav-item:nth-child(3) .nav-icon {
             width: 44px;
             height: 44px;
@@ -382,14 +302,10 @@
             font-size: 10px;
             color: var(--light-gray);
             font-weight: 500;
-            letter-spacing: 0.3px;
-            transition: all 0.2s;
         }
         
-        .nav-item.active .nav-label {
-            color: var(--black);
-            font-weight: 600;
-        }
+        .nav-item.active .nav-icon,
+        .nav-item.active .nav-label { color: var(--black); }
         
         /* 工具提示 */
         .tooltip {
@@ -407,7 +323,6 @@
             visibility: hidden;
             transition: all 0.2s;
             margin-bottom: 8px;
-            z-index: 1000;
         }
         
         .tooltip::after {
@@ -425,18 +340,9 @@
             visibility: visible;
         }
         
-        /* 响应式调整 */
         @media (max-width: 375px) {
-            html { font-size: 14px; }
-            .container { padding: 0 var(--space-sm); }
-            .functions-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+            .functions-grid { grid-template-columns: repeat(2, 1fr); }
             .groups-grid { grid-template-columns: 1fr; }
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                padding: 0;
-            }
         }
     </style>
 </head>
@@ -444,7 +350,7 @@
     <!-- 状态栏 -->
     <div class="status-bar">
         <div class="status-time">9:41</div>
-        <div class="status-icons">
+        <div>
             <i class="fas fa-signal"></i>
             <i class="fas fa-wifi" style="margin: 0 8px;"></i>
             <i class="fas fa-battery-three-quarters"></i>
@@ -472,27 +378,19 @@
         <!-- 核心功能网格 -->
         <section class="functions-grid">
             <div class="function-card" onclick="openFeature('申请')">
-                <div class="function-icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
+                <div class="function-icon"><i class="fas fa-user-plus"></i></div>
                 <h3 class="function-title">成员申请</h3>
-                <p class="function-desc">在线提交 · 加入我们</p>
+                <p class="function-desc">在线提交 · 智能审核</p>
             </div>
-            
             <div class="function-card" onclick="openFeature('分组')">
-                <div class="function-icon">
-                    <i class="fas fa-sitemap"></i>
-                </div>
+                <div class="function-icon"><i class="fas fa-sitemap"></i></div>
                 <h3 class="function-title">分组管理</h3>
                 <p class="function-desc">8大分组 · 自由加入</p>
             </div>
-            
             <div class="function-card" onclick="openFeature('活动')">
-                <div class="function-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
+                <div class="function-icon"><i class="fas fa-calendar-alt"></i></div>
                 <h3 class="function-title">活动组织</h3>
-                <p class="function-desc">参与活动 · 自动积分</p>
+                <p class="function-desc">发布活动 · 自动积分</p>
             </div>
         </section>
         
@@ -513,43 +411,31 @@
                     查看全部 <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
-            
             <div class="groups-grid">
                 <div class="group-card">
-                    <div class="group-icon">
-                        <i class="fas fa-pen-fancy"></i>
-                    </div>
+                    <div class="group-icon"><i class="fas fa-pen-fancy"></i></div>
                     <h3 class="group-name">编剧组</h3>
                     <p class="group-desc">剧本创作 · 故事开发 · 文案策划</p>
                 </div>
-                
                 <div class="group-card">
-                    <div class="group-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
+                    <div class="group-icon"><i class="fas fa-video"></i></div>
                     <h3 class="group-name">导演组</h3>
                     <p class="group-desc">现场指导 · 艺术把控 · 演员调度</p>
                 </div>
-                
                 <div class="group-card">
-                    <div class="group-icon">
-                        <i class="fas fa-camera"></i>
-                    </div>
+                    <div class="group-icon"><i class="fas fa-camera"></i></div>
                     <h3 class="group-name">摄影组</h3>
                     <p class="group-desc">镜头设计 · 画面构图 · 画质要求</p>
                 </div>
-                
                 <div class="group-card">
-                    <div class="group-icon">
-                        <i class="fas fa-cut"></i>
-                    </div>
+                    <div class="group-icon"><i class="fas fa-cut"></i></div>
                     <h3 class="group-name">后期组</h3>
                     <p class="group-desc">剪辑调色 · 特效制作 · 需要审核</p>
                 </div>
             </div>
         </section>
         
-        <!-- 图片占位区域 2：作品展示 -->
+        <!-- 图片占位区域 2 -->
         <section class="image-section">
             <div class="image-placeholder" onclick="changeImage('works')">
                 <i class="fas fa-photo-video"></i>
@@ -567,64 +453,43 @@
         </section>
     </main>
     
-    <!-- 底部导航栏 -->
+    <!-- 底部导航 -->
     <nav class="bottom-nav">
         <div class="nav-item active">
-            <div class="nav-icon">
-                <i class="fas fa-home"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
             <div class="nav-label">首页</div>
             <div class="tooltip">首页</div>
         </div>
-        
         <div class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-compass"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
             <div class="nav-label">发现</div>
             <div class="tooltip">浏览内容</div>
         </div>
-        
         <div class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-plus"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-plus"></i></div>
             <div class="nav-label">发布</div>
             <div class="tooltip">创建内容</div>
         </div>
-        
         <div class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-bell"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-bell"></i></div>
             <div class="nav-label">通知</div>
             <div class="tooltip">消息通知</div>
         </div>
-        
         <div class="nav-item">
-            <div class="nav-icon">
-                <i class="fas fa-user"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
             <div class="nav-label">我的</div>
             <div class="tooltip">个人中心</div>
         </div>
     </nav>
     
-    <!-- 弹窗 -->
-<div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:red; z-index:9999;"></div>
-
-    <!-- ==================== 报名弹窗模块 ==================== -->
+    <!-- ==================== 报名弹窗 ==================== -->
     <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
         <div style="background:#fff; width:90%; max-width:500px; border-radius:20px; padding:30px; position:relative; max-height:85vh; overflow-y:auto; border:2px solid #333;">
-            <!-- 关闭按钮 -->
-            <button onclick="document.getElementById('applicationModal').style.display='none'; document.body.style.overflow='auto';" 
-                    style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:28px; color:#666; cursor:pointer;">×</button>
+            <button onclick="closeModal()" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:28px; color:#666; cursor:pointer;">×</button>
             
-            <!-- 标题 -->
             <h2 style="text-align:center; margin-bottom:10px; color:#000;">🎬 加入NINE剧组</h2>
             <p style="text-align:center; color:#666; margin-bottom:25px; font-size:14px;">填写信息，开启你的剧组之旅</p>
             
-            <!-- 表单 -->
             <form id="nineApplicationForm">
                 <!-- 光遇名 -->
                 <div style="margin-bottom:20px;">
@@ -632,7 +497,7 @@
                     <input type="text" id="skyName" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="你的光遇游戏昵称">
                 </div>
                 
-             <!-- 性别 -->
+                <!-- 性别 -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">性别 *</label>
                     <div style="display:flex; gap:10px;">
@@ -651,7 +516,7 @@
                     <input type="text" id="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
                 </div>
                 
-                <!-- 意向分组（8个分组） -->
+                <!-- 意向分组（8个） -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
                     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
@@ -693,203 +558,87 @@
                     </select>
                 </div>
                 
-                <!-- 推荐人（动态显示） -->
+                <!-- 推荐人字段 -->
                 <div id="referrerField" style="margin-bottom:25px; display:none;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">我是由 ___ 招入Nine</label>
-                    <p class="hint-text" style="font-size:12px; color:#666; margin:4px 0 8px 0;">可以询问找你的人，他的ID</p>
+                    <p style="font-size:12px; color:#666; margin:4px 0 8px 0;">可以询问找你的人，他的ID</p>
                     <input type="text" id="referrerName" style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="推荐人的光遇名或昵称">
                 </div>
                 
-                <!-- 提交按钮 -->
                 <button type="submit" id="submitBtn" style="width:100%; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-size:18px; font-weight:bold; cursor:pointer;">提交申请</button>
                 <div id="formMessage" style="margin-top:15px; text-align:center; font-size:14px;"></div>
             </form>
         </div>
     </div>
-
-    <!-- ==================== JavaScript 功能模块 ==================== -->
+    
+    <!-- ==================== JavaScript ==================== -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        // Supabase 配置
+        // Supabase配置
         window.supabaseConfig = {
             url: 'https://slfyrftrgitapzhplgkv.supabase.co',
             key: 'sb_publishable_TdJ3rHkcP--bGZ9f5Anu8A_b_Okudzj'
         };
         const supabase = window.supabase.createClient(window.supabaseConfig.url, window.supabaseConfig.key);
         
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎬 NINE CREW 系统初始化');
-            
-            // 更新时间
-            function updateTime() {
-                const now = new Date();
-                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                              now.getMinutes().toString().padStart(2, '0');
-                document.querySelector('.status-time').textContent = timeStr;
+        // 核心功能
+        function openApplicationModal() {
+            console.log('🟢 打开弹窗');
+            const modal = document.getElementById('applicationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                initFormInteraction();
+            } else {
+                console.error('❌ 弹窗不存在');
             }
-            
-            updateTime();
-            setInterval(updateTime, 60000);
-            
-            // 底部导航交互
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 移除所有active状态
-                    navItems.forEach(i => i.classList.remove('active'));
-                    
-                    // 添加当前active状态
-                    this.classList.add('active');
-                    
-                    // 如果是加号按钮，显示发布菜单
-                    if (this.querySelector('.fa-plus')) {
-                        showPublishMenu();
-                        return;
-                    }
-                    
-                    // 获取页面标题
-                    const pageName = this.querySelector('.nav-label').textContent;
-                    showLoading(pageName);
-                });
-            });
-            
-            // 卡片点击效果
-            const cards = document.querySelectorAll('.function-card, .group-card');
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.style.transform = 'translateY(-2px)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                });
-            });
-            
-            // 初始化弹窗交互修复
-            initFormInteraction();
-        });
+        }
         
-        // 打开报名弹窗 - 修复版
-window.openApplicationModal = function() {
-    console.log('🟢 开始打开弹窗');
-    var modal = document.getElementById('applicationModal');
-    console.log('弹窗元素:', modal);
-    
-    if (!modal) {
-        alert('错误：找不到弹窗！请检查HTML代码');
-        return;
-    }
-    
-    // 显示一个简单的测试弹窗
-    modal.style.display = 'block';
-    modal.innerHTML = '<div style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:40px; border-radius:15px; text-align:center; box-shadow:0 0 30px rgba(0,0,0,0.3);"><h2 style="color:green;">✅ 弹窗正常！</h2><p>这说明弹窗功能已经修复</p><button onclick="document.getElementById(\'applicationModal\').style.display=\'none\'" style="margin-top:20px; padding:10px 20px; background:black; color:white; border:none; border-radius:8px; cursor:pointer;">关闭弹窗</button></div>';
-    
-    console.log('✅ 弹窗已显示');
-};
+        function closeModal() {
+            const modal = document.getElementById('applicationModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
         
-        // 修复表单交互
         function initFormInteraction() {
-            console.log('🔧 初始化表单交互修复...');
+            console.log('🔧 初始化表单交互');
             
-            // 修复性别选项点击
+            // 性别选项点击
             document.querySelectorAll('.option-label[data-type="radio"]').forEach(label => {
                 label.addEventListener('click', function() {
-                    const input = this.querySelector('input[type="radio"]');
-                    if (!input) return;
-                    
-                    // 清除同组其他选项的样式
-                    const name = input.name;
-                    document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
-                        radio.checked = false;
-                        const parent = radio.parentElement;
-                        if (parent) {
-                            parent.style.borderColor = '#ddd';
-                            parent.style.background = '#fff';
-                        }
+                    const input = this.querySelector('input');
+                    document.querySelectorAll(`input[name="${input.name}"]`).forEach(radio => {
+                        radio.parentElement.style.borderColor = '#ddd';
+                        radio.parentElement.style.background = '#fff';
                     });
-                    
-                    // 设置当前选中
                     input.checked = true;
                     this.style.borderColor = '#000';
                     this.style.background = '#f5f5f5';
                 });
             });
             
-            // 修复分组选项点击
+            // 分组选项点击
             document.querySelectorAll('.option-label[data-type="checkbox"]').forEach(label => {
                 label.addEventListener('click', function() {
-                    const input = this.querySelector('input[type="checkbox"]');
-                    if (!input) return;
-                    
+                    const input = this.querySelector('input');
                     input.checked = !input.checked;
-                    
-                    // 更新样式
-                    if (input.checked) {
-                        this.style.borderColor = '#000';
-                        this.style.background = '#f5f5f5';
-                    } else {
-                        this.style.borderColor = '#ddd';
-                        this.style.background = '#fff';
-                    }
+                    this.style.borderColor = input.checked ? '#000' : '#ddd';
+                    this.style.background = input.checked ? '#f5f5f5' : '#fff';
                 });
             });
             
-            // 初始化已选中项的样式
-            setTimeout(() => {
-                document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-                    const parent = cb.parentElement;
-                    if (parent && parent.classList.contains('option-label')) {
-                        parent.style.borderColor = '#000';
-                        parent.style.background = '#f5f5f5';
-                    }
-                });
-                document.querySelectorAll('input[type="radio"]:checked').forEach(rb => {
-                    const parent = rb.parentElement;
-                    if (parent && parent.classList.contains('option-label')) {
-                        parent.style.borderColor = '#000';
-                        parent.style.background = '#f5f5f5';
-                    }
-                });
-            }, 100);
-            
-            // 动态显示推荐人字段（带提示语）
+            // 推荐人字段动态显示
             document.getElementById('findMethod').addEventListener('change', function(e) {
-                const referrerField = document.getElementById('referrerField');
-                const shouldShow = e.target.value === '剧组招人(有推荐人)';
-                
-                referrerField.style.display = shouldShow ? 'block' : 'none';
-                
-                // 确保提示语存在
-                if (shouldShow) {
-                    let hint = referrerField.querySelector('.hint-text');
-                    if (!hint) {
-                        hint = document.createElement('p');
-                        hint.className = 'hint-text';
-                        hint.style.fontSize = '12px';
-                        hint.style.color = '#666';
-                        hint.style.margin = '4px 0 8px 0';
-                        hint.textContent = '可以询问找你的人，他的ID';
-                        
-                        const label = referrerField.querySelector('label');
-                        if (label) {
-                            label.insertAdjacentElement('afterend', hint);
-                        }
-                    }
-                }
+                const show = e.target.value === '剧组招人(有推荐人)';
+                document.getElementById('referrerField').style.display = show ? 'block' : 'none';
             });
             
-            // 点击弹窗背景关闭
-const modal = document.getElementById('applicationModal');
-if (modal) {
-    modal.addEventListener('click', function(event) {
-        if (event.target === this) {
-            this.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-}
+            // 弹窗背景点击关闭
+            document.getElementById('applicationModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
             
             // 表单提交
             document.getElementById('nineApplicationForm').addEventListener('submit', async function(e) {
@@ -899,10 +648,7 @@ if (modal) {
                 
                 btn.disabled = true;
                 btn.textContent = '提交中...';
-                msg.textContent = '';
-                msg.style.color = '#333';
-
-                // 收集数据
+                
                 const formData = {
                     sky_name: document.getElementById('skyName').value.trim(),
                     gender: document.querySelector('input[name="gender"]:checked')?.value,
@@ -913,18 +659,16 @@ if (modal) {
                         ? document.getElementById('referrerName').value.trim() 
                         : null
                 };
-
-                // 验证
+                
                 if (!formData.sky_name || !formData.gender || !formData.age || !formData.find_method || formData.interest_groups.length === 0) {
-                    msg.textContent = '❌ 请填写所有必填项并至少选择一个分组';
+                    msg.textContent = '❌ 请填写所有必填项';
                     msg.style.color = 'red';
                     btn.disabled = false;
                     btn.textContent = '提交申请';
                     return;
                 }
-
+                
                 try {
-                    // 插入数据库
                     const { data, error } = await supabase
                         .from('nine_applications')
                         .insert([formData])
@@ -936,15 +680,11 @@ if (modal) {
                     msg.style.color = 'green';
                     document.getElementById('nineApplicationForm').reset();
                     
-                    // 3秒后关闭弹窗
-                    setTimeout(() => {
-                        document.getElementById('applicationModal').style.display = 'none';
-                        document.body.style.overflow = 'auto';
-                    }, 3000);
+                    setTimeout(() => closeModal(), 3000);
                     
                 } catch (error) {
                     console.error('提交失败:', error);
-                    msg.textContent = '❌ 提交失败: ' + (error.message || '网络错误，请重试');
+                    msg.textContent = '❌ 提交失败，请重试';
                     msg.style.color = 'red';
                 } finally {
                     btn.disabled = false;
@@ -953,185 +693,64 @@ if (modal) {
             });
         }
         
-        // 其他功能函数
-        function openFeature(feature) {
-            alert('功能 "' + feature + '" 正在开发中，敬请期待！');
-        }
-        
-        function changeImage(type) {
-            alert('点击了 ' + type + ' 图片区域');
-        }
-        
-        function showPublishMenu() {
-            alert('发布功能正在开发中');
-        }
-        
-        function showLoading(pageName) {
-            console.log('正在加载: ' + pageName);
-        }
-    
-// ========== 页面美化效果 ==========
-// 页面加载时的渐入动画
-document.addEventListener('DOMContentLoaded', function() {
-    // 控制台欢迎信息
-    console.log('%c🎬 NINE CREW 剧组管理系统', 'font-size: 18px; font-weight: bold; color: #000;');
-    console.log('%c✨ 版本 1.0.0 · 专业影视创作社区', 'color: #666;');
-    console.log('%c🔒 安全提示：请勿在此粘贴任何人的代码', 'color: #e74c3c; font-weight: bold;');
-    
-    // 页面元素渐入效果
-    const mainContent = document.querySelector('main');
-    if (mainContent) {
-        mainContent.style.opacity = '0';
-        mainContent.style.transform = 'translateY(20px)';
-        mainContent.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        
-        setTimeout(() => {
-            mainContent.style.opacity = '1';
-            mainContent.style.transform = 'translateY(0)';
-        }, 100);
-    }
-    
-    // 功能卡片悬停效果增强
-    const functionCards = document.querySelectorAll('.function-card');
-    functionCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.boxShadow = '';
-        });
-    });
-});
-
-// ========== 实用小工具 ==========
-// 复制当前页面链接
-window.copyPageLink = function() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-        alert('✅ 页面链接已复制到剪贴板！\n\n' + url);
-    }).catch(() => {
-        prompt('📋 请手动复制链接：', url);
-    });
-};
-
-// 显示当前时间（更精确）
-function showCurrentTime() {
-    const now = new Date();
-    const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        weekday: 'long',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    };
-    return now.toLocaleDateString('zh-CN', options);
-}
-
-// 在控制台输入 ninestatus() 查看系统状态
-window.ninestatus = function() {
-    console.log('====== NINE CREW 系统状态 ======');
-    console.log('🕒 当前时间：', showCurrentTime());
-    console.log('🌐 页面地址：', window.location.href);
-    console.log('📱 用户设备：', navigator.userAgent);
-    console.log('🎯 弹窗状态：', document.getElementById('applicationModal').style.display);
-    console.log('✅ 系统状态：运行正常');
-    console.log('==============================');
-};
-
-// 提示：在控制台输入 ninestatus() 查看详情
-setTimeout(() => {
-    console.log('💡 提示：在控制台输入 ninestatus() 查看系统状态');
-}, 3000);
-        // ========== 强制弹窗修复 ==========
-console.log('🔧 执行强制弹窗修复...');
-
-// 1. 确保函数存在（最保险的方式）
-if (typeof window.openApplicationModal !== 'function') {
-    console.log('🔄 重新定义 openApplicationModal');
-    window.openApplicationModal = function() {
-        console.log('🟢 强制打开弹窗');
-        const modal = document.getElementById('applicationModal');
-        if (modal) {
-            console.log('✅ 找到弹窗元素');
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎬 NINE CREW 系统初始化');
             
-            // 手动初始化表单交互
-            if (typeof initFormInteraction === 'function') {
-                initFormInteraction();
+            // 更新时间
+            function updateTime() {
+                const timeStr = new Date().toTimeString().substring(0, 5);
+                document.querySelector('.status-time').textContent = timeStr;
             }
-        } else {
-            console.error('❌ 找不到弹窗元素！检查HTML中是否有id="applicationModal"的div');
-        }
-    };
-}
-
-// 2. 重新绑定点击事件（确保一定能触发）
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔗 重新绑定点击事件...');
-    
-    const welcomeLink = document.querySelector('.welcome-link');
-    if (welcomeLink) {
-        // 移除所有旧的事件监听器
-        const newLink = welcomeLink.cloneNode(true);
-        welcomeLink.parentNode.replaceChild(newLink, welcomeLink);
-        
-        // 添加新的点击事件
-        newLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('🖱️ 点击事件被触发');
-            window.openApplicationModal();
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // 导航交互
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 卡片点击效果
+            document.querySelectorAll('.function-card, .group-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    setTimeout(() => this.style.transform = '', 200);
+                });
+            });
+            
+            // 优化：页面加载动画
+            document.querySelector('main').style.opacity = '0';
+            document.querySelector('main').style.transform = 'translateY(20px)';
+            document.querySelector('main').style.transition = 'all 0.5s ease';
+            setTimeout(() => {
+                document.querySelector('main').style.opacity = '1';
+                document.querySelector('main').style.transform = 'translateY(0)';
+            }, 100);
         });
         
-        // 同时保留原有的onclick（双重保险）
-        newLink.setAttribute('onclick', 'openApplicationModal(); return false;');
+        // 其他功能
+        function openFeature(feature) { alert(`功能"${feature}"开发中`); }
+        function changeImage(type) { alert(`点击了${type}区域`); }
+        function showPublishMenu() { alert('发布功能开发中'); }
+        function showLoading(page) { console.log(`加载: ${page}`); }
         
-        console.log('✅ 点击事件已重新绑定');
-    } else {
-        console.error('❌ 找不到.welcome-link元素！');
-    }
-    
-    // 3. 测试：手动打开一次弹窗（调试用）
-    setTimeout(function() {
-        console.log('🧪 测试：3秒后尝试自动打开弹窗...');
-        const modal = document.getElementById('applicationModal');
-        if (modal) {
-            console.log('✅ 弹窗元素存在，样式为:', modal.style.display);
-            // 手动显示一次测试
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.style.display = 'none';
-                console.log('✅ 弹窗测试通过！');
-            }, 2000);
-        } else {
-            console.error('❌ 弹窗元素不存在！');
-        }
-    }, 3000);
-});
-
-// 4. 在控制台添加帮助命令
-window.debugModal = function() {
-    console.log('====== 弹窗调试信息 ======');
-    console.log('1. 弹窗元素:', document.getElementById('applicationModal'));
-    console.log('2. 打开函数:', typeof openApplicationModal);
-    console.log('3. 点击链接:', document.querySelector('.welcome-link'));
-    console.log('4. 当前URL:', window.location.href);
-    console.log('=========================');
-    
-    // 尝试强制打开
-    const modal = document.getElementById('applicationModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        console.log('✅ 已强制打开弹窗');
-    }
-};
-
-console.log('💡 提示：在控制台输入 debugModal() 调试弹窗');
-        </script>
+        // 控制台工具
+        window.ninestatus = function() {
+            console.log('====== 系统状态 ======');
+            console.log('时间:', new Date().toLocaleString());
+            console.log('弹窗:', document.getElementById('applicationModal') ? '存在' : '不存在');
+            console.log('链接:', document.querySelector('.welcome-link') ? '存在' : '不存在');
+            console.log('====================');
+        };
+        
+        // 自动测试
+        setTimeout(() => {
+            console.log('💡 提示：控制台输入 ninestatus() 查看状态');
+            console.log('✅ 系统加载完成，点击"我要申请加入Nine剧组！"测试弹窗');
+        }, 2000);
+    </script>
 </body>
 </html>
