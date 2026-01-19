@@ -180,46 +180,109 @@
     margin-top: 8px;
 }
 
-/* 组长卡片 */
+/* ===== 新的组长卡片系统 ===== */
+
+/* 组长卡片容器（多组长布局） */
+.leaders-container {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .leaders-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 单个组长卡片 - 支持自定义背景 */
 .leader-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 16px;
+    padding: 20px;
     color: white;
     position: relative;
     overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.leader-card::before {
+.leader-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* 背景图片层（虚化效果） */
+.leader-card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.6) saturate(1.2);
+    z-index: 1;
+    transform: scale(1.05); /* 避免边缘模糊空白 */
+}
+
+/* 内容层（在背景之上） */
+.leader-card-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 背景遮罩，增强文字可读性 */
+.leader-card::after {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -50%;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    opacity: 0.3;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.4) 100%);
+    z-index: 1;
 }
 
-.leader-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
+/* 组长头像（圆形，带光晕） */
 .leader-avatar {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    margin-right: 12px;
-    background: var(--white);
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    margin-right: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    color: #764ba2;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    z-index: 3;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.leader-card:hover .leader-avatar {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* 组长信息区域 */
+.leader-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
 .leader-info {
@@ -227,51 +290,82 @@
 }
 
 .leader-name {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .leader-title {
     font-size: 12px;
     opacity: 0.9;
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }
 
+/* 组长徽章（发光效果） */
 .leader-badge {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 8px;
+    background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%);
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
 }
 
+/* 查看主页按钮（毛玻璃效果） */
 .leader-action {
     text-align: center;
-    margin-top: 12px;
+    margin-top: auto;
 }
 
 .view-profile-btn {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 600;
     text-decoration: none;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    z-index: 3;
+    position: relative;
+    width: 100%;
 }
 
 .view-profile-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
 }
+
+.view-profile-btn i {
+    font-size: 11px;
+}
+
+/* 为不同组长设置不同的默认背景图片 */
+.leader-card:nth-child(1) .leader-card-bg {
+    background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+}
+
+.leader-card:nth-child(2) .leader-card-bg {
+    background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+}
+
+.leader-card:nth-child(3) .leader-card-bg {
+    background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+}
+
 
 /* 加入按钮 */
 .join-section {
