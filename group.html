@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>专业分组 · NINE CREW</title>
+    <!-- 微信分享优化 -->
+    <meta property="og:title" content="NINE CREW · 专业分组">
+    <meta property="og:description" content="加入光遇最有趣的剧组，选择你的专业分组">
+    <meta property="og:image" content="https://520556.github.io/nine-crew-v3/og-image.jpg">
+    <meta property="og:url" content="https://520556.github.io/nine-crew-v3/groups.html">
+    
+    <!-- 样式和图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="groups.css">
+    
+    <style>
+        /* 临时内联样式，确保页面立即显示 */
+        :root {
+            --black: #000000;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #999999;
+            --lighter-gray: #CCCCCC;
+            --lightest-gray: #F5F5F5;
+            --white: #FFFFFF;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            padding: 20px 16px 80px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+        
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--lightest-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .back-button:hover {
+            border-color: var(--lighter-gray);
+            background: var(--lightest-gray);
+        }
+        
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-top: 4px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--light-gray);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="page-header">
+        <a href="index.html" class="back-button" aria-label="返回首页">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+            <h1 class="page-title">专业分组</h1>
+            <p class="page-subtitle">选择你的专业领域，开启剧组之旅</p>
+        </div>
+    </header>
+    
+    <!-- 分组容器 -->
+    <main id="groupsContainer">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>
+            加载分组信息中...
+        </div>
+    </main>
+    
+    <!-- 底部导航（简化版） -->
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: var(--light-gray); font-size: 12px;">
+        <p>NINE CREW 剧组管理系统 · 分组页面</p>
+        <p style="margin-top: 8px;">点击分组查看详情，选择适合你的专业方向</p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="groups.js"></script>
+</body>
+</html>
