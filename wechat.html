@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NINE剧组 - 微信内访问</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, sans-serif;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 400px;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h2 {
+            color: #6a11cb;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin: 15px 0;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        .tip {
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎬 NINE剧组管理系统</h2>
+        <p>专业光遇剧组管理平台</p>
+        
+        <a href="https://520556.github.io/nine-crew-v3/index.html" class="btn">
+            ✅ 直接访问网站
+        </a>
+        
+        <a href="javascript:void(0)" onclick="addToHomeScreen()" class="btn">
+            📱 添加到手机桌面
+        </a>
+        
+        <div class="tip">
+            <p><i class="fas fa-info-circle"></i> 提示：</p>
+            <p>• 建议在微信右上角用浏览器打开</p>
+            <p>• 添加到桌面后可像APP一样使用</p>
+            <p>• 所有功能完全免费</p>
+        </div>
+    </div>
+    
+    <script>
+        function addToHomeScreen() {
+            if (window.navigator.standalone) {
+                alert('已在桌面创建快捷方式！');
+            } else {
+                alert('请在浏览器菜单中选择"添加到主屏幕"');
+            }
+        }
+    </script>
+</body>
+</html>
