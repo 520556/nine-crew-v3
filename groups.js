@@ -327,3 +327,13 @@ ${group.id === 3 ? `
         }
     };
 });
+window.openScriptEditor = function(groupId) {
+    console.log('打开剧本编辑器，分组:', groupId);
+    
+    // 保存当前分组ID到localStorage，供编辑器页面使用
+    localStorage.setItem('currentGroupId', groupId);
+    localStorage.setItem('currentGroupName', '编剧组');
+    
+    // 跳转到编辑器页面
+    window.location.href = 'script-editor.html';
+};
