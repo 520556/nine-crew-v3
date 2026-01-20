@@ -1,0 +1,16 @@
+{
+  "name": "NINE剧组",
+  "short_name": "NINE剧组",
+  "description": "光遇剧组管理平台",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/color/96/000000/film-reel.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ]
+}
