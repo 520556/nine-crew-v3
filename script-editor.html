@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>剧本编辑器 - NINE剧组</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="script-editor.css">
+    
+    <!-- 网站图标 -->
+    <link rel="icon" href="https://img.icons8.com/color/96/000000/film-reel.png" type="image/x-icon">
+    
+    <!-- 微信分享优化 -->
+    <meta property="og:title" content="剧本编辑器 - NINE剧组">
+    <meta property="og:description" content="在线创作剧本，支持富文本编辑和文档上传">
+    <meta property="og:image" content="https://img.icons8.com/color/96/000000/film-reel.png">
+    <meta property="og:url" content="https://520556.github.io/nine-crew-v3/script-editor.html">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="groups.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回分组</span>
+                </a>
+                <h1 class="page-title">剧本编辑器</h1>
+                <div class="header-actions">
+                    <button id="saveStatus" class="save-status">
+                        <i class="fas fa-check-circle"></i>
+                        <span>已保存</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="container">
+        <!-- 剧本信息卡片 -->
+        <div class="script-info-card">
+            <div class="script-header">
+                <h2><i class="fas fa-scroll"></i> 创作新剧本</h2>
+                <div class="script-meta">
+                    <span class="meta-item">
+                        <i class="far fa-clock"></i> 最后保存：<span id="lastSaved">刚刚</span>
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-pen"></i> 字数：<span id="wordCount">0</span>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- 剧本标题 -->
+            <div class="form-group">
+                <label for="scriptTitle">
+                    <i class="fas fa-heading"></i> 剧本标题 *
+                </label>
+                <input type="text" id="scriptTitle" placeholder="请输入剧本标题（例如：光遇之梦）" maxlength="100">
+            </div>
+            
+            <!-- 剧本简介 -->
+            <div class="form-group">
+                <label for="scriptDescription">
+                    <i class="fas fa-align-left"></i> 剧本简介
+                </label>
+                <textarea id="scriptDescription" placeholder="简要描述剧本内容、角色设定等（可选）" rows="3"></textarea>
+            </div>
+        </div>
+
+        <!-- 富文本编辑器区域 -->
+        <div class="editor-container">
+            <div class="editor-header">
+                <h3><i class="fas fa-edit"></i> 剧本内容</h3>
+                <div class="editor-tools">
+                    <button class="tool-btn" id="formatHelp" title="格式帮助">
+                        <i class="fas fa-question-circle"></i> 帮助
+                    </button>
+                    <button class="tool-btn" id="fullscreenBtn" title="全屏编辑">
+                        <i class="fas fa-expand"></i> 全屏
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quill编辑器容器 -->
+            <div id="editor-container">
+                <div id="editor"></div>
+            </div>
+            
+            <!-- 编辑器工具栏（Quill自带） -->
+            <div id="toolbar-container">
+                <!-- Quill会自动生成工具栏 -->
+            </div>
+            
+            <!-- 自定义功能按钮 -->
+            <div class="custom-tools">
+                <button class="custom-tool-btn" id="insertImage">
+                    <i class="fas fa-image"></i> 插入图片
+                </button>
+                <button class="custom-tool-btn" id="insertLink">
+                    <i class="fas fa-link"></i> 插入链接
+                </button>
+                <button class="custom-tool-btn" id="clearFormat">
+                    <i class="fas fa-eraser"></i> 清除格式
+                </button>
+            </div>
+        </div>
+
+        <!-- 文档上传区域 -->
+        <div class="upload-container">
+            <div class="upload-header">
+                <h3><i class="fas fa-file-upload"></i> 上传文档（可选）</h3>
+                <p class="upload-hint">支持 .txt, .doc, .docx, .pdf 格式，最大100MB</p>
+            </div>
+            
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-placeholder">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>点击或拖拽文件到这里上传</p>
+                    <p class="upload-sub">支持多种文档格式</p>
+                </div>
+                <input type="file" id="fileInput" accept=".txt,.doc,.docx,.pdf,.md" multiple style="display: none;">
+            </div>
+            
+            <div class="uploaded-files" id="uploadedFiles">
+                <!-- 已上传文件列表会动态显示在这里 -->
+            </div>
+        </div>
+
+        <!-- 提交区域 -->
+        <div class="submit-container">
+            <div class="submit-header">
+                <h3><i class="fas fa-paper-plane"></i> 提交审核</h3>
+                <p class="submit-hint">提交后剧本将进入审核队列，组长将在24小时内审核</p>
+            </div>
+            
+            <div class="submit-actions">
+                <button class="btn-secondary" id="saveDraftBtn">
+                    <i class="far fa-save"></i> 保存草稿
+                </button>
+                <button class="btn-primary" id="submitScriptBtn">
+                    <i class="fas fa-check-circle"></i> 提交审核
+                </button>
+            </div>
+            
+            <div class="submit-note">
+                <p><i class="fas fa-info-circle"></i> 注意：</p>
+                <ul>
+                    <li>剧本提交后不可直接修改，需等待审核结果</li>
+                    <li>审核通过后剧本将发布到剧组活动页面</li>
+                    <li>审核不通过会收到改进意见，可修改后重新提交</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 格式帮助模态框 -->
+        <div id="formatHelpModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-question-circle"></i> 格式帮助</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="help-section">
+                        <h4>快捷键：</h4>
+                        <ul>
+                            <li><strong>Ctrl+B</strong> - 加粗</li>
+                            <li><strong>Ctrl+I</strong> - 斜体</li>
+                            <li><strong>Ctrl+U</strong> - 下划线</li>
+                            <li><strong>Ctrl+Z</strong> - 撤销</li>
+                            <li><strong>Ctrl+Y</strong> - 重做</li>
+                        </ul>
+                    </div>
+                    <div class="help-section">
+                        <h4>支持格式：</h4>
+                        <ul>
+                            <li>标题（H1-H6）</li>
+                            <li>文字格式（加粗、斜体、下划线）</li>
+                            <li>列表（有序、无序）</li>
+                            <li>链接和图片</li>
+                            <li>文字颜色和背景色</li>
+                            <li>代码块</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer class="editor-footer">
+        <div class="container">
+            <p>NINE剧组剧本创作系统 &copy; 2024</p>
+            <p class="footer-links">
+                <a href="javascript:void(0)" onclick="window.location.href='index.html'">首页</a> |
+                <a href="javascript:void(0)" onclick="window.location.href='groups.html'">所有分组</a> |
+                <a href="javascript:void(0)" id="myScriptsBtn">我的剧本</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="script-editor.js"></script>
+    
+    <!-- 初始化脚本 -->
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('剧本编辑器页面加载完成');
+            
+            // 设置页面标题
+            const groupName = localStorage.getItem('currentGroupName') || '编剧组';
+            document.title = `剧本编辑器 - ${groupName}`;
+            
+            // 更新页面标题
+            const pageTitle = document.querySelector('.page-title');
+            if (pageTitle) {
+                pageTitle.textContent = `${groupName}剧本编辑器`;
+            }
+        });
+    </script>
+</body>
+      </html>
