@@ -2,261 +2,528 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剧本编辑器 - NINE剧组</title>
     
-    <!-- 样式文件 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Quill富文本编辑器CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <!-- 主样式 -->
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="script-editor.css">
+    <link rel="stylesheet" href="css/script-editor.css">
     
-    <!-- 网站图标 -->
-    <link rel="icon" href="https://img.icons8.com/color/96/000000/film-reel.png" type="image/x-icon">
-    
-    <!-- 微信分享优化 -->
-    <!-- ===== 微信分享优化 - 开始 ===== -->
-<!-- Open Graph 基础标签 -->
-<meta property="og:title" content="NINE剧组剧本编辑器 - 在线创作剧本">
-<meta property="og:description" content="富文本编辑｜文档上传｜自动保存｜审核提交｜活动剧本导入｜专业编剧工具">
-<meta property="og:image" content="https://img.icons8.com/color/512/000000/film-reel.png">
-<meta property="og:url" content="https://520556.github.io/nine-crew-v3/script-editor.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="NINE剧组管理系统">
-
-<!-- 微信专用标签 -->
-<meta itemprop="name" content="NINE剧组剧本编辑器">
-<meta itemprop="description" content="在线创作剧本，支持富文本编辑、文档上传、自动保存、审核流程">
-<meta itemprop="image" content="https://img.icons8.com/color/512/000000/film-reel.png">
-
-<!-- 移动端优化 -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="NINE剧组">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#000000">
-<meta name="msapplication-TileColor" content="#000000">
-
-<!-- 防止电话/邮箱自动识别 -->
-<meta name="format-detection" content="telephone=no">
-<meta name="format-detection" content="email=no">
-<meta name="format-detection" content="address=no">
-
-<!-- PWA 图标 -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://img.icons8.com/color/180/000000/film-reel.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://img.icons8.com/color/96/000000/film-reel.png">
-<link rel="icon" type="image/png" sizes="16x16" href="https://img.icons8.com/color/96/000000/film-reel.png">
-<link rel="mask-icon" href="https://img.icons8.com/color/96/000000/film-reel.png" color="#000000">
-
-<!-- 预连接优化 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- ===== 微信分享优化 - 结束 ===== -->
+    <!-- 修复BUG的CSS -->
+    <style>
+        /* ====== BUG修复：透明度和层叠问题 ====== */
+        
+        /* 1. 修复整个页面背景，避免透明叠加 */
+        body.script-editor-page {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* 2. 修复编辑器容器 - 纯白背景，无透明 */
+        .editor-wrapper {
+            background: #FFFFFF !important;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #eaeaea;
+        }
+        
+        /* 3. 修复Quill工具栏背景 */
+        .ql-toolbar.ql-snow {
+            background: #f8f9fa !important;
+            border: 1px solid #dee2e6 !important;
+            border-radius: 8px 8px 0 0;
+            border-bottom: none !important;
+        }
+        
+        /* 4. 修复Quill编辑区域 */
+        .ql-container.ql-snow {
+            background: #FFFFFF !important;
+            border: 1px solid #dee2e6 !important;
+            border-radius: 0 0 8px 8px;
+            border-top: none !important;
+            min-height: 400px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        /* 5. 修复全屏模式 - 确保背景不透明 */
+        .ql-editor.ql-blank::before,
+        .ql-editor {
+            color: #212529 !important;
+            background: #FFFFFF !important;
+        }
+        
+        /* 全屏模式专用修复 */
+        .ql-editor.fullscreen {
+            background: #FFFFFF !important;
+            z-index: 10000 !important;
+            padding: 40px !important;
+        }
+        
+        /* 6. 修复已保存提示按钮 */
+        #saveIndicator {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(15, 15, 15, 0.95) !important;
+            color: #6A11CB;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid #6A11CB;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+        
+        /* 按钮消失动画 */
+        #saveIndicator.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        /* 7. 修复表单区域 */
+        .form-container {
+            background: #FFFFFF !important;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #eaeaea;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-input, .form-textarea {
+            background: #FFFFFF !important;
+            border: 1px solid #ced4da !important;
+            color: #212529 !important;
+        }
+        
+        /* 8. 修复文件上传区域 */
+        .upload-area {
+            background: #f8f9fa !important;
+            border: 2px dashed #6A11CB !important;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .upload-area.dragover {
+            background: rgba(106, 17, 203, 0.1) !important;
+        }
+        
+        /* 9. 修复文件列表 */
+        .file-list {
+            background: #FFFFFF !important;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            background: #f8f9fa !important;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+        }
+        
+        /* 10. 修复按钮区域 */
+        .action-buttons {
+            background: #FFFFFF !important;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+        }
+        
+        .btn-primary, .btn-secondary {
+            background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%) !important;
+            color: white !important;
+            border: none !important;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 0 10px;
+            min-width: 160px;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #495057 0%, #6c757d 100%) !important;
+        }
+        
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+        }
+        
+        /* 11. 修复页面标题 */
+        .page-title {
+            color: #FFFFFF !important;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 12. 确保所有文字清晰可见 */
+        * {
+            color: inherit !important;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            body.script-editor-page {
+                padding: 10px;
+            }
+            
+            .editor-wrapper, .form-container {
+                padding: 15px;
+            }
+            
+            .action-buttons {
+                padding: 15px;
+            }
+            
+            .btn-primary, .btn-secondary {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
-<body>
-    <!-- 顶部导航栏 -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="groups.html" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>返回分组</span>
-                </a>
-                <h1 class="page-title">剧本编辑器</h1>
-                <div class="header-actions">
-                    <button id="saveStatus" class="save-status">
-                        <i class="fas fa-check-circle"></i>
-                        <span>已保存</span>
-                    </button>
-                </div>
+<body class="script-editor-page">
+    <!-- 返回导航 -->
+    <div class="container" style="margin-top: 20px;">
+        <a href="groups.html" class="back-link" style="color: #6A11CB; text-decoration: none; font-size: 16px;">
+            ← 返回分组页面
+        </a>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <h1 class="page-title">✍️ 剧本编辑器</h1>
+        
+        <!-- 剧本信息表单 -->
+        <div class="form-container">
+            <h2 style="color: #212529; margin-bottom: 20px;">📝 剧本信息</h2>
+            
+            <div class="form-group">
+                <label for="scriptTitle" style="color: #495057; display: block; margin-bottom: 8px; font-weight: bold;">
+                    剧本标题 *
+                </label>
+                <input type="text" id="scriptTitle" class="form-input" 
+                       placeholder="请输入剧本标题（如：星海之约）" 
+                       style="width: 100%; padding: 12px; border-radius: 6px;">
+            </div>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="scriptDescription" style="color: #495057; display: block; margin-bottom: 8px; font-weight: bold;">
+                    剧本简介
+                </label>
+                <textarea id="scriptDescription" class="form-textarea" 
+                          placeholder="简要描述剧本内容、背景、主要角色..." 
+                          rows="4"
+                          style="width: 100%; padding: 12px; border-radius: 6px;"></textarea>
             </div>
         </div>
-    </header>
-
-    <!-- 主内容区域 -->
-    <main class="container">
-        <!-- 剧本信息卡片 -->
-        <div class="script-info-card">
-            <div class="script-header">
-                <h2><i class="fas fa-scroll"></i> 创作新剧本</h2>
-                <div class="script-meta">
-                    <span class="meta-item">
-                        <i class="far fa-clock"></i> 最后保存：<span id="lastSaved">刚刚</span>
-                    </span>
-                    <span class="meta-item">
-                        <i class="fas fa-pen"></i> 字数：<span id="wordCount">0</span>
-                    </span>
-                </div>
-            </div>
-            
-            <!-- 剧本标题 -->
-            <div class="form-group">
-                <label for="scriptTitle">
-                    <i class="fas fa-heading"></i> 剧本标题 *
-                </label>
-                <input type="text" id="scriptTitle" placeholder="请输入剧本标题（例如：光遇之梦）" maxlength="100">
-            </div>
-            
-            <!-- 剧本简介 -->
-            <div class="form-group">
-                <label for="scriptDescription">
-                    <i class="fas fa-align-left"></i> 剧本简介
-                </label>
-                <textarea id="scriptDescription" placeholder="简要描述剧本内容、角色设定等（可选）" rows="3"></textarea>
-            </div>
-        </div>
-
-        <!-- 富文本编辑器区域 -->
-        <div class="editor-container">
-            <div class="editor-header">
-                <h3><i class="fas fa-edit"></i> 剧本内容</h3>
-                <div class="editor-tools">
-                    <button class="tool-btn" id="formatHelp" title="格式帮助">
-                        <i class="fas fa-question-circle"></i> 帮助
-                    </button>
-                    <button class="tool-btn" id="fullscreenBtn" title="全屏编辑">
-                        <i class="fas fa-expand"></i> 全屏
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Quill编辑器容器 -->
+        
+        <!-- 富文本编辑器 -->
+        <div class="editor-wrapper">
+            <h2 style="color: #212529; margin-bottom: 20px;">📖 剧本内容</h2>
             <div id="editor-container">
-                <div id="editor"></div>
-            </div>
-            
-            <!-- 编辑器工具栏（Quill自带） -->
-            <div id="toolbar-container">
-                <!-- Quill会自动生成工具栏 -->
-            </div>
-            
-            <!-- 自定义功能按钮 -->
-            <div class="custom-tools">
-                <button class="custom-tool-btn" id="insertImage">
-                    <i class="fas fa-image"></i> 插入图片
-                </button>
-                <button class="custom-tool-btn" id="insertLink">
-                    <i class="fas fa-link"></i> 插入链接
-                </button>
-                <button class="custom-tool-btn" id="clearFormat">
-                    <i class="fas fa-eraser"></i> 清除格式
-                </button>
+                <!-- Quill编辑器将在这里初始化 -->
             </div>
         </div>
-
-        <!-- 文档上传区域 -->
-        <div class="upload-container">
-            <div class="upload-header">
-                <h3><i class="fas fa-file-upload"></i> 上传文档（可选）</h3>
-                <p class="upload-hint">支持 .txt, .doc, .docx, .pdf 格式，最大100MB</p>
-            </div>
+        
+        <!-- 文件上传区域 -->
+        <div class="form-container">
+            <h2 style="color: #212529; margin-bottom: 20px;">📎 附件上传</h2>
+            <p style="color: #6c757d; margin-bottom: 15px;">支持 .txt, .docx, .pdf 等文档格式（可选）</p>
             
             <div class="upload-area" id="uploadArea">
-                <div class="upload-placeholder">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>点击或拖拽文件到这里上传</p>
-                    <p class="upload-sub">支持多种文档格式</p>
-                </div>
-                <input type="file" id="fileInput" accept=".txt,.doc,.docx,.pdf,.md" multiple style="display: none;">
-            </div>
-            
-            <div class="uploaded-files" id="uploadedFiles">
-                <!-- 已上传文件列表会动态显示在这里 -->
-            </div>
-        </div>
-
-        <!-- 提交区域 -->
-        <div class="submit-container">
-            <div class="submit-header">
-                <h3><i class="fas fa-paper-plane"></i> 提交审核</h3>
-                <p class="submit-hint">提交后剧本将进入审核队列，组长将在24小时内审核</p>
-            </div>
-            
-            <div class="submit-actions">
-                <button class="btn-secondary" id="saveDraftBtn">
-                    <i class="far fa-save"></i> 保存草稿
-                </button>
-                <button class="btn-primary" id="submitScriptBtn">
-                    <i class="fas fa-check-circle"></i> 提交审核
+                <div style="font-size: 48px; color: #6A11CB; margin-bottom: 15px;">📤</div>
+                <p style="color: #495057; font-size: 18px; margin-bottom: 10px;">
+                    拖拽文件到这里，或点击选择文件
+                </p>
+                <p style="color: #6c757d; font-size: 14px;">
+                    支持单个或多个文件上传
+                </p>
+                <input type="file" id="fileInput" multiple 
+                       style="display: none;" 
+                       accept=".txt,.doc,.docx,.pdf,.md">
+                <button onclick="document.getElementById('fileInput').click()" 
+                        class="btn-secondary" 
+                        style="margin-top: 15px; padding: 10px 20px; font-size: 14px;">
+                    选择文件
                 </button>
             </div>
             
-            <div class="submit-note">
-                <p><i class="fas fa-info-circle"></i> 注意：</p>
-                <ul>
-                    <li>剧本提交后不可直接修改，需等待审核结果</li>
-                    <li>审核通过后剧本将发布到剧组活动页面</li>
-                    <li>审核不通过会收到改进意见，可修改后重新提交</li>
-                </ul>
+            <div class="file-list" id="fileList">
+                <!-- 文件列表将动态显示在这里 -->
             </div>
         </div>
-
-        <!-- 格式帮助模态框 -->
-        <div id="formatHelpModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-question-circle"></i> 格式帮助</h3>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="help-section">
-                        <h4>快捷键：</h4>
-                        <ul>
-                            <li><strong>Ctrl+B</strong> - 加粗</li>
-                            <li><strong>Ctrl+I</strong> - 斜体</li>
-                            <li><strong>Ctrl+U</strong> - 下划线</li>
-                            <li><strong>Ctrl+Z</strong> - 撤销</li>
-                            <li><strong>Ctrl+Y</strong> - 重做</li>
-                        </ul>
-                    </div>
-                    <div class="help-section">
-                        <h4>支持格式：</h4>
-                        <ul>
-                            <li>标题（H1-H6）</li>
-                            <li>文字格式（加粗、斜体、下划线）</li>
-                            <li>列表（有序、无序）</li>
-                            <li>链接和图片</li>
-                            <li>文字颜色和背景色</li>
-                            <li>代码块</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        
+        <!-- 操作按钮 -->
+        <div class="action-buttons">
+            <button onclick="saveDraft()" class="btn-secondary">
+                💾 保存草稿
+            </button>
+            <button onclick="submitScript()" class="btn-primary">
+                🚀 提交审核
+            </button>
         </div>
-    </main>
-
-    <!-- 底部信息 -->
-    <footer class="editor-footer">
-        <div class="container">
-            <p>NINE剧组剧本创作系统 &copy; 2024</p>
-            <p class="footer-links">
-                <a href="javascript:void(0)" onclick="window.location.href='index.html'">首页</a> |
-                <a href="javascript:void(0)" onclick="window.location.href='groups.html'">所有分组</a> |
-                <a href="javascript:void(0)" id="myScriptsBtn">我的剧本</a>
-            </p>
-        </div>
-    </footer>
-
-    <!-- JavaScript文件 -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="script-editor.js"></script>
+    </div>
     
-    <!-- 初始化脚本 -->
+    <!-- 保存提示 -->
+    <div id="saveIndicator">✅ 已保存草稿</div>
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    
+    <!-- 修复后的脚本 -->
     <script>
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('剧本编辑器页面加载完成');
-            
-            // 设置页面标题
-            const groupName = localStorage.getItem('currentGroupName') || '编剧组';
-            document.title = `剧本编辑器 - ${groupName}`;
-            
-            // 更新页面标题
-            const pageTitle = document.querySelector('.page-title');
-            if (pageTitle) {
-                pageTitle.textContent = `${groupName}剧本编辑器`;
-            }
+        // 初始化Quill编辑器
+        const quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image', 'video'],
+                    ['clean'],
+                    ['fullscreen']
+                ]
+            },
+            placeholder: '开始创作你的剧本...支持文字格式、图片、链接等'
         });
+        
+        // 文件上传相关变量
+        let uploadedFiles = [];
+        
+        // 初始化 - 加载草稿
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDraft();
+            setupFileUpload();
+            setupAutoSave();
+        });
+        
+        // 加载草稿
+        function loadDraft() {
+            const draft = localStorage.getItem('scriptDraft');
+            if (draft) {
+                try {
+                    const data = JSON.parse(draft);
+                    document.getElementById('scriptTitle').value = data.title || '';
+                    document.getElementById('scriptDescription').value = data.description || '';
+                    if (data.content) {
+                        quill.root.innerHTML = data.content;
+                    }
+                    uploadedFiles = data.files || [];
+                    updateFileList();
+                    showSaveIndicator('📂 已加载草稿');
+                } catch (e) {
+                    console.error('加载草稿失败:', e);
+                }
+            }
+        }
+        
+        // 自动保存（每30秒）
+        function setupAutoSave() {
+            setInterval(() => {
+                const title = document.getElementById('scriptTitle').value;
+                const description = document.getElementById('scriptDescription').value;
+                const content = quill.root.innerHTML;
+                
+                if (title.trim() || content.trim() !== '<p><br></p>') {
+                    const scriptData = {
+                        title: title,
+                        description: description,
+                        content: content,
+                        files: uploadedFiles,
+                        savedAt: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('scriptDraft', JSON.stringify(scriptData));
+                    showSaveIndicator('✅ 已自动保存');
+                }
+            }, 30000); // 30秒
+        }
+        
+        // 手动保存草稿
+        function saveDraft() {
+            const title = document.getElementById('scriptTitle').value;
+            const description = document.getElementById('scriptDescription').value;
+            const content = quill.root.innerHTML;
+            
+            const scriptData = {
+                title: title,
+                description: description,
+                content: content,
+                files: uploadedFiles,
+                savedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('scriptDraft', JSON.stringify(scriptData));
+            showSaveIndicator('✅ 草稿已保存');
+        }
+        
+        // 显示保存提示（3秒后自动消失）
+        function showSaveIndicator(message) {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.textContent = message;
+            indicator.style.display = 'block';
+            indicator.style.opacity = '1';
+            indicator.classList.remove('fade-out');
+            
+            // 3秒后开始淡出
+            setTimeout(() => {
+                indicator.classList.add('fade-out');
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+        
+        // 文件上传设置
+        function setupFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            // 拖拽上传
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+            
+            // 点击上传
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+                fileInput.value = ''; // 重置input
+            });
+        }
+        
+        // 处理上传的文件
+        function handleFiles(files) {
+            for (let file of files) {
+                // 模拟上传（实际项目需要上传到服务器）
+                const fileInfo = {
+                    id: Date.now() + Math.random(),
+                    name: file.name,
+                    size: formatFileSize(file.size),
+                    type: file.type,
+                    uploadedAt: new Date().toLocaleString()
+                };
+                uploadedFiles.push(fileInfo);
+            }
+            updateFileList();
+            saveDraft(); // 保存文件列表到草稿
+        }
+        
+        // 更新文件列表显示
+        function updateFileList() {
+            const fileListEl = document.getElementById('fileList');
+            
+            if (uploadedFiles.length === 0) {
+                fileListEl.innerHTML = '<p style="color: #6c757d; text-align: center;">暂无上传文件</p>';
+                return;
+            }
+            
+            fileListEl.innerHTML = uploadedFiles.map(file => `
+                <div class="file-item" data-id="${file.id}">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: #212529;">${file.name}</strong>
+                            <br>
+                            <small style="color: #6c757d;">${file.size} • ${file.uploadedAt}</small>
+                        </div>
+                        <button onclick="removeFile('${file.id}')" 
+                                style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 18px;">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 移除文件
+        function removeFile(fileId) {
+            uploadedFiles = uploadedFiles.filter(file => file.id !== fileId);
+            updateFileList();
+            saveDraft();
+        }
+        
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // 提交剧本（模拟）
+        function submitScript() {
+            const title = document.getElementById('scriptTitle').value.trim();
+            const content = quill.root.innerHTML;
+            
+            if (!title) {
+                alert('请填写剧本标题');
+                return;
+            }
+            
+            if (content === '<p><br></p>' || content.trim() === '<p></p>') {
+                alert('请填写剧本内容');
+                return;
+            }
+            
+            if (confirm(`确定提交剧本 "${title}" 进行审核吗？\n\n提交后，组长将在24小时内进行审核。`)) {
+                // 这里实际应该发送到服务器
+                console.log('提交剧本:', {
+                    title: title,
+                    description: document.getElementById('scriptDescription').value,
+                    content: content,
+                    files: uploadedFiles
+                });
+                
+                // 清空草稿
+                localStorage.removeItem('scriptDraft');
+                uploadedFiles = [];
+                
+                // 显示成功消息
+                alert('✅ 剧本提交成功！\n\n已进入审核队列，审核结果将通过系统通知。');
+                
+                // 跳转到我的剧本页面（待开发）
+                window.location.href = 'groups.html'; // 暂时返回分组页
+            }
+        }
     </script>
 </body>
-      </html>
+</html>
