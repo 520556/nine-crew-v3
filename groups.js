@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         avatar: '张',
         role: '组长'  // 可以根据分组调整，如'配音组长'
     },
+{
+    name: '李四（测试）',  // 第二个组长
+    avatar: '李',
+    role: '组长'
+}
     // 可以添加更多组长
 ],
             qrCodeUpdated: '2024-01-15'
