@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     role: '组长'
                 }
             ],
+            hasEditor: true,
             needsAudit: false,  // 添加这个字段
             qrCodeUpdated: '2024-01-10'
         },
@@ -264,7 +265,25 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 ` : ''}
-                
+
+               <!-- 剧本创作区域（仅编剧组显示） -->
+${group.id === 3 ? `
+<div class="content-section editor-section">
+    <h3 class="section-title">
+        <i class="fas fa-edit"></i> 剧本创作
+    </h3>
+    <p style="font-size: 14px; color: var(--medium-gray); margin-bottom: 12px;">
+        为活动创作剧本或上传已有文档
+    </p>
+    <button class="create-script-btn" onclick="openScriptEditor(${group.id})">
+        <i class="fas fa-pen-alt"></i> 开始创作剧本
+    </button>
+    <p style="font-size: 11px; color: var(--light-gray); margin-top: 8px;">
+        支持富文本编辑，可上传文档，提交后需审核
+    </p>
+</div>
+` : ''} 
+
                 <!-- 加入按钮 -->
                 <div class="content-section join-section">
                     <button class="join-button" onclick="joinGroup(${group.id}, ${group.needsAudit})">
