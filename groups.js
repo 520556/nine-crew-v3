@@ -16,9 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 热爱表演，有表现欲\n2. 能够按照剧本要求演绎角色\n3. 愿意学习和提升演技\n4. 按时参加排练和拍摄',
             hasLeader: true,
-            leaderName: '张三',
-            leaderAvatar: '张',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-15'
         },
         {
@@ -30,9 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 普通话标准，发音清晰\n2. 能够表达角色情感\n3. 有录音设备（基础即可）\n4. 需要提交作品审核',
             hasLeader: true,
-            leaderName: '李四',
-            leaderAvatar: '李',
-            needsAudit: true,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-18'
         },
         {
@@ -44,9 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 有创意，喜欢讲故事\n2. 文字表达能力良好\n3. 跟进剧本内容\n4. 接受团队讨论修改',
             hasLeader: true,
-            leaderName: '王五',
-            leaderAvatar: '王',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-10'
         },
         {
@@ -56,11 +71,16 @@ document.addEventListener('DOMContentLoaded', function() {
             description: '视频剪辑、特效制作、音频处理，需要相关软件操作经验。',
             members: 36,
             isActive: false,
-            requirements: '1. 会使用剪辑软件（剪映/PR等）\n2. 有耐心，注重细节\n3. 需要提交作品审核\n4. 愿意学习新技能',
+            requirements: '1. 会使用剪辑软件（剪映/PR等）\n2. 有耐！寒假之前我真的会叫你的。心，注重细节\n3. 需要提交作品审核\n4. 愿意学习新技能',
             hasLeader: false,
-            leaderName: '',
-            leaderAvatar: '',
-            needsAudit: true,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-12'
         },
         {
@@ -72,9 +92,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 熟悉光遇游戏摄影，画质清晰\n2. 有画面构图意识\n3. 能够按导演要求拍摄\n4. 按时提交拍摄素材',
             hasLeader: true,
-            leaderName: '赵六',
-            leaderAvatar: '赵',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-14'
         },
         {
@@ -86,9 +111,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 喜欢社交媒体运营\n2. 有文案或设计能力\n3. 能够定期产出内容\n4. 了解光遇玩家社区',
             hasLeader: true,
-            leaderName: '钱七',
-            leaderAvatar: '钱',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-16'
         },
         {
@@ -100,9 +130,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 性格开朗，有亲和力\n2. 喜欢组织活动\n3. 能够活跃气氛\n4. 愿意帮助新人',
             hasLeader: true,
-            leaderName: '孙八',
-            leaderAvatar: '孙',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-11'
         },
         {
@@ -114,9 +149,14 @@ document.addEventListener('DOMContentLoaded', function() {
             isActive: true,
             requirements: '1. 有创作视野和领导能力\n2. 能够协调各组工作\n3. 熟悉影视制作流程\n4. 需要经验积累',
             hasLeader: true,
-            leaderName: '周九',
-            leaderAvatar: '周',
-            needsAudit: false,
+            leaders: [
+    {
+        name: '张三',
+        avatar: '张',
+        role: '组长'  // 可以根据分组调整，如'配音组长'
+    },
+    // 可以添加更多组长
+],
             qrCodeUpdated: '2024-01-17'
         }
     ];
@@ -191,33 +231,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <!-- 组长信息（如果有） -->
-                ${group.hasLeader ? `
-                <div class="content-section">
-                    <h3 class="section-title">
-                        <i class="fas fa-crown"></i> 分组组长
-                    </h3>
-                    <div class="leader-card">
-                        <div class="leader-header">
-                            <div class="leader-avatar">
-                                ${group.leaderAvatar}
-                            </div>
-                            <div class="leader-info">
-                                <div class="leader-name">${group.leaderName}</div>
-                                <div class="leader-title">
-                                    <span class="leader-badge">
-                                        <i class="fas fa-star"></i> 组长
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="leader-action">
-                            <a href="javascript:void(0)" class="view-profile-btn" onclick="viewLeaderProfile(${group.id})">
-                                查看组长主页 <i class="fas fa-external-link-alt"></i>
-                            </a>
+                ${group.leaders && group.leaders.length > 0 ? `
+<div class="content-section">
+    <h3 class="section-title">
+        <i class="fas fa-crown"></i> 分组管理 ${group.leaders.length > 1 ? `(${group.leaders.length}位)` : ''}
+    </h3>
+    <div class="leaders-container">
+        ${group.leaders.map((leader, index) => `
+        <div class="leader-card">
+            <div class="leader-card-bg" data-leader-index="${index}"></div>
+            
+            <div class="leader-card-content">
+                <div class="leader-header">
+                    <div class="leader-avatar">
+                        ${leader.avatar}
+                    </div>
+                    <div class="leader-info">
+                        <div class="leader-name">${leader.name}</div>
+                        <div class="leader-title">
+                            <span class="leader-badge">
+                                <i class="fas fa-star"></i> ${leader.role}
+                            </span>
                         </div>
                     </div>
                 </div>
-                ` : ''}
+                <div class="leader-action">
+                    <a href="javascript:void(0)" class="view-profile-btn" 
+                       onclick="viewLeaderProfile('${leader.name}', ${group.id})">
+                        <i class="fas fa-user-circle"></i> 查看主页
+                    </a>
+                </div>
+            </div>
+        </div>
+        `).join('')}
+    </div>
+</div>
+` : ''}
                 
                 <!-- 加入按钮 -->
                 <div class="content-section join-section">
