@@ -1,3 +1,29 @@
+/* ===== 强制测试：验证CSS是否加载 ===== */
+
+/* 测试1：整个页面变成深紫色渐变（很明显） */
+body {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important;
+    min-height: 100vh !important;
+}
+
+/* 测试2：所有卡片变成黄色（很明显） */
+.function-card, .group-card, .image-placeholder {
+    background: yellow !important;
+    border: 3px solid red !important;
+    transform: scale(1.05) !important;
+}
+
+/* 测试3：文字变成蓝色（很明显） */
+h1, h2, h3, p, span {
+    color: blue !important;
+    font-weight: bold !important;
+}
+
+/* 测试4：底部导航变成绿色（很明显） */
+.bottom-nav {
+    background: green !important;
+    border-top: 5px solid orange !important;
+}
 /* ===== NINE剧组 - 高级玻璃拟态风格 ===== */
 :root {
     /* 高级灰阶系统 */
