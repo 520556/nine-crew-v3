@@ -74,6 +74,38 @@
             background-size: cover;
         }
         
+        /* 状态栏 - 带通知图标 */
+        .status-bar {
+            padding: 12px var(--space-md);
+            background: var(--white);
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .status-time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-icons i {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        
+        .status-icons .fa-bell {
+            color: var(--black);
+            margin-right: 4px;
+        }
+        
         /* 返回链接 */
         .back-link {
             display: inline-flex;
@@ -225,11 +257,6 @@
             align-items: center;
             gap: 4px;
             border: 1px solid var(--lighter-gray);
-        }
-        
-        .group-badge i {
-            font-size: 10px;
-            color: var(--light-gray);
         }
         
         .level-badge {
@@ -497,6 +524,72 @@
             font-size: 12px;
         }
         
+        /* 打卡日历 */
+        .calendar-section {
+            margin: var(--space-xl) 0;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+        
+        .calendar-month {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .streak-badge {
+            background: var(--lightest-gray);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 11px;
+            color: var(--light-gray);
+            margin-bottom: 8px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .calendar-day.checked {
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+        
+        .calendar-day.today {
+            border: 2px solid var(--black);
+            font-weight: 600;
+        }
+        
         /* 作品网格 */
         .works-grid {
             display: grid;
@@ -545,6 +638,17 @@
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 9px;
+        }
+        
+        .work-stats {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            font-size: 9px;
+            color: var(--medium-gray);
+            background: rgba(255,255,255,0.9);
+            padding: 2px 6px;
+            border-radius: 10px;
         }
         
         /* 积分动态 */
@@ -662,7 +766,6 @@
             text-align: center;
             flex: 1;
             color: var(--light-gray);
-            cursor: pointer;
             text-decoration: none;
         }
         
@@ -692,12 +795,27 @@
             .profile-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .calendar-grid {
+                gap: 2px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 顶部装饰带 -->
     <div class="header-decoration"></div>
+    
+    <!-- 状态栏 - 带通知图标 -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-bell" onclick="window.location.href='notifications.html'" style="cursor: pointer; margin-right: 4px;"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
     
     <div class="container">
         <!-- 返回链接 -->
@@ -813,6 +931,14 @@
                     <div class="badge-icon">⭐</div>
                     <div class="badge-name">人气作品</div>
                 </div>
+                <div class="badge-item" onclick="alert('剧组之星：积分5000+')">
+                    <div class="badge-icon">🏆</div>
+                    <div class="badge-name">剧组之星</div>
+                </div>
+                <div class="badge-item" onclick="alert('人气王：粉丝100+')">
+                    <div class="badge-icon">👥</div>
+                    <div class="badge-name">人气王</div>
+                </div>
             </div>
         </div>
         
@@ -826,108 +952,55 @@
                 <span class="group-tag"><i class="fas fa-pen-fancy"></i> 编剧组 · 组长</span>
                 <span class="group-tag"><i class="fas fa-video"></i> 导演组</span>
                 <span class="group-tag"><i class="fas fa-heart"></i> 气氛组</span>
+                <span class="group-tag"><i class="fas fa-plus"></i> 申请中:摄影组</span>
             </div>
         </div>
         
-        <!-- 近期作品 -->
-        <div class="profile-card">
-            <div class="section-title" style="margin-bottom: var(--space-lg);">
-                <i class="fas fa-images"></i>
-                近期作品
-                <span style="flex:1;"></span>
-                <a href="#" style="color: var(--medium-gray); font-size: 13px; text-decoration: none;" onclick="alert('查看更多开发中')">查看更多 →</a>
+        <!-- 打卡日历 -->
+        <div class="calendar-section">
+            <div class="calendar-header">
+                <div class="calendar-month">
+                    <i class="far fa-calendar" style="margin-right: 6px;"></i>
+                    2026年2月
+                </div>
+                <div class="streak-badge">
+                    <i class="fas fa-fire" style="color: #ff6b6b;"></i> 连续打卡 15天
+                </div>
             </div>
             
-            <div class="works-grid">
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-pen-fancy"></i>
-                    <span>星海之约</span>
-                    <span class="work-badge">剧本</span>
-                </div>
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-image"></i>
-                    <span>光遇日记</span>
-                    <span class="work-badge">图文</span>
-                </div>
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-video"></i>
-                    <span>剧组日常</span>
-                    <span class="work-badge">视频</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 积分动态 -->
-        <div class="profile-card">
-            <div class="section-title" style="margin-bottom: var(--space-lg);">
-                <i class="fas fa-history"></i>
-                积分动态
+            <div class="weekdays">
+                <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
             </div>
             
-            <div class="points-feed">
-                <div class="points-item">
-                    <div class="points-icon">✍️</div>
-                    <div class="points-detail">
-                        <div class="points-action">提交剧本《新项目》</div>
-                        <div class="points-time">2小时前</div>
-                    </div>
-                    <div class="points-amount positive">+50</div>
-                </div>
-                
-                <div class="points-item">
-                    <div class="points-icon">❤️</div>
-                    <div class="points-detail">
-                        <div class="points-action">作品被点赞 (5次)</div>
-                        <div class="points-time">昨天</div>
-                    </div>
-                    <div class="points-amount positive">+25</div>
-                </div>
-                
-                <div class="points-item">
-                    <div class="points-icon">🎬</div>
-                    <div class="points-detail">
-                        <div class="points-action">参与活动《星海之约》</div>
-                        <div class="points-time">3天前</div>
-                    </div>
-                    <div class="points-amount positive">+30</div>
-                </div>
+            <div class="calendar-grid">
+                <!-- 2月1-28日 -->
+                <span class="calendar-day">1</span>
+                <span class="calendar-day">2</span>
+                <span class="calendar-day">3</span>
+                <span class="calendar-day">4</span>
+                <span class="calendar-day">5</span>
+                <span class="calendar-day">6</span>
+                <span class="calendar-day">7</span>
+                <span class="calendar-day checked">8</span>
+                <span class="calendar-day checked">9</span>
+                <span class="calendar-day checked">10</span>
+                <span class="calendar-day checked">11</span>
+                <span class="calendar-day checked">12</span>
+                <span class="calendar-day checked">13</span>
+                <span class="calendar-day checked">14</span>
+                <span class="calendar-day checked">15</span>
+                <span class="calendar-day checked">16</span>
+                <span class="calendar-day checked">17</span>
+                <span class="calendar-day checked">18</span>
+                <span class="calendar-day checked">19</span>
+                <span class="calendar-day checked">20</span>
+                <span class="calendar-day checked">21</span>
+                <span class="calendar-day checked today">22</span>
+                <span class="calendar-day">23</span>
+                <span class="calendar-day">24</span>
+                <span class="calendar-day">25</span>
+                <span class="calendar-day">26</span>
+                <span class="calendar-day">27</span>
+                <span class="calendar-day">28</span>
             </div>
         </div>
-        
-        <!-- 编辑资料按钮 -->
-        <button class="edit-btn" onclick="alert('编辑资料功能开发中')">
-            <i class="fas fa-edit"></i> 编辑资料
-        </button>
-        
-        <!-- 退出剧团按钮 -->
-        <button class="exit-btn" onclick="if(confirm('确定退出剧团吗？退出后无法操作，请同步退出微信群')){alert('已退出剧团')}">
-            <i class="fas fa-sign-out-alt"></i> 退出剧团
-        </button>
-        
-    </div>
-    
-    <!-- 底部导航 -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-home"></i></div>
-            <div class="nav-label">首页</div>
-        </a>
-        <a href="groups.html" class="nav-item">
-            <div class="nav-icon"><i class="fas fa-compass"></i></div>
-            <div class="nav-label">发现</div>
-        </a>
-        <a href="#" class="nav-item" onclick="alert('发布功能开发中'); return false;">
-            <div class="nav-icon"><i class="fas fa-plus"></i></div>
-            <div class="nav-label">发布</div>
-        </a>
-        <a href="#" class="nav-item" onclick="alert('通知功能开发中'); return false;">
-            <div class="nav-icon"><i class="fas fa-bell"></i></div>
-            <div class="nav-label">通知</div>
-        </a>
-        <a href="profile.html" class="nav-item active">
-            <div class="nav-icon"><i class="fas fa-user"></i></div>
-            <div class="nav-label">我的</div>
-        </a>
-    </nav>
-</body>
-</html>
