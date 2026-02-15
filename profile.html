@@ -1004,3 +1004,148 @@
                 <span class="calendar-day">28</span>
             </div>
         </div>
+        <!-- 近期作品 -->
+        <div class="profile-card">
+            <div class="section-title" style="margin-bottom: var(--space-lg);">
+                <i class="fas fa-images"></i>
+                近期作品
+                <span style="flex:1;"></span>
+                <a href="#" style="color: var(--medium-gray); font-size: 13px; text-decoration: none;" onclick="alert('查看更多开发中')">查看更多 →</a>
+            </div>
+            
+            <div class="works-grid">
+                <div class="work-item" onclick="alert('作品详情开发中')">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>星海之约</span>
+                    <span class="work-badge">剧本</span>
+                    <span class="work-stats">❤️ 45</span>
+                </div>
+                <div class="work-item" onclick="alert('作品详情开发中')">
+                    <i class="fas fa-image"></i>
+                    <span>光遇日记</span>
+                    <span class="work-badge">图文</span>
+                    <span class="work-stats">❤️ 23</span>
+                </div>
+                <div class="work-item" onclick="alert('作品详情开发中')">
+                    <i class="fas fa-video"></i>
+                    <span>剧组日常</span>
+                    <span class="work-badge">视频</span>
+                    <span class="work-stats">❤️ 12</span>
+                </div>
+                <div class="work-item" onclick="alert('作品详情开发中')">
+                    <i class="fas fa-microphone"></i>
+                    <span>配音片段</span>
+                    <span class="work-badge">音频</span>
+                    <span class="work-stats">❤️ 8</span>
+                </div>
+                <div class="work-item" onclick="alert('作品详情开发中')">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>新剧本</span>
+                    <span class="work-badge">创作中</span>
+                </div>
+                <div class="work-item" onclick="window.location.href='publish.html'">
+                    <i class="fas fa-plus"></i>
+                    <span>发布作品</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 积分动态 -->
+        <div class="profile-card">
+            <div class="section-title" style="margin-bottom: var(--space-lg);">
+                <i class="fas fa-history"></i>
+                积分动态
+            </div>
+            
+            <div class="points-feed">
+                <div class="points-item">
+                    <div class="points-icon">✍️</div>
+                    <div class="points-detail">
+                        <div class="points-action">提交剧本《新项目》</div>
+                        <div class="points-time">2小时前</div>
+                    </div>
+                    <div class="points-amount positive">+50</div>
+                </div>
+                
+                <div class="points-item">
+                    <div class="points-icon">❤️</div>
+                    <div class="points-detail">
+                        <div class="points-action">作品被点赞 (5次)</div>
+                        <div class="points-time">昨天</div>
+                    </div>
+                    <div class="points-amount positive">+25</div>
+                </div>
+                
+                <div class="points-item">
+                    <div class="points-icon">🎬</div>
+                    <div class="points-detail">
+                        <div class="points-action">参与活动《星海之约》</div>
+                        <div class="points-time">3天前</div>
+                    </div>
+                    <div class="points-amount positive">+30</div>
+                </div>
+                
+                <div class="points-item">
+                    <div class="points-icon">📅</div>
+                    <div class="points-detail">
+                        <div class="points-action">连续打卡第15天</div>
+                        <div class="points-time">5天前</div>
+                    </div>
+                    <div class="points-amount positive">+15</div>
+                </div>
+                
+                <div style="text-align: center; margin-top: var(--space-sm);">
+                    <a href="#" style="color: var(--medium-gray); font-size: 13px;">查看全部积分记录 →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 编辑资料按钮 -->
+        <button class="edit-btn" onclick="alert('编辑资料功能开发中')">
+            <i class="fas fa-edit"></i> 编辑资料
+        </button>
+        
+        <!-- 退出剧团按钮 -->
+        <button class="exit-btn" onclick="if(confirm('确定退出剧团吗？退出后无法操作，请同步退出微信群')){alert('已退出剧团')}">
+            <i class="fas fa-sign-out-alt"></i> 退出剧团
+        </button>
+        
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="rank.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
+        </a>
+        <a href="publish.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
+            <div class="nav-label">发布</div>
+        </a>
+        <a href="groups.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">分组</div>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+    
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html>
