@@ -780,22 +780,20 @@
             document.body.style.overflow = 'hidden';
         };
     </script>
-        <!-- 申请弹窗 -->
+           <!-- 申请弹窗 -->
     <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
         <div style="background:#fff; width:90%; max-width:500px; border-radius:20px; padding:30px; position:relative; max-height:85vh; overflow-y:auto; border:2px solid #333;">
             <!-- 关闭按钮 -->
             <button onclick="document.getElementById('applicationModal').style.display='none'; document.body.style.overflow='auto';" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:28px; color:#666; cursor:pointer;">×</button>
             
-            <!-- 标题 -->
             <h2 style="text-align:center; margin-bottom:10px; color:#000;">🎬 加入NINE剧组</h2>
             <p style="text-align:center; color:#666; margin-bottom:25px; font-size:14px;">填写信息，开启你的剧组之旅</p>
             
-            <!-- 表单 -->
             <form id="nineApplicationForm">
                 <!-- 光遇名 -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">光遇名 *</label>
-                    <input type="text" id="skyName" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="你的光遇游戏昵称">
+                    <input type="text" id="skyName" name="skyName" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="你的光遇游戏昵称">
                 </div>
                 
                 <!-- 性别 -->
@@ -814,35 +812,35 @@
                 <!-- 年龄 -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">年龄 *</label>
-                    <input type="text" id="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
+                    <input type="text" id="age" name="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
                 </div>
                 
                 <!-- 意向分组 -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
                     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-                        <label id="groupActor" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('演员组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('演员组', this)">
                             <input type="checkbox" name="interestGroups" value="演员组" style="display:none;"> 演员组
                         </label>
-                        <label id="groupVoice" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('配音组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('配音组', this)">
                             <input type="checkbox" name="interestGroups" value="配音组" style="display:none;"> 配音组
                         </label>
-                        <label id="groupScript" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('编剧组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('编剧组', this)">
                             <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
                         </label>
-                        <label id="groupPost" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('后期组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('后期组', this)">
                             <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
                         </label>
-                        <label id="groupPhoto" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('摄影组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('摄影组', this)">
                             <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
                         </label>
-                        <label id="groupPromo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('宣传组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('宣传组', this)">
                             <input type="checkbox" name="interestGroups" value="宣传组" style="display:none;"> 宣传组
                         </label>
-                        <label id="groupAtmo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('气氛组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('气氛组', this)">
                             <input type="checkbox" name="interestGroups" value="气氛组" style="display:none;"> 气氛组
                         </label>
-                        <label id="groupDirector" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('导演组', this)">
+                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('导演组', this)">
                             <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
                         </label>
                     </div>
@@ -851,7 +849,7 @@
                 <!-- 如何找到我们 -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">如何找到我们 *</label>
-                    <select id="findMethod" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;">
+                    <select id="findMethod" name="findMethod" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;">
                         <option value="">请选择...</option>
                         <option value="剧组招人(有推荐人)">剧组招人(有推荐人)</option>
                         <option value="通过团长视频了解">通过团长视频了解</option>
@@ -862,11 +860,10 @@
                 <!-- 推荐人 -->
                 <div id="referrerField" style="margin-bottom:25px; display:none;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">我是由 ___ 招入Nine</label>
-                    <p style="font-size:12px; color:#666; margin:4px 0 8px 0; line-height:1.4;">可以询问找你的人，他的ID</p>
-                    <input type="text" id="referrerName" style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="推荐人的光遇名或昵称">
+                    <p style="font-size:12px; color:#666; margin:4px 0 8px 0;">可以询问找你的人，他的ID</p>
+                    <input type="text" id="referrerName" name="referrerName" style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="推荐人的光遇名或昵称">
                 </div>
                 
-                <!-- 提交按钮 -->
                 <button type="submit" id="submitBtn" style="width:100%; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-size:18px; font-weight:bold; cursor:pointer;">提交申请</button>
                 <div id="formMessage" style="margin-top:15px; text-align:center; font-size:14px;"></div>
             </form>
@@ -874,7 +871,6 @@
     </div>
 
     <script>
-        // ==================== 弹窗表单交互函数 ====================
         function selectGender(gender) {
             document.getElementById('genderMale').style.borderColor = '#ddd';
             document.getElementById('genderMale').style.background = '#fff';
@@ -906,12 +902,9 @@
             const referrerField = document.getElementById('referrerField');
             
             if (findMethod && referrerField) {
-                findMethod.removeEventListener('change', findMethod._handler);
-                const handler = function() {
+                findMethod.addEventListener('change', function() {
                     referrerField.style.display = this.value === '剧组招人(有推荐人)' ? 'block' : 'none';
-                };
-                findMethod._handler = handler;
-                findMethod.addEventListener('change', handler);
+                });
             }
         }
         
@@ -938,21 +931,9 @@
             if (form) {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    
-                    const submitBtn = document.getElementById('submitBtn');
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = '提交中...';
-                    
-                    setTimeout(() => {
-                        document.getElementById('formMessage').innerHTML = '✅ 申请提交成功！';
-                        document.getElementById('formMessage').style.color = '#00aa00';
-                        submitBtn.textContent = '提交成功';
-                        
-                        setTimeout(() => {
-                            document.getElementById('applicationModal').style.display = 'none';
-                            document.body.style.overflow = 'auto';
-                        }, 2000);
-                    }, 1000);
+                    alert('申请提交成功！');
+                    document.getElementById('applicationModal').style.display = 'none';
+                    document.body.style.overflow = 'auto';
                 });
             }
         });
