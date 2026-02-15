@@ -181,14 +181,15 @@
             if (isValid) {
                 localStorage.setItem('adminLogin', 'yes');
                 localStorage.setItem('adminName', username);
-                window.location.href = '/admin/index.html';
+                // ⭐⭐⭐ 这里改成相对路径 ⭐⭐⭐
+                window.location.href = 'index.html';
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
             }
         }
         
         if (localStorage.getItem('adminLogin') === 'yes') {
-            window.location.href = '/admin/index.html';
+            window.location.href = 'index.html';
         }
     </script>
 </body>
