@@ -73,7 +73,7 @@
             background-size: cover;
         }
         
-        /* 状态栏 - 带通知图标 */
+        /* 状态栏 */
         .status-bar {
             padding: 12px var(--space-md);
             background: var(--white);
@@ -521,7 +521,7 @@
     <!-- 顶部装饰带 -->
     <div class="header-decoration"></div>
     
-    <!-- 状态栏 - 带通知图标 -->
+    <!-- 状态栏 -->
     <div class="status-bar">
         <div class="status-time" id="currentTime">9:41</div>
         <div class="status-icons">
@@ -750,45 +750,17 @@
         </a>
     </nav>
     
-    <!-- 申请弹窗（保持不变） -->
-    <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
-        <!-- 弹窗内容保持不变 -->
-    </div>
-
-    <script>
-        // 更新时间
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('currentTime').textContent = 
-                now.getHours().toString().padStart(2,'0') + ':' + 
-                now.getMinutes().toString().padStart(2,'0');
-        }
-        updateTime();
-        setInterval(updateTime, 60000);
-        
-        function openFeature(name) {
-            alert('功能 "' + name + '" 开发中');
-        }
-        
-        function changeImage(type) {
-            alert('点击了 ' + type);
-        }
-        
-        // 弹窗相关函数
-        window.openApplicationModal = function() {
-            document.getElementById('applicationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        };
-    </script>
-           <!-- 申请弹窗 -->
+    <!-- ===== 申请弹窗 ===== -->
     <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
         <div style="background:#fff; width:90%; max-width:500px; border-radius:20px; padding:30px; position:relative; max-height:85vh; overflow-y:auto; border:2px solid #333;">
             <!-- 关闭按钮 -->
             <button onclick="document.getElementById('applicationModal').style.display='none'; document.body.style.overflow='auto';" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:28px; color:#666; cursor:pointer;">×</button>
             
+            <!-- 标题 -->
             <h2 style="text-align:center; margin-bottom:10px; color:#000;">🎬 加入NINE剧组</h2>
             <p style="text-align:center; color:#666; margin-bottom:25px; font-size:14px;">填写信息，开启你的剧组之旅</p>
             
+            <!-- 表单 -->
             <form id="nineApplicationForm">
                 <!-- 光遇名 -->
                 <div style="margin-bottom:20px;">
@@ -815,32 +787,32 @@
                     <input type="text" id="age" name="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
                 </div>
                 
-                <!-- 意向分组 -->
+                <!-- 意向分组（8个分组） -->
                 <div style="margin-bottom:20px;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
                     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('演员组', this)">
+                        <label id="groupActor" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('演员组', this)">
                             <input type="checkbox" name="interestGroups" value="演员组" style="display:none;"> 演员组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('配音组', this)">
+                        <label id="groupVoice" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('配音组', this)">
                             <input type="checkbox" name="interestGroups" value="配音组" style="display:none;"> 配音组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('编剧组', this)">
+                        <label id="groupScript" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('编剧组', this)">
                             <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('后期组', this)">
+                        <label id="groupPost" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('后期组', this)">
                             <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('摄影组', this)">
+                        <label id="groupPhoto" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('摄影组', this)">
                             <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('宣传组', this)">
+                        <label id="groupPromo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('宣传组', this)">
                             <input type="checkbox" name="interestGroups" value="宣传组" style="display:none;"> 宣传组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('气氛组', this)">
+                        <label id="groupAtmo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('气氛组', this)">
                             <input type="checkbox" name="interestGroups" value="气氛组" style="display:none;"> 气氛组
                         </label>
-                        <label style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('导演组', this)">
+                        <label id="groupDirector" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('导演组', this)">
                             <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
                         </label>
                     </div>
@@ -857,13 +829,14 @@
                     </select>
                 </div>
                 
-                <!-- 推荐人 -->
+                <!-- 推荐人（动态显示） -->
                 <div id="referrerField" style="margin-bottom:25px; display:none;">
                     <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">我是由 ___ 招入Nine</label>
                     <p style="font-size:12px; color:#666; margin:4px 0 8px 0;">可以询问找你的人，他的ID</p>
                     <input type="text" id="referrerName" name="referrerName" style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="推荐人的光遇名或昵称">
                 </div>
                 
+                <!-- 提交按钮 -->
                 <button type="submit" id="submitBtn" style="width:100%; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-size:18px; font-weight:bold; cursor:pointer;">提交申请</button>
                 <div id="formMessage" style="margin-top:15px; text-align:center; font-size:14px;"></div>
             </form>
@@ -871,6 +844,25 @@
     </div>
 
     <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        function openFeature(name) {
+            alert('功能 "' + name + '" 开发中');
+        }
+        
+        function changeImage(type) {
+            alert('点击了 ' + type);
+        }
+        
+        // ==================== 弹窗表单交互函数 ====================
         function selectGender(gender) {
             document.getElementById('genderMale').style.borderColor = '#ddd';
             document.getElementById('genderMale').style.background = '#fff';
@@ -914,6 +906,7 @@
             setupReferrerField();
         };
         
+        // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('applicationModal');
             if (modal) {
@@ -927,13 +920,33 @@
             
             setupReferrerField();
             
+            // 表单提交
             const form = document.getElementById('nineApplicationForm');
             if (form) {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    alert('申请提交成功！');
-                    document.getElementById('applicationModal').style.display = 'none';
-                    document.body.style.overflow = 'auto';
+                    
+                    const submitBtn = document.getElementById('submitBtn');
+                    const formMessage = document.getElementById('formMessage');
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = '提交中...';
+                    
+                    // 模拟提交成功
+                    setTimeout(() => {
+                        formMessage.innerHTML = '✅ 申请提交成功！';
+                        formMessage.style.color = '#00aa00';
+                        submitBtn.textContent = '提交成功';
+                        
+                        setTimeout(() => {
+                            document.getElementById('applicationModal').style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                            form.reset();
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = '提交申请';
+                            formMessage.innerHTML = '';
+                        }, 2000);
+                    }, 1000);
                 });
             }
         });
