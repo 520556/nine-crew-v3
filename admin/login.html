@@ -1,0 +1,26 @@
+<div class="admin-user">
+    <span style="color: var(--white); margin-right: 10px;">
+        <i class="fas fa-user-shield"></i> 超级管理员
+    </span>
+    <button onclick="logout()" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+        <i class="fas fa-sign-out-alt"></i> 退出
+    </button>
+    <a href="/index.html" class="back-to-site">
+        <i class="fas fa-external-link-alt"></i> 返回网站
+    </a>
+    <div class="admin-avatar" id="adminAvatar"></div>
+</div>
+
+<script>
+    // 显示当前登录的管理员
+    document.getElementById('adminAvatar').textContent = 
+        localStorage.getItem('adminUser')?.charAt(0) || '管';
+    
+    function logout() {
+        if (confirm('确定退出登录吗？')) {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminUser');
+            window.location.href = '/admin/login.html';
+        }
+    }
+</script>
