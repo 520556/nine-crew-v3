@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统设置 · NINE剧组后台</title>
+    
+    <!-- 登录验证 -->
     <script>
-    if (localStorage.getItem('admin') !== 'yes') {
-       window.location.href = '/admin/index.html'; 
-    }
+        if (localStorage.getItem('adminLogin') !== 'yes') {
+            window.location.href = 'login.html';
+        }
     </script>
     
     <!-- 字体图标 -->
@@ -106,6 +108,20 @@
         .back-to-site:hover {
             background: var(--white);
             color: var(--black);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.1);
         }
         
         /* 侧边栏 + 主内容布局 */
@@ -250,12 +266,6 @@
             font-weight: 500;
             font-size: 14px;
             margin-bottom: 8px;
-        }
-        
-        .form-label i {
-            color: var(--light-gray);
-            margin-left: 4px;
-            font-size: 12px;
         }
         
         .form-input {
@@ -481,13 +491,19 @@
     <div class="admin-header">
         <div class="container header-content">
             <div class="admin-logo">
-                <i class="fas fa-film"></i> NINE剧组 · 管理后台
+                <i class="fas fa-crown" style="color: #ffd700;"></i> NINE剧组 · 管理后台
             </div>
             <div class="admin-user">
+                <span style="color: var(--white); margin-right: 5px;">
+                    <i class="fas fa-user-shield"></i> <span id="currentAdmin"></span>
+                </span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
                 <a href="/index.html" class="back-to-site">
                     <i class="fas fa-external-link-alt"></i> 返回网站
                 </a>
-                <div class="admin-avatar">张</div>
+                <div class="admin-avatar" id="adminAvatar"></div>
             </div>
         </div>
     </div>
@@ -605,154 +621,3 @@
                         </tr>
                     </table>
                 </div>
-                
-                <!-- 功能开关 -->
-                <div class="settings-card">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fas fa-toggle-on"></i></div>
-                        <div>
-                            <div class="card-title">功能开关</div>
-                            <div class="card-subtitle">开启/关闭各项功能</div>
-                        </div>
-                    </div>
-                    
-                    <div class="switch-group">
-                        <div class="switch-info">
-                            <div class="switch-title">成员申请功能</div>
-                            <div class="switch-desc">允许新用户申请加入剧组</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="switch-group">
-                        <div class="switch-info">
-                            <div class="switch-title">积分系统</div>
-                            <div class="switch-desc">开启积分获取和排名功能</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="switch-group">
-                        <div class="switch-info">
-                            <div class="switch-title">打卡功能</div>
-                            <div class="switch-desc">允许成员每日打卡赚积分</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="switch-group">
-                        <div class="switch-info">
-                            <div class="switch-title">剧本审核</div>
-                            <div class="switch-desc">编剧组提交剧本需组长审核</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="switch-group">
-                        <div class="switch-info">
-                            <div class="switch-title">作品审核</div>
-                            <div class="switch-desc">配音/摄影/后期需审核加入</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- 权限管理 -->
-                <div class="settings-card">
-                    <div class="card-header">
-                        <div class="card-icon"><i class="fas fa-user-shield"></i></div>
-                        <div>
-                            <div class="card-title">权限管理</div>
-                            <div class="card-subtitle">设置管理员和组长权限</div>
-                        </div>
-                    </div>
-                    
-                    <div class="role-list">
-                        <div class="role-item">
-                            <div class="role-avatar">张</div>
-                            <div class="role-info">
-                                <div class="role-name">张三</div>
-                                <div class="role-desc">编剧组组长 · 超级管理员</div>
-                            </div>
-                            <select class="role-select">
-                                <option>超级管理员</option>
-                                <option>副团</option>
-                                <option>组长</option>
-                                <option>成员</option>
-                            </select>
-                        </div>
-                        
-                        <div class="role-item">
-                            <div class="role-avatar">李</div>
-                            <div class="role-info">
-                                <div class="role-name">李思思</div>
-                                <div class="role-desc">导演组组长 · 副团</div>
-                            </div>
-                            <select class="role-select">
-                                <option>超级管理员</option>
-                                <option selected>副团</option>
-                                <option>组长</option>
-                                <option>成员</option>
-                            </select>
-                        </div>
-                        
-                        <div class="role-item">
-                            <div class="role-avatar">王</div>
-                            <div class="role-info">
-                                <div class="role-name">王小明</div>
-                                <div class="role-desc">摄影组 · 成员</div>
-                            </div>
-                            <select class="role-select">
-                                <option>超级管理员</option>
-                                <option>副团</option>
-                                <option>组长</option>
-                                <option selected>成员</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 20px; text-align: center;">
-                        <button class="save-btn" style="display: inline-block; padding: 8px 20px;" onclick="alert('添加管理员')">
-                            <i class="fas fa-plus"></i> 添加管理员
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 危险区域（超管专用） -->
-                <div class="danger-zone">
-                    <div class="danger-title">
-                        <i class="fas fa-exclamation-triangle"></i> 危险操作区
-                    </div>
-                    <p style="color: var(--medium-gray); font-size: 14px; margin-bottom: 20px;">以下操作不可逆，请谨慎使用</p>
-                    <div style="display: flex; gap: 16px;">
-                        <button class="danger-btn" onclick="if(confirm('确定清空所有数据？')) alert('已清空')">
-                            <i class="fas fa-trash-alt"></i> 清空所有数据
-                        </button>
-                        <button class="danger-btn" onclick="if(confirm('确定重置系统？')) alert('已重置')">
-                            <i class="fas fa-undo-alt"></i> 重置系统
-                        </button>
-                        <button class="danger-btn" onclick="if(confirm('确定注销剧组？')) alert('已注销')">
-                            <i class="fas fa-times-circle"></i> 注销剧组
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
