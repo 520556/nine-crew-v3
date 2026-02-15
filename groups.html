@@ -2,150 +2,219 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>分组管理 - NINE剧组</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业分组 · NINE剧组</title>
     
-    <!-- ===== 微信分享优化 - 开始 ===== -->
-    <!-- Open Graph 基础标签 -->
-    <meta property="og:title" content="NINE剧组分组系统 - 加入你感兴趣的分组">
-    <meta property="og:description" content="8个专业分组｜演员/配音/编剧/后期/摄影/宣传/气氛/导演｜多组长管理｜微信群二维码">
-    <meta property="og:image" content="https://img.icons8.com/color/512/000000/film-reel.png">
-    <meta property="og:url" content="https://520556.github.io/nine-crew-v3/groups.html">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="NINE剧组管理系统">
-    
-    <!-- 微信专用标签 -->
-    <meta itemprop="name" content="NINE剧组分组系统">
-    <meta itemprop="description" content="选择加入演员、配音、编剧、后期、摄影、宣传、气氛、导演等8个分组">
-    <meta itemprop="image" content="https://img.icons8.com/color/512/000000/film-reel.png">
-    
-    <!-- 移动端优化 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NINE剧组">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    <meta name="msapplication-TileColor" content="#000000">
-    
-    <!-- 防止电话/邮箱自动识别 -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="format-detection" content="email=no">
-    <meta name="format-detection" content="address=no">
-    
-    <!-- PWA 图标 -->
-    <link rel="apple-touch-icon" sizes="180x180" href="https://img.icons8.com/color/180/000000/film-reel.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://img.icons8.com/color/96/000000/film-reel.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://img.icons8.com/color/96/000000/film-reel.png">
-    <link rel="mask-icon" href="https://img.icons8.com/color/96/000000/film-reel.png" color="#000000">
-    
-    <!-- 预连接优化 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- ===== 微信分享优化 - 结束 ===== -->
-
-    <!-- 样式文件 -->
+    <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="groups.css">
     
-    <!-- 网站图标 -->
-    <link rel="icon" href="https://img.icons8.com/color/96/000000/film-reel.png" type="image/x-icon">
+    <!-- 引入全局样式（和首页保持一致） -->
+    <style>
+        /* 复用首页的全局样式变量 */
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444444;
+            --medium-gray: #666666;
+            --light-gray: #999999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #ffffff;
+            
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部装饰带 */
+        .header-decoration {
+            height: 100px;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.02) 0%, 
+                rgba(0,0,0,0.05) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-decoration::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" opacity="0.03"><path d="M0,100 Q200,50 400,100 T800,100" stroke="%23000000" fill="none"/><path d="M0,150 Q200,100 400,150 T800,150" stroke="%23000000" fill="none"/></svg>');
+            background-size: cover;
+        }
+        
+        /* 返回链接 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 14px;
+            margin: var(--space-lg) 0;
+            padding: 8px 0;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover {
+            color: var(--black);
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            margin: var(--space-xl) 0 var(--space-lg);
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .page-subtitle {
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+        
+        /* 统计卡片 */
+        .group-stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-sm);
+            margin: var(--space-xl) 0;
+        }
+        
+        .stat-item {
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--medium-gray);
+        }
+    </style>
+    
+    <!-- 引入分组专属样式 -->
+    <link rel="stylesheet" href="groups.css">
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>返回首页</span>
-                </a>
-                <h1 class="page-title">分组管理系统</h1>
-                <div class="header-actions">
-                    <span class="header-subtitle">选择加入，开启剧组之旅</span>
-                </div>
+    <!-- 顶部装饰带 -->
+    <div class="header-decoration"></div>
+    
+    <div class="container">
+        <!-- 返回链接 -->
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+        
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">专业分组</h1>
+            <p class="page-subtitle">8个专业小组，找到属于你的位置</p>
+        </div>
+        
+        <!-- 分组统计概览 -->
+        <div class="group-stats-overview">
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">总分组</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">86</div>
+                <div class="stat-label">总成员</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">进行中</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">待审核</div>
             </div>
         </div>
-    </header>
-
-    <!-- 主内容区域 -->
-    <main class="container">
-        <!-- 页面说明 -->
-        <div class="page-intro">
-            <h2><i class="fas fa-layer-group"></i> 所有分组</h2>
-            <p class="intro-text">
-                我们共有8个专业分组，每个分组都有独特的功能和职责。<br>
-                点击分组卡片查看详情，选择适合你的分组加入！
-            </p>
-            <div class="intro-stats">
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <span>8个分组</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-crown"></i>
-                    <span>多组长管理</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-qrcode"></i>
-                    <span>微信群直达</span>
-                </div>
-            </div>
+        
+        <!-- 分组列表 -->
+        <div class="groups-list" id="groupsList">
+            <!-- 分组卡片会由JS动态生成 -->
         </div>
-
-        <!-- 分组容器 -->
-        <div id="groupsContainer" class="groups-container">
-            <!-- 分组卡片会通过JavaScript动态生成在这里 -->
+    </div>
+    
+    <!-- 底部导航（和首页一致） -->
+    <nav class="bottom-nav">
+        <div class="nav-item" data-page="home">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
         </div>
-
-        <!-- 使用提示 -->
-        <div class="usage-tips">
-            <h3><i class="fas fa-lightbulb"></i> 使用提示</h3>
-            <ul>
-                <li>点击分组卡片可以展开/收起详细信息</li>
-                <li>需要审核的分组（配音组、后期组）需要提交作品</li>
-                <li>每个分组都有微信群二维码，可扫码加入</li>
-                <li>一人可加入多个分组，发挥你的多方面才能</li>
-                <li>组长信息在分组详情中查看，可点击查看主页</li>
-            </ul>
+        <div class="nav-item active" data-page="groups">
+            <div class="nav-icon"><i class="fas fa-sitemap"></i></div>
+            <div class="nav-label">分组</div>
         </div>
-    </main>
-
-    <!-- 底部信息 -->
-    <footer class="main-footer">
-        <div class="container">
-            <p>NINE剧组管理系统 &copy; 2024</p>
-            <p class="footer-links">
-                <a href="index.html">首页</a> | 
-                <a href="groups.html" class="active">所有分组</a> | 
-                <a href="javascript:void(0)" onclick="alert('个人主页功能开发中...')">个人主页</a>
-            </p>
-            <p class="footer-note">
-                <i class="fas fa-mobile-alt"></i> 建议在微信内使用，可添加到手机桌面
-            </p>
+        <div class="nav-item" data-page="create">
+            <div class="nav-icon"><i class="fas fa-plus"></i></div>
+            <div class="nav-label">发布</div>
         </div>
-    </footer>
+        <div class="nav-item" data-page="notifications">
+            <div class="nav-icon"><i class="fas fa-bell"></i></div>
+            <div class="nav-label">通知</div>
+        </div>
+        <div class="nav-item" data-page="profile">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </div>
+    </nav>
 
-    <!-- JavaScript文件 -->
+    <!-- 引入分组JS -->
     <script src="groups.js"></script>
     
-    <!-- 页面加载完成后的初始化 -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('分组页面加载完成');
-            
-            // 检查是否从编辑器页面跳转回来
-            const fromEditor = localStorage.getItem('fromScriptEditor');
-            if (fromEditor === 'true') {
-                localStorage.removeItem('fromScriptEditor');
-                alert('剧本已提交审核！\n\n请等待组长审核，审核通过后剧本将导入活动页面。');
-            }
-            
-            // 微信内优化提示
-            if (/MicroMessenger/i.test(navigator.userAgent)) {
-                console.log('微信内浏览器检测到');
-                // 可以添加微信特定优化
-            }
+        // 底部导航交互
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const page = this.dataset.page;
+                if (page === 'home') window.location.href = 'index.html';
+                else if (page === 'groups') window.location.href = 'groups.html';
+                else alert('功能开发中');
+            });
         });
     </script>
 </body>
