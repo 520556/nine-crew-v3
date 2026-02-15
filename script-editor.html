@@ -3,303 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>剧本编辑器 - NINE剧组</title>
+    <title>剧本编辑器 · NINE剧组</title>
     
-    <!-- Quill富文本编辑器CSS -->
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Quill编辑器CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     
-    <!-- 主样式 -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/script-editor.css">
-    
-    <!-- 修复BUG的CSS -->
     <style>
-        /* ====== BUG修复：透明度和层叠问题 ====== */
+        /* ===== 全局样式（和首页统一） ===== */
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444444;
+            --medium-gray: #666666;
+            --light-gray: #999999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #ffffff;
+            
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
         
-        /* 1. 修复整个页面背景，避免透明叠加 */
-        body.script-editor-page {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%) !important;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
             min-height: 100vh;
-            padding: 20px;
+            padding-bottom: 80px;
         }
         
-        /* 2. 修复编辑器容器 - 纯白背景，无透明 */
-        .editor-wrapper {
-            background: #FFFFFF !important;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid #eaeaea;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
         }
         
-        /* 3. 修复Quill工具栏背景 */
-        .ql-toolbar.ql-snow {
-            background: #f8f9fa !important;
-            border: 1px solid #dee2e6 !important;
-            border-radius: 8px 8px 0 0;
-            border-bottom: none !important;
+        /* 顶部装饰带 */
+        .header-decoration {
+            height: 80px;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.02) 0%, 
+                rgba(0,0,0,0.05) 100%);
+            position: relative;
+            overflow: hidden;
         }
         
-        /* 4. 修复Quill编辑区域 */
-        .ql-container.ql-snow {
-            background: #FFFFFF !important;
-            border: 1px solid #dee2e6 !important;
-            border-radius: 0 0 8px 8px;
-            border-top: none !important;
-            min-height: 400px;
-            font-size: 16px;
-            line-height: 1.6;
+        .header-decoration::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" opacity="0.03"><path d="M0,100 Q200,50 400,100 T800,100" stroke="%23000000" fill="none"/><path d="M0,150 Q200,100 400,150 T800,150" stroke="%23000000" fill="none"/></svg>');
+            background-size: cover;
         }
         
-        /* 5. 修复全屏模式 - 确保背景不透明 */
-        .ql-editor.ql-blank::before,
-        .ql-editor {
-            color: #212529 !important;
-            background: #FFFFFF !important;
+        /* 返回链接 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 14px;
+            margin: var(--space-lg) 0;
+            padding: 8px 0;
+            transition: color 0.2s;
         }
         
-        /* 全屏模式专用修复 */
-        .ql-editor.fullscreen {
-            background: #FFFFFF !important;
-            z-index: 10000 !important;
-            padding: 40px !important;
+        .back-link:hover {
+            color: var(--black);
         }
         
-        /* 6. 修复已保存提示按钮 */
-        #saveIndicator {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: rgba(15, 15, 15, 0.95) !important;
-            color: #6A11CB;
-            padding: 12px 20px;
-            border-radius: 10px;
-            border: 2px solid #6A11CB;
-            z-index: 9999;
-            display: none;
-            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
-            font-weight: bold;
-            backdrop-filter: blur(10px);
-            transition: opacity 0.5s ease, transform 0.3s ease;
-        }
-        
-        /* 按钮消失动画 */
-        #saveIndicator.fade-out {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        /* 7. 修复表单区域 */
-        .form-container {
-            background: #FFFFFF !important;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #eaeaea;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-        }
-        
-        .form-input, .form-textarea {
-            background: #FFFFFF !important;
-            border: 1px solid #ced4da !important;
-            color: #212529 !important;
-        }
-        
-        /* 8. 修复文件上传区域 */
-        .upload-area {
-            background: #f8f9fa !important;
-            border: 2px dashed #6A11CB !important;
-            border-radius: 10px;
-            padding: 30px;
+        /* 页面标题 */
+        .page-header {
+            margin: var(--space-xl) 0 var(--space-lg);
             text-align: center;
-            margin: 20px 0;
         }
         
-        .upload-area.dragover {
-            background: rgba(106, 17, 203, 0.1) !important;
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
         }
         
-        /* 9. 修复文件列表 */
+        .page-subtitle {
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+        
+        /* ===== 卡片样式 ===== */
+        .editor-card {
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .editor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent,
+                var(--black),
+                transparent);
+            opacity: 0.1;
+        }
+        
+        .editor-card:hover {
+            border-color: var(--light-gray);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--lighter-gray);
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--dark-gray);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .card-subtitle {
+            color: var(--light-gray);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        
+        /* ===== 表单样式 ===== */
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--lighter-gray);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: var(--white);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--black);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--lighter-gray);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-family: inherit;
+            min-height: 100px;
+            resize: vertical;
+            transition: all 0.2s;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--black);
+        }
+        
+        /* ===== Quill编辑器自定义 ===== */
+        .quill-wrapper {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .ql-toolbar.ql-snow {
+            border: 2px solid var(--lighter-gray);
+            border-bottom: none;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            background: var(--lightest-gray);
+        }
+        
+        .ql-container.ql-snow {
+            border: 2px solid var(--lighter-gray);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            min-height: 300px;
+        }
+        
+        .ql-editor {
+            min-height: 300px;
+        }
+        
+        .ql-editor.ql-blank::before {
+            color: var(--light-gray);
+            font-style: normal;
+        }
+        
+        /* ===== 文件上传区域 ===== */
+        .upload-area {
+            border: 2px dashed var(--lighter-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: var(--space-md);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--medium-gray);
+            background: var(--lightest-gray);
+        }
+        
+        .upload-icon {
+            font-size: 32px;
+            color: var(--light-gray);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .upload-text {
+            color: var(--medium-gray);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .upload-hint {
+            color: var(--light-gray);
+            font-size: 12px;
+        }
+        
         .file-list {
-            background: #FFFFFF !important;
-            border: 1px solid #eaeaea;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            margin-top: var(--space-md);
         }
         
         .file-item {
-            background: #f8f9fa !important;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-sm);
+            background: var(--lightest-gray);
+            border-radius: var(--radius-sm);
+            margin-bottom: 6px;
         }
         
-        /* 10. 修复按钮区域 */
-        .action-buttons {
-            background: #FFFFFF !important;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-            text-align: center;
-            border: 1px solid #eaeaea;
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .btn-primary, .btn-secondary {
-            background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%) !important;
-            color: white !important;
-            border: none !important;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
+        .file-info i {
+            color: var(--medium-gray);
+        }
+        
+        .file-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .file-size {
+            font-size: 11px;
+            color: var(--light-gray);
+            margin-left: 8px;
+        }
+        
+        .file-remove {
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .file-remove:hover {
+            color: #ef4444;
+        }
+        
+        /* ===== 按钮样式 ===== */
+        .btn-group {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+            margin-top: var(--space-xl);
+        }
+        
+        .btn-primary {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-block;
-            margin: 0 10px;
-            min-width: 160px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            background: var(--dark-gray);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #495057 0%, #6c757d 100%) !important;
+            background: transparent;
+            border: 1.5px solid var(--black);
+            color: var(--black);
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .btn-primary:hover, .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+        .btn-secondary:hover {
+            background: var(--black);
+            color: var(--white);
+            transform: translateY(-2px);
         }
         
-        /* 11. 修复页面标题 */
-        .page-title {
-            color: #FFFFFF !important;
+        /* 保存提示 */
+        .save-indicator {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: var(--black);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .save-indicator.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            z-index: 100;
+        }
+        
+        .nav-item {
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            color: var(--light-gray);
+            cursor: pointer;
+            text-decoration: none;
         }
         
-        /* 12. 确保所有文字清晰可见 */
-        * {
-            color: inherit !important;
+        .nav-item.active {
+            color: var(--black);
         }
         
-        /* 响应式调整 */
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+        }
+        
+        /* 响应式 */
         @media (max-width: 768px) {
-            body.script-editor-page {
-                padding: 10px;
-            }
-            
-            .editor-wrapper, .form-container {
-                padding: 15px;
-            }
-            
-            .action-buttons {
-                padding: 15px;
+            .btn-group {
+                flex-direction: column;
             }
             
             .btn-primary, .btn-secondary {
-                display: block;
                 width: 100%;
-                margin: 10px 0;
+                justify-content: center;
+            }
+            
+            .editor-card {
+                padding: var(--space-lg);
             }
         }
     </style>
 </head>
-<body class="script-editor-page">
-    <!-- 返回导航 -->
-    <div class="container" style="margin-top: 20px;">
-        <a href="groups.html" class="back-link" style="color: #6A11CB; text-decoration: none; font-size: 16px;">
-            ← 返回分组页面
-        </a>
-    </div>
-
-    <!-- 主容器 -->
+<body>
+    <!-- 顶部装饰带 -->
+    <div class="header-decoration"></div>
+    
     <div class="container">
-        <h1 class="page-title">✍️ 剧本编辑器</h1>
+        <!-- 返回链接 -->
+        <a href="groups.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> 返回分组
+        </a>
         
-        <!-- 剧本信息表单 -->
-        <div class="form-container">
-            <h2 style="color: #212529; margin-bottom: 20px;">📝 剧本信息</h2>
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">剧本编辑器</h1>
+            <p class="page-subtitle">用文字创造世界 · 支持富文本创作和文档上传</p>
+        </div>
+        
+        <!-- 剧本信息卡片 -->
+        <div class="editor-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-info"></i>
+                </div>
+                <div>
+                    <div class="card-title">剧本信息</div>
+                    <div class="card-subtitle">填写剧本的基本信息</div>
+                </div>
+            </div>
             
             <div class="form-group">
-                <label for="scriptTitle" style="color: #495057; display: block; margin-bottom: 8px; font-weight: bold;">
-                    剧本标题 *
-                </label>
-                <input type="text" id="scriptTitle" class="form-input" 
-                       placeholder="请输入剧本标题（如：星海之约）" 
-                       style="width: 100%; padding: 12px; border-radius: 6px;">
+                <label class="form-label">剧本标题 <span style="color: var(--light-gray);">*</span></label>
+                <input type="text" class="form-input" id="scriptTitle" placeholder="例如：星海之约">
             </div>
             
-            <div class="form-group" style="margin-top: 20px;">
-                <label for="scriptDescription" style="color: #495057; display: block; margin-bottom: 8px; font-weight: bold;">
-                    剧本简介
-                </label>
-                <textarea id="scriptDescription" class="form-textarea" 
-                          placeholder="简要描述剧本内容、背景、主要角色..." 
-                          rows="4"
-                          style="width: 100%; padding: 12px; border-radius: 6px;"></textarea>
+            <div class="form-group">
+                <label class="form-label">剧本简介</label>
+                <textarea class="form-textarea" id="scriptDescription" placeholder="简要描述剧本的背景、主题和核心情节..."></textarea>
             </div>
         </div>
         
-        <!-- 富文本编辑器 -->
-        <div class="editor-wrapper">
-            <h2 style="color: #212529; margin-bottom: 20px;">📖 剧本内容</h2>
-            <div id="editor-container">
-                <!-- Quill编辑器将在这里初始化 -->
+        <!-- 编辑器卡片 -->
+        <div class="editor-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <div>
+                    <div class="card-title">剧本内容</div>
+                    <div class="card-subtitle">支持富文本编辑、图片、链接等</div>
+                </div>
+            </div>
+            
+            <div class="quill-wrapper">
+                <div id="editor"></div>
             </div>
         </div>
         
-        <!-- 文件上传区域 -->
-        <div class="form-container">
-            <h2 style="color: #212529; margin-bottom: 20px;">📎 附件上传</h2>
-            <p style="color: #6c757d; margin-bottom: 15px;">支持 .txt, .docx, .pdf 等文档格式（可选）</p>
+        <!-- 附件上传卡片 -->
+        <div class="editor-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-paperclip"></i>
+                </div>
+                <div>
+                    <div class="card-title">附件上传</div>
+                    <div class="card-subtitle">支持 .txt .docx .pdf 等格式</div>
+                </div>
+            </div>
             
             <div class="upload-area" id="uploadArea">
-                <div style="font-size: 48px; color: #6A11CB; margin-bottom: 15px;">📤</div>
-                <p style="color: #495057; font-size: 18px; margin-bottom: 10px;">
-                    拖拽文件到这里，或点击选择文件
-                </p>
-                <p style="color: #6c757d; font-size: 14px;">
-                    支持单个或多个文件上传
-                </p>
-                <input type="file" id="fileInput" multiple 
-                       style="display: none;" 
-                       accept=".txt,.doc,.docx,.pdf,.md">
-                <button onclick="document.getElementById('fileInput').click()" 
-                        class="btn-secondary" 
-                        style="margin-top: 15px; padding: 10px 20px; font-size: 14px;">
-                    选择文件
-                </button>
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">点击或拖拽文件到此处</div>
+                <div class="upload-hint">支持单个或多个文件上传</div>
+                <input type="file" id="fileInput" multiple style="display: none;" accept=".txt,.doc,.docx,.pdf,.md">
             </div>
             
             <div class="file-list" id="fileList">
-                <!-- 文件列表将动态显示在这里 -->
+                <!-- 文件列表会动态显示 -->
             </div>
         </div>
         
         <!-- 操作按钮 -->
-        <div class="action-buttons">
-            <button onclick="saveDraft()" class="btn-secondary">
-                💾 保存草稿
+        <div class="btn-group">
+            <button class="btn-secondary" id="saveDraftBtn">
+                <i class="fas fa-save"></i> 保存草稿
             </button>
-            <button onclick="submitScript()" class="btn-primary">
-                🚀 提交审核
+            <button class="btn-primary" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> 提交审核
             </button>
         </div>
     </div>
     
     <!-- 保存提示 -->
-    <div id="saveIndicator">✅ 已保存草稿</div>
-
+    <div class="save-indicator" id="saveIndicator">
+        <i class="fas fa-check-circle"></i> 已保存草稿
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="groups.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-sitemap"></i></div>
+            <div class="nav-label">分组</div>
+        </a>
+        <a href="#" class="nav-item" onclick="alert('发布功能开发中'); return false;">
+            <div class="nav-icon"><i class="fas fa-plus"></i></div>
+            <div class="nav-label">发布</div>
+        </a>
+        <a href="#" class="nav-item" onclick="alert('通知功能开发中'); return false;">
+            <div class="nav-icon"><i class="fas fa-bell"></i></div>
+            <div class="nav-label">通知</div>
+        </a>
+        <a href="#" class="nav-item" onclick="alert('个人中心开发中'); return false;">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+    
     <!-- Quill JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     
-    <!-- 修复后的脚本 -->
     <script>
-        // 初始化Quill编辑器
-        const quill = new Quill('#editor-container', {
+        // ===== 初始化Quill编辑器 =====
+        const quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 toolbar: [
@@ -307,223 +599,184 @@
                     ['bold', 'italic', 'underline', 'strike'],
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image', 'video'],
-                    ['clean'],
-                    ['fullscreen']
+                    ['link', 'image'],
+                    ['clean']
                 ]
             },
             placeholder: '开始创作你的剧本...支持文字格式、图片、链接等'
         });
         
-        // 文件上传相关变量
+        // ===== 文件上传 =====
         let uploadedFiles = [];
         
-        // 初始化 - 加载草稿
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDraft();
-            setupFileUpload();
-            setupAutoSave();
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
         });
         
-        // 加载草稿
-        function loadDraft() {
-            const draft = localStorage.getItem('scriptDraft');
-            if (draft) {
-                try {
-                    const data = JSON.parse(draft);
-                    document.getElementById('scriptTitle').value = data.title || '';
-                    document.getElementById('scriptDescription').value = data.description || '';
-                    if (data.content) {
-                        quill.root.innerHTML = data.content;
-                    }
-                    uploadedFiles = data.files || [];
-                    updateFileList();
-                    showSaveIndicator('📂 已加载草稿');
-                } catch (e) {
-                    console.error('加载草稿失败:', e);
-                }
-            }
-        }
+        document.getElementById('uploadArea').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            document.getElementById('uploadArea').style.borderColor = 'var(--black)';
+        });
         
-        // 自动保存（每30秒）
-        function setupAutoSave() {
-            setInterval(() => {
-                const title = document.getElementById('scriptTitle').value;
-                const description = document.getElementById('scriptDescription').value;
-                const content = quill.root.innerHTML;
-                
-                if (title.trim() || content.trim() !== '<p><br></p>') {
-                    const scriptData = {
-                        title: title,
-                        description: description,
-                        content: content,
-                        files: uploadedFiles,
-                        savedAt: new Date().toISOString()
-                    };
-                    
-                    localStorage.setItem('scriptDraft', JSON.stringify(scriptData));
-                    showSaveIndicator('✅ 已自动保存');
-                }
-            }, 30000); // 30秒
-        }
+        document.getElementById('uploadArea').addEventListener('dragleave', () => {
+            document.getElementById('uploadArea').style.borderColor = '';
+        });
         
-        // 手动保存草稿
-        function saveDraft() {
-            const title = document.getElementById('scriptTitle').value;
-            const description = document.getElementById('scriptDescription').value;
-            const content = quill.root.innerHTML;
-            
-            const scriptData = {
-                title: title,
-                description: description,
-                content: content,
-                files: uploadedFiles,
-                savedAt: new Date().toISOString()
-            };
-            
-            localStorage.setItem('scriptDraft', JSON.stringify(scriptData));
-            showSaveIndicator('✅ 草稿已保存');
-        }
+        document.getElementById('uploadArea').addEventListener('drop', (e) => {
+            e.preventDefault();
+            document.getElementById('uploadArea').style.borderColor = '';
+            handleFiles(e.dataTransfer.files);
+        });
         
-        // 显示保存提示（3秒后自动消失）
-        function showSaveIndicator(message) {
-            const indicator = document.getElementById('saveIndicator');
-            indicator.textContent = message;
-            indicator.style.display = 'block';
-            indicator.style.opacity = '1';
-            indicator.classList.remove('fade-out');
-            
-            // 3秒后开始淡出
-            setTimeout(() => {
-                indicator.classList.add('fade-out');
-                setTimeout(() => {
-                    indicator.style.display = 'none';
-                }, 500);
-            }, 3000);
-        }
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
         
-        // 文件上传设置
-        function setupFileUpload() {
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('fileInput');
-            
-            // 拖拽上传
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                handleFiles(e.dataTransfer.files);
-            });
-            
-            // 点击上传
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-                fileInput.value = ''; // 重置input
-            });
-        }
-        
-        // 处理上传的文件
         function handleFiles(files) {
             for (let file of files) {
-                // 模拟上传（实际项目需要上传到服务器）
                 const fileInfo = {
                     id: Date.now() + Math.random(),
                     name: file.name,
                     size: formatFileSize(file.size),
-                    type: file.type,
-                    uploadedAt: new Date().toLocaleString()
+                    type: file.type
                 };
                 uploadedFiles.push(fileInfo);
             }
             updateFileList();
-            saveDraft(); // 保存文件列表到草稿
+            showSaveIndicator('文件已添加');
         }
         
-        // 更新文件列表显示
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+        
         function updateFileList() {
-            const fileListEl = document.getElementById('fileList');
-            
+            const fileList = document.getElementById('fileList');
             if (uploadedFiles.length === 0) {
-                fileListEl.innerHTML = '<p style="color: #6c757d; text-align: center;">暂无上传文件</p>';
+                fileList.innerHTML = '';
                 return;
             }
             
-            fileListEl.innerHTML = uploadedFiles.map(file => `
-                <div class="file-item" data-id="${file.id}">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="color: #212529;">${file.name}</strong>
-                            <br>
-                            <small style="color: #6c757d;">${file.size} • ${file.uploadedAt}</small>
-                        </div>
-                        <button onclick="removeFile('${file.id}')" 
-                                style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 18px;">
-                            🗑️
-                        </button>
+            fileList.innerHTML = uploadedFiles.map(file => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <i class="fas fa-file"></i>
+                        <span class="file-name">${file.name}</span>
+                        <span class="file-size">${file.size}</span>
+                    </div>
+                    <div class="file-remove" onclick="removeFile('${file.id}')">
+                        <i class="fas fa-times"></i>
                     </div>
                 </div>
             `).join('');
         }
         
-        // 移除文件
-        function removeFile(fileId) {
-            uploadedFiles = uploadedFiles.filter(file => file.id !== fileId);
+        window.removeFile = function(fileId) {
+            uploadedFiles = uploadedFiles.filter(f => f.id != fileId);
             updateFileList();
-            saveDraft();
+        };
+        
+        // ===== 保存提示 =====
+        function showSaveIndicator(message) {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 3000);
         }
         
-        // 格式化文件大小
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        // 提交剧本（模拟）
-        function submitScript() {
-            const title = document.getElementById('scriptTitle').value.trim();
+        // ===== 自动保存 =====
+        function autoSave() {
+            const title = document.getElementById('scriptTitle').value;
+            const description = document.getElementById('scriptDescription').value;
             const content = quill.root.innerHTML;
             
+            const draft = {
+                title,
+                description,
+                content,
+                files: uploadedFiles,
+                savedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('scriptDraft', JSON.stringify(draft));
+            showSaveIndicator('草稿已自动保存');
+        }
+        
+        setInterval(autoSave, 30000);
+        
+        // ===== 加载草稿 =====
+        function loadDraft() {
+            const saved = localStorage.getItem('scriptDraft');
+            if (saved) {
+                try {
+                    const draft = JSON.parse(saved);
+                    document.getElementById('scriptTitle').value = draft.title || '';
+                    document.getElementById('scriptDescription').value = draft.description || '';
+                    if (draft.content) {
+                        quill.root.innerHTML = draft.content;
+                    }
+                    if (draft.files) {
+                        uploadedFiles = draft.files;
+                        updateFileList();
+                    }
+                    showSaveIndicator('已加载草稿');
+                } catch (e) {
+                    console.error('加载草稿失败');
+                }
+            }
+        }
+        
+        // ===== 保存草稿 =====
+        document.getElementById('saveDraftBtn').addEventListener('click', () => {
+            autoSave();
+        });
+        
+        // ===== 提交审核 =====
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            const title = document.getElementById('scriptTitle').value.trim();
             if (!title) {
-                alert('请填写剧本标题');
+                alert('请输入剧本标题');
                 return;
             }
             
-            if (content === '<p><br></p>' || content.trim() === '<p></p>') {
-                alert('请填写剧本内容');
+            const content = quill.root.innerHTML;
+            if (content === '<p><br></p>' || content.trim() === '') {
+                alert('请输入剧本内容');
                 return;
             }
             
-            if (confirm(`确定提交剧本 "${title}" 进行审核吗？\n\n提交后，组长将在24小时内进行审核。`)) {
-                // 这里实际应该发送到服务器
-                console.log('提交剧本:', {
-                    title: title,
-                    description: document.getElementById('scriptDescription').value,
-                    content: content,
-                    files: uploadedFiles
-                });
+            if (confirm('确定提交审核吗？提交后组长将在24小时内审核')) {
+                // 这里可以添加提交到后端的逻辑
+                alert('提交成功！请等待审核结果');
                 
                 // 清空草稿
                 localStorage.removeItem('scriptDraft');
+                document.getElementById('scriptTitle').value = '';
+                document.getElementById('scriptDescription').value = '';
+                quill.root.innerHTML = '';
                 uploadedFiles = [];
-                
-                // 显示成功消息
-                alert('✅ 剧本提交成功！\n\n已进入审核队列，审核结果将通过系统通知。');
-                
-                // 跳转到我的剧本页面（待开发）
-                window.location.href = 'groups.html'; // 暂时返回分组页
+                updateFileList();
             }
-        }
+        });
+        
+        // ===== 页面初始化 =====
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDraft();
+            
+            // 底部导航激活状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === 'groups.html') {
+                    item.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
