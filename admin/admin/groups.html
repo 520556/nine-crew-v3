@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分组管理 · NINE剧组后台</title>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--lightest-gray);
+            color: var(--black);
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部导航 */
+        .admin-header {
+            background: var(--black);
+            color: var(--white);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .admin-logo i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .back-to-site {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .back-to-site:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+        
+        /* 侧边栏 + 主内容布局 */
+        .admin-layout {
+            display: flex;
+            gap: 24px;
+            margin: 30px 0;
+        }
+        
+        /* 侧边导航 */
+        .admin-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-menu {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--lighter-gray);
+            color: var(--medium-gray);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        .menu-item:hover {
+            background: var(--lightest-gray);
+            color: var(--black);
+        }
+        
+        .menu-item.active {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        /* 主内容区 */
+        .admin-main {
+            flex: 1;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .add-group-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .add-group-btn:hover {
+            background: var(--dark-gray);
+        }
+        
+        /* 分组统计卡片 */
+        .groups-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            color: var(--medium-gray);
+            font-size: 13px;
+        }
+        
+        /* 分组卡片网格 */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .group-admin-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--lighter-gray);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .group-admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .group-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .group-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--lightest-gray);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .group-title {
+            flex: 1;
+        }
+        
+        .group-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .audit-tag {
+            background: var(--lightest-gray);
+            color: var(--medium-gray);
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .group-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--medium-gray);
+        }
+        
+        .group-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .group-content {
+            padding: 20px;
+        }
+        
+        .leaders-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-label {
+            font-size: 13px;
+            color: var(--light-gray);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .leaders-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .leader-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--lightest-gray);
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .leader-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .leader-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .leader-role {
+            font-size: 11px;
+            color: var(--light-gray);
+            margin-left: 4px;
+        }
+        
+        .add-leader-btn {
+            background: transparent;
+            border: 1.5px dashed var(--light-gray);
+            color: var(--medium-gray);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .add-leader-btn:hover {
+            border-color: var(--black);
+            color: var(--black);
+        }
+        
+        .members-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
+        }
+        
+        .members-count {
+            font-size: 14px;
+        }
+        
+        .members-count strong {
+            font-size: 18px;
+            margin-right: 4px;
+        }
+        
+        .view-members {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .group-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        
+        .group-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .group-btn.primary {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+        }
+        
+        .group-btn.primary:hover {
+            background: var(--dark-gray);
+        }
+        
+        .group-btn.secondary {
+            background: transparent;
+            border: 1.5px solid var(--black);
+            color: var(--black);
+        }
+        
+        .group-btn.secondary:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        /* 分页 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+        }
+        
+        .page-item {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .page-item:hover {
+            background: var(--lightest-gray);
+        }
+        
+        .page-item.active {
+            background: var(--black);
+            color: white;
+            border-color: var(--black);
+        }
+    </style>
+</head>
+<body>
+    <!-- 后台顶部导航 -->
+    <div class="admin-header">
+        <div class="container header-content">
+            <div class="admin-logo">
+                <i class="fas fa-film"></i> NINE剧组 · 管理后台
+            </div>
+            <div class="admin-user">
+                <a href="/index.html" class="back-to-site">
+                    <i class="fas fa-external-link-alt"></i> 返回网站
+                </a>
+                <div class="admin-avatar">张</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="admin-layout">
+            <!-- 侧边导航 -->
+            <div class="admin-sidebar">
+                <div class="sidebar-menu">
+                    <a href="index.html" class="menu-item">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="audit.html" class="menu-item">
+                        <i class="fas fa-clipboard-check"></i> 审核管理
+                    </a>
+                    <a href="members.html" class="menu-item">
+                        <i class="fas fa-users"></i> 成员管理
+                    </a>
+                    <a href="groups.html" class="menu-item active">
+                        <i class="fas fa-sitemap"></i> 分组管理
+                    </a>
+                    <a href="settings.html" class="menu-item">
+                        <i class="fas fa-cog"></i> 系统设置
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="admin-main">
+                <!-- 页面标题 -->
+                <div class="page-header">
+                    <h1 class="page-title">分组管理</h1>
+                    <button class="add-group-btn" onclick="alert('新建分组功能开发中')">
+                        <i class="fas fa-plus"></i> 新建分组
+                    </button>
+                </div>
+                
+                <!-- 分组统计 -->
+                <div class="groups-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">总分组</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">组长</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">86</div>
+                        <div class="stat-label">总成员</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">待审核</div>
+                    </div>
+                </div>
+                
+                <!-- 分组卡片网格 -->
+                <div class="groups-grid">
+                    <!-- 编剧组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-pen-fancy"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">
+                                    编剧组
+                                    <span class="audit-tag">需审核</span>
+                                </div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 12人</span>
+                                    <span><i class="fas fa-clock"></i> 3进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">刘</div>
+                                        <span class="leader-name">刘畅</span>
+                                        <span class="leader-role">主编剧</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">周</div>
+                                        <span class="leader-name">周明</span>
+                                        <span class="leader-role">剧本指导</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>12</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 演员组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-user"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">演员组</div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 24人</span>
+                                    <span><i class="fas fa-clock"></i> 4进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">张</div>
+                                        <span class="leader-name">张艺</span>
+                                        <span class="leader-role">表演指导</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">陈</div>
+                                        <span class="leader-name">陈曦</span>
+                                        <span class="leader-role">选角导演</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>24</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看成员列表')">成员列表</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 配音组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-microphone"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">
+                                    配音组
+                                    <span class="audit-tag">需审核</span>
+                                </div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 18人</span>
+                                    <span><i class="fas fa-clock"></i> 3进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">王</div>
+                                        <span class="leader-name">王磊</span>
+                                        <span class="leader-role">配音指导</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">赵</div>
+                                        <span class="leader-name">赵晴</span>
+                                        <span class="leader-role">音频总监</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>18</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 摄影组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-camera"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">
+                                    摄影组
+                                    <span class="audit-tag">需审核</span>
+                                </div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 15人</span>
+                                    <span><i class="fas fa-clock"></i> 4进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">孙</div>
+                                        <span class="leader-name">孙阳</span>
+                                        <span class="leader-role">摄影指导</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">李</div>
+                                        <span class="leader-name">李娜</span>
+                                        <span class="leader-role">灯光设计</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>15</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 后期组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-cut"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">
+                                    后期组
+                                    <span class="audit-tag">需审核</span>
+                                </div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 10人</span>
+                                    <span><i class="fas fa-clock"></i> 3进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">吴</div>
+                                        <span class="leader-name">吴迪</span>
+                                        <span class="leader-role">后期总监</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">郑</div>
+                                        <span class="leader-name">郑爽</span>
+                                        <span class="leader-role">特效指导</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>10</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 导演组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-video"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">导演组</div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 8人</span>
+                                    <span><i class="fas fa-clock"></i> 2进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">冯</div>
+                                        <span class="leader-name">冯导</span>
+                                        <span class="leader-role">总导演</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">郭</div>
+                                        <span class="leader-name">郭导</span>
+                                        <span class="leader-role">执行导演</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>8</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看成员列表')">成员列表</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 宣传组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-bullhorn"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">宣传组</div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 8人</span>
+                                    <span><i class="fas fa-clock"></i> 2进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">徐</div>
+                                        <span class="leader-name">徐静</span>
+                                        <span class="leader-role">宣传主管</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">高</div>
+                                        <span class="leader-name">高翔</span>
+                                        <span class="leader-role">视觉设计</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>8</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看宣传任务')">宣传任务</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 气氛组 -->
+                    <div class="group-admin-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas fa-heart"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">气氛组</div>
+                                <div class="group-meta">
+                                    <span><i class="fas fa-user"></i> 20人</span>
+                                    <span><i class="fas fa-clock"></i> 5进行中</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-content">
+                            <div class="leaders-section">
+                                <div class="section-label">组长团队</div>
+                                <div class="leaders-list">
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">杨</div>
+                                        <span class="leader-name">杨欢</span>
+                                        <span class="leader-role">气氛组长</span>
+                                    </div>
+                                    <div class="leader-item">
+                                        <div class="leader-avatar">林</div>
+                                        <span class="leader-name">林欣</span>
+                                        <span class="leader-role">活动策划</span>
+                                    </div>
+                                    <div class="add-leader-btn" onclick="alert('添加组长')">
+                                        <i class="fas fa-plus"></i> 添加组长
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="members-stats">
+                                <span class="members-count"><strong>20</strong> 名成员</span>
+                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="group-actions">
+                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
+                                <button class="group-btn secondary" onclick="alert('查看活动')">活动列表</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="pagination">
+                    <span class="page-item active">1</span>
+                    <span class="page-item">2</span>
+                    <span class="page-item">3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
