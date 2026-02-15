@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布 · NINE剧组</title>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部装饰带 */
+        .header-decoration {
+            height: 100px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            padding: 12px var(--space-md);
+            background: var(--white);
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .status-time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-icons i {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        
+        .status-icons .fa-bell {
+            color: var(--black);
+            margin-right: 4px;
+        }
+        
+        /* 返回链接 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            margin: 30px 0 20px;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .page-subtitle {
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+        
+        /* 发布选项网格 */
+        .publish-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+            margin: var(--space-xl) 0;
+        }
+        
+        .publish-card {
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .publish-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--black), transparent);
+            opacity: 0.1;
+        }
+        
+        .publish-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--medium-gray);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        
+        .publish-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--lightest-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto var(--space-md);
+            color: var(--dark-gray);
+            transition: all 0.3s;
+        }
+        
+        .publish-card:hover .publish-icon {
+            background: var(--black);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+        
+        .publish-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .publish-desc {
+            color: var(--medium-gray);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .group-badge {
+            display: inline-block;
+            background: var(--lightest-gray);
+            color: var(--medium-gray);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 12px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            flex: 1;
+            color: var(--light-gray);
+            text-decoration: none;
+        }
+        
+        .nav-item.active {
+            color: var(--black);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 375px) {
+            .publish-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部装饰带 -->
+    <div class="header-decoration"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-bell" onclick="window.location.href='notifications.html'" style="cursor: pointer;"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 返回链接 -->
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+        
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">发布</h1>
+            <p class="page-subtitle">选择你要发布的内容类型</p>
+        </div>
+        
+        <!-- 发布选项 -->
+        <div class="publish-grid">
+            <!-- 发布剧本 -->
+            <div class="publish-card" onclick="window.location.href='publish-script.html'">
+                <div class="publish-icon">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+                <div class="publish-title">发布剧本</div>
+                <div class="publish-desc">创作新剧本，支持富文本编辑，可提交审核</div>
+                <div class="group-badge">编剧组</div>
+            </div>
+            
+            <!-- 发布活动 -->
+            <div class="publish-card" onclick="window.location.href='publish-activity.html'">
+                <div class="publish-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="publish-title">发布活动</div>
+                <div class="publish-desc">组织拍摄、团建等活动，招募成员</div>
+                <div class="group-badge">所有分组</div>
+            </div>
+            
+            <!-- 发布日常 -->
+            <div class="publish-card" onclick="window.location.href='publish-post.html'">
+                <div class="publish-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div class="publish-title">发布日常</div>
+                <div class="publish-desc">分享剧组日常、作品花絮、个人动态</div>
+                <div class="group-badge">所有人</div>
+            </div>
+            
+            <!-- 发布宣传 -->
+            <div class="publish-card" onclick="alert('宣传任务需组长审核，请前往宣传组')">
+                <div class="publish-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="publish-title">发布宣传</div>
+                <div class="publish-desc">提交宣传文案，组长审核通过后发布</div>
+                <div class="group-badge">宣传组</div>
+            </div>
+        </div>
+        
+        <!-- 提示信息 -->
+        <div style="background: var(--lightest-gray); border-radius: var(--radius-lg); padding: var(--space-lg); margin: var(--space-xl) 0;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <i class="fas fa-info-circle" style="color: var(--medium-gray); font-size: 20px;"></i>
+                <span style="font-weight: 600;">发布须知</span>
+            </div>
+            <ul style="color: var(--medium-gray); font-size: 13px; line-height: 1.8; margin-left: 20px;">
+                <li>剧本发布后需经组长审核</li>
+                <li>活动发布后可由成员报名</li>
+                <li>宣传任务需组长审核通过</li>
+                <li>日常动态即时发布，无需审核</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="rank.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
+        </a>
+        <a href="publish.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
+            <div class="nav-label">发布</div>
+        </a>
+        <a href="groups.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">分组</div>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+    
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html>
