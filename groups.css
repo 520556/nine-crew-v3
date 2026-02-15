@@ -1,485 +1,284 @@
-/* groups.css - 分组页面专用样式 */
+/* ===== 分组页面专属样式 ===== */
 
-/* ===== 分组卡片基础样式 ===== */
+/* 分组列表 */
+.groups-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: var(--space-xl) 0;
+}
+
+/* 分组卡片 */
 .group-card {
     background: var(--white);
-    border: 1px solid var(--lightest-gray);
-    border-radius: 16px;
-    margin-bottom: 16px;
-    overflow: hidden;
+    border: 1px solid var(--lighter-gray);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 卡片顶部渐变装饰 */
+.group-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent,
+        var(--black),
+        transparent);
+    opacity: 0.1;
 }
 
 .group-card:hover {
-    border-color: var(--lighter-gray);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    border-color: var(--medium-gray);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
 }
 
-/* 卡片头部（默认显示） */
-.card-header {
-    padding: 20px;
+/* 卡片头部 */
+.group-header {
     display: flex;
     align-items: center;
-    position: relative;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
 }
 
+/* 图标容器 */
 .group-icon {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     background: var(--lightest-gray);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 16px;
-    font-size: 20px;
+    font-size: 24px;
     color: var(--dark-gray);
-    flex-shrink: 0;
+    transition: all 0.3s ease;
 }
 
-.group-info {
+.group-card:hover .group-icon {
+    background: var(--black);
+    color: var(--white);
+    transform: scale(1.05);
+}
+
+/* 标题区域 */
+.group-title {
     flex: 1;
 }
 
 .group-name {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 4px;
-    color: var(--black);
-}
-
-.group-stats {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 12px;
+    gap: 8px;
+}
+
+/* 审核标签 */
+.audit-badge {
+    background: var(--lightest-gray);
     color: var(--medium-gray);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: normal;
+    border: 1px solid var(--lighter-gray);
 }
 
-.member-count {
+.group-meta {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-sm);
+    color: var(--light-gray);
+    font-size: 12px;
 }
 
+/* 活跃度指示器 */
 .activity-indicator {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.activity-indicator.active {
-    color: #ff6b6b;
-}
-
-.activity-indicator .dot {
-    width: 6px;
-    height: 6px;
-    background: currentColor;
+.activity-dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
 }
 
+.activity-dot.high { background: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+.activity-dot.medium { background: #eab308; box-shadow: 0 0 0 2px rgba(234,179,8,0.2); }
+.activity-dot.low { background: #ef4444; box-shadow: 0 0 0 2px rgba(239,68,68,0.2); }
+
+/* 卡片描述 */
 .group-description {
-    font-size: 14px;
     color: var(--medium-gray);
-    line-height: 1.5;
-    margin-top: 8px;
-    max-height: 42px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.expand-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--light-gray);
-    transition: transform 0.3s ease;
-}
-
-.group-card.expanded .expand-icon {
-    transform: rotate(180deg);
-}
-
-/* 卡片内容（展开时显示） */
-.card-content {
-    padding: 0 20px 20px;
-    border-top: 1px solid var(--lightest-gray);
-    margin-top: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-}
-
-.group-card.expanded .card-content {
-    max-height: 2000px;
-    margin-top: 16px;
-}
-
-/* 内容区块 */
-.content-section {
-    margin-bottom: 20px;
-}
-
-.section-title {
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--dark-gray);
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--lighter-gray);
 }
 
-/* 分组要求 */
-.group-requirements {
-    background: var(--lightest-gray);
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--dark-gray);
+/* 组长区域 */
+.leaders-section {
+    margin-bottom: var(--space-md);
 }
 
-/* 微信群二维码 */
-.qr-code-container {
-    text-align: center;
-    padding: 16px;
-    background: var(--lightest-gray);
-    border-radius: 12px;
-}
-
-.qr-code-placeholder {
-    width: 160px;
-    height: 160px;
-    background: var(--lighter-gray);
-    border-radius: 8px;
-    margin: 0 auto 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--light-gray);
-}
-
-.qr-code-placeholder i {
-    font-size: 32px;
-    margin-bottom: 8px;
-}
-
-.qr-code-info {
-    font-size: 11px;
-    color: var(--medium-gray);
-    margin-top: 8px;
-}
-
-/* ===== 新的组长卡片系统 ===== */
-
-/* 组长卡片容器（多组长布局） */
-.leaders-container {
-    display: grid;
-    gap: 16px;
-}
-
-@media (min-width: 768px) {
-    .leaders-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* 单个组长卡片 - 支持自定义背景 */
-.leader-card {
-    border-radius: 16px;
-    padding: 20px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.leader-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-}
-
-/* 背景图片层（虚化效果） */
-.leader-card-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(15px) brightness(0.6) saturate(1.2);
-    z-index: 1;
-    transform: scale(1.05); /* 避免边缘模糊空白 */
-}
-
-/* 内容层（在背景之上） */
-.leader-card-content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-/* 背景遮罩，增强文字可读性 */
-.leader-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, 
-        rgba(0, 0, 0, 0.4) 0%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.4) 100%);
-    z-index: 1;
-}
-
-/* 组长头像（圆形，带光晕） */
-.leader-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.6);
-    margin-right: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    z-index: 3;
-    position: relative;
-    transition: transform 0.3s ease;
-}
-
-.leader-card:hover .leader-avatar {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
-}
-
-/* 组长信息区域 */
-.leader-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.leader-info {
-    flex: 1;
-}
-
-.leader-name {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.leader-title {
+.leaders-title {
     font-size: 12px;
-    opacity: 0.9;
-}
-
-/* 组长徽章（发光效果） */
-.leader-badge {
-    background: linear-gradient(135deg, #ffd700 0%, #ff9900 100%);
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    color: var(--light-gray);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* 查看主页按钮（毛玻璃效果） */
-.leader-action {
-    text-align: center;
-    margin-top: auto;
+.leaders-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
 }
 
-.view-profile-btn {
-    display: inline-flex;
+.leader-item {
+    display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 10px 22px;
-    border-radius: 25px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    z-index: 3;
-    position: relative;
-    width: 100%;
+    background: var(--lightest-gray);
+    padding: 6px 12px 6px 6px;
+    border-radius: 30px;
+    border: 1px solid var(--lighter-gray);
 }
 
-.view-profile-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
-}
-
-.view-profile-btn i {
-    font-size: 11px;
-}
-
-/* 为不同组长设置不同的默认背景图片 */
-.leader-card:nth-child(1) .leader-card-bg {
-    background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-}
-
-.leader-card:nth-child(2) .leader-card-bg {
-    background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-}
-
-.leader-card:nth-child(3) .leader-card-bg {
-    background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-}
-
-
-/* 加入按钮 */
-.join-section {
-    text-align: center;
-    padding-top: 16px;
-    border-top: 1px solid var(--lightest-gray);
-}
-
-.join-button {
-    width: 100%;
-    padding: 14px;
-    background: var(--black);
-    color: var(--white);
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.join-button:hover {
-    background: var(--dark-gray);
-    transform: translateY(-2px);
-}
-
-.join-button:disabled {
-    background: var(--light-gray);
-    cursor: not-allowed;
-    transform: none;
-}
-
-.join-button.joined {
-    background: var(--medium-gray);
-}
-
-/* 响应式布局 */
-@media (min-width: 768px) {
-    #groupsContainer {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-    
-    .group-card {
-        margin-bottom: 0;
-    }
-}
-
-/* ===== 剧本创作区域样式 ===== */
-.editor-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid #dee2e6;
-    margin-bottom: 20px;
-}
-
-.editor-section .section-title {
-    color: #6a11cb;
-}
-
-.create-script-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
+.leader-avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--white);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--lighter-gray);
+}
+
+.leader-name {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.leader-role {
+    font-size: 11px;
+    color: var(--light-gray);
+    margin-left: 4px;
+}
+
+/* 标签列表 */
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: var(--space-md) 0;
+}
+
+.tag {
+    background: var(--lightest-gray);
+    color: var(--medium-gray);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    border: 1px solid var(--lighter-gray);
+}
+
+/* 卡片底部 */
+.group-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--lighter-gray);
+}
+
+/* 成员计数 */
+.member-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--light-gray);
+    font-size: 13px;
+}
+
+.member-count i {
+    font-size: 14px;
+}
+
+/* 加入按钮 */
+.join-btn {
+    background: transparent;
+    border: 1.5px solid var(--black);
+    color: var(--black);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.create-script-btn:hover {
+.join-btn:hover {
+    background: var(--black);
+    color: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(106, 17, 203, 0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.create-script-btn:active {
-    transform: translateY(0);
+.join-btn i {
+    font-size: 12px;
 }
 
-.create-script-btn i {
-    font-size: 16px;
+/* 展开内容（用于卡片点击展开更多信息） */
+.group-expanded {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--lighter-gray);
+    animation: fadeIn 0.3s ease;
 }
 
-/* 微信内优化 */
-@media (max-width: 767px) {
-    body {
-        padding: 16px 12px 70px;
-    }
-    
-    .card-header {
-        padding: 16px;
-    }
-    
-    .card-content {
-        padding: 0 16px 16px;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+    .group-header {
+        flex-wrap: wrap;
     }
     
     .group-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
     }
     
-    .group-name {
-        font-size: 16px;
+    .leaders-list {
+        flex-direction: column;
+    }
+    
+    .leader-item {
+        width: 100%;
     }
 }
