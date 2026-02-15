@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>分组管理 · NINE剧组后台</title>
+    
+    <!-- 登录验证 -->
     <script>
-    if (localStorage.getItem('admin') !== 'yes') {
-        window.location.href = '/admin/index.html';  
-    }
+        if (localStorage.getItem('adminLogin') !== 'yes') {
+            window.location.href = 'login.html';
+        }
     </script>
     
     <!-- 字体图标 -->
@@ -106,6 +108,20 @@
         .back-to-site:hover {
             background: var(--white);
             color: var(--black);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.1);
         }
         
         /* 侧边栏 + 主内容布局 */
@@ -469,13 +485,19 @@
     <div class="admin-header">
         <div class="container header-content">
             <div class="admin-logo">
-                <i class="fas fa-film"></i> NINE剧组 · 管理后台
+                <i class="fas fa-crown" style="color: #ffd700;"></i> NINE剧组 · 管理后台
             </div>
             <div class="admin-user">
+                <span style="color: var(--white); margin-right: 5px;">
+                    <i class="fas fa-user-shield"></i> <span id="currentAdmin"></span>
+                </span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
                 <a href="/index.html" class="back-to-site">
                     <i class="fas fa-external-link-alt"></i> 返回网站
                 </a>
-                <div class="admin-avatar">张</div>
+                <div class="admin-avatar" id="adminAvatar"></div>
             </div>
         </div>
     </div>
@@ -625,279 +647,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- 配音组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-microphone"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">
-                                    配音组
-                                    <span class="audit-tag">需审核</span>
-                                </div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 18人</span>
-                                    <span><i class="fas fa-clock"></i> 3进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">王</div>
-                                        <span class="leader-name">王磊</span>
-                                        <span class="leader-role">配音指导</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">赵</div>
-                                        <span class="leader-name">赵晴</span>
-                                        <span class="leader-role">音频总监</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>18</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 摄影组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-camera"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">
-                                    摄影组
-                                    <span class="audit-tag">需审核</span>
-                                </div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 15人</span>
-                                    <span><i class="fas fa-clock"></i> 4进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">孙</div>
-                                        <span class="leader-name">孙阳</span>
-                                        <span class="leader-role">摄影指导</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">李</div>
-                                        <span class="leader-name">李娜</span>
-                                        <span class="leader-role">灯光设计</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>15</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 后期组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-cut"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">
-                                    后期组
-                                    <span class="audit-tag">需审核</span>
-                                </div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 10人</span>
-                                    <span><i class="fas fa-clock"></i> 3进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">吴</div>
-                                        <span class="leader-name">吴迪</span>
-                                        <span class="leader-role">后期总监</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">郑</div>
-                                        <span class="leader-name">郑爽</span>
-                                        <span class="leader-role">特效指导</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>10</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看审核队列')">审核队列</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 导演组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-video"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">导演组</div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 8人</span>
-                                    <span><i class="fas fa-clock"></i> 2进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">冯</div>
-                                        <span class="leader-name">冯导</span>
-                                        <span class="leader-role">总导演</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">郭</div>
-                                        <span class="leader-name">郭导</span>
-                                        <span class="leader-role">执行导演</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>8</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看成员列表')">成员列表</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 宣传组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-bullhorn"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">宣传组</div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 8人</span>
-                                    <span><i class="fas fa-clock"></i> 2进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">徐</div>
-                                        <span class="leader-name">徐静</span>
-                                        <span class="leader-role">宣传主管</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">高</div>
-                                        <span class="leader-name">高翔</span>
-                                        <span class="leader-role">视觉设计</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>8</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看宣传任务')">宣传任务</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 气氛组 -->
-                    <div class="group-admin-card">
-                        <div class="group-header">
-                            <div class="group-icon"><i class="fas fa-heart"></i></div>
-                            <div class="group-title">
-                                <div class="group-name">气氛组</div>
-                                <div class="group-meta">
-                                    <span><i class="fas fa-user"></i> 20人</span>
-                                    <span><i class="fas fa-clock"></i> 5进行中</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group-content">
-                            <div class="leaders-section">
-                                <div class="section-label">组长团队</div>
-                                <div class="leaders-list">
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">杨</div>
-                                        <span class="leader-name">杨欢</span>
-                                        <span class="leader-role">气氛组长</span>
-                                    </div>
-                                    <div class="leader-item">
-                                        <div class="leader-avatar">林</div>
-                                        <span class="leader-name">林欣</span>
-                                        <span class="leader-role">活动策划</span>
-                                    </div>
-                                    <div class="add-leader-btn" onclick="alert('添加组长')">
-                                        <i class="fas fa-plus"></i> 添加组长
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="members-stats">
-                                <span class="members-count"><strong>20</strong> 名成员</span>
-                                <a href="#" class="view-members" onclick="alert('查看成员列表')">查看全部 <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                            
-                            <div class="group-actions">
-                                <button class="group-btn primary" onclick="alert('编辑分组信息')">编辑分组</button>
-                                <button class="group-btn secondary" onclick="alert('查看活动')">活动列表</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- 分页 -->
@@ -909,5 +658,21 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // 显示当前登录的管理员
+        const adminName = localStorage.getItem('adminName') || '管理员';
+        document.getElementById('currentAdmin').textContent = adminName;
+        document.getElementById('adminAvatar').textContent = adminName.charAt(0);
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定退出登录吗？')) {
+                localStorage.removeItem('adminLogin');
+                localStorage.removeItem('adminName');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
 </body>
 </html>
