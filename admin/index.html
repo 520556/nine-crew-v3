@@ -1,37 +1,650 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>后台管理 · NINE剧组</title>
+    
+    <!-- 登录验证 -->
+    <script>
+        if (localStorage.getItem('adminLogin') !== 'yes') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
+            background: var(--lightest-gray);
+            color: var(--black);
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部导航 */
+        .admin-header {
+            background: var(--black);
+            color: var(--white);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .admin-logo i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--white);
+            color: var(--black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .back-to-site {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .back-to-site:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* 侧边栏 + 主内容布局 */
+        .admin-layout {
+            display: flex;
+            gap: 24px;
+            margin: 30px 0;
+        }
+        
+        /* 侧边导航 */
+        .admin-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-menu {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--lighter-gray);
+            color: var(--medium-gray);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        .menu-item:hover {
+            background: var(--lightest-gray);
+            color: var(--black);
+        }
+        
+        .menu-item.active {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        /* 主内容区 */
+        .admin-main {
+            flex: 1;
+        }
+        
+        /* 欢迎卡片 */
+        .welcome-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-subtitle {
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+        
+        .role-badge {
+            background: var(--black);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+        
+        /* 统计卡片网格 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
             padding: 20px;
+            border: 1px solid var(--lighter-gray);
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--lightest-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+        
+        .stat-change.up {
+            background: rgba(34,197,94,0.1);
+            color: #22c55e;
+        }
+        
+        .stat-change.down {
+            background: rgba(239,68,68,0.1);
+            color: #ef4444;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            color: var(--medium-gray);
+            font-size: 13px;
+        }
+        
+        /* 分组统计 */
+        .groups-stats {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        
+        .group-stat-item {
+            padding: 16px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
             text-align: center;
         }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        
+        .group-name {
+            font-weight: 600;
+            margin-bottom: 8px;
         }
-        h1 { color: #1a1a1a; }
-        p { color: #666; }
-        .success { color: #22c55e; font-weight: bold; }
+        
+        .group-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--medium-gray);
+        }
+        
+        .group-numbers span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 待审核列表 */
+        .pending-list {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .pending-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .view-all {
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        .pending-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--lighter-gray);
+        }
+        
+        .pending-item:last-child {
+            border-bottom: none;
+        }
+        
+        .pending-avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--lightest-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .pending-info {
+            flex: 1;
+        }
+        
+        .pending-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .pending-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--light-gray);
+        }
+        
+        .pending-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .approve-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .reject-btn {
+            background: transparent;
+            border: 1.5px solid #ff4444;
+            color: #ff4444;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>✅ NINE剧组 · 后台管理</h1>
-        <p class="success">index.html 文件正确加载！</p>
-        <p>如果你能看到这个页面，说明文件没问题。</p>
-        <p>接下来可以替换成完整版的后台代码。</p>
-        <hr style="margin: 30px 0;">
-        <p><a href="login.html" style="color: #1a1a1a;">→ 去登录页</a></p>
+    <!-- 后台顶部导航 -->
+    <div class="admin-header">
+        <div class="container header-content">
+            <div class="admin-logo">
+                <i class="fas fa-crown" style="color: #ffd700;"></i> NINE剧组 · 管理后台
+            </div>
+            <div class="admin-user">
+                <span style="color: var(--white); margin-right: 5px;">
+                    <i class="fas fa-user-shield"></i> <span id="currentAdmin"></span>
+                </span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
+                <a href="/index.html" class="back-to-site">
+                    <i class="fas fa-external-link-alt"></i> 返回网站
+                </a>
+                <div class="admin-avatar" id="adminAvatar"></div>
+            </div>
+        </div>
     </div>
+    
+    <div class="container">
+        <div class="admin-layout">
+            <!-- 侧边导航 -->
+            <div class="admin-sidebar">
+                <div class="sidebar-menu">
+                    <a href="index.html" class="menu-item active">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                    <a href="audit.html" class="menu-item">
+                        <i class="fas fa-clipboard-check"></i> 审核管理
+                    </a>
+                    <a href="members.html" class="menu-item">
+                        <i class="fas fa-users"></i> 成员管理
+                    </a>
+                    <a href="groups.html" class="menu-item">
+                        <i class="fas fa-sitemap"></i> 分组管理
+                    </a>
+                    <a href="settings.html" class="menu-item">
+                        <i class="fas fa-cog"></i> 系统设置
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="admin-main">
+                <!-- 欢迎卡片 -->
+                <div class="welcome-card">
+                    <div>
+                        <h2 class="welcome-title">欢迎回来，<span id="welcomeName">管理员</span></h2>
+                        <p class="welcome-subtitle">您有 8 条待审核申请，3 条待处理反馈</p>
+                    </div>
+                    <div class="role-badge">超级管理员</div>
+                </div>
+                
+                <!-- 统计卡片 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <span class="stat-change up">↑ 12</span>
+                        </div>
+                        <div class="stat-value">248</div>
+                        <div class="stat-label">总成员</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <span class="stat-change up">↑ 5</span>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">待审核</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                            <span class="stat-change down">↓ 2</span>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">进行中活动</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                            <span class="stat-change up">↑ 8%</span>
+                        </div>
+                        <div class="stat-value">56</div>
+                        <div class="stat-label">今日活跃</div>
+                    </div>
+                </div>
+                
+                <!-- 分组统计 -->
+                <div class="groups-stats">
+                    <div class="section-title">
+                        <span>分组人数统计</span>
+                        <span style="font-size: 13px; color: var(--medium-gray);">总成员 248 人</span>
+                    </div>
+                    
+                    <div class="groups-grid">
+                        <div class="group-stat-item">
+                            <div class="group-name">编剧组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 32</span>
+                                <span><i class="fas fa-clock"></i> 3</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">演员组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 45</span>
+                                <span><i class="fas fa-clock"></i> 4</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">配音组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 18</span>
+                                <span><i class="fas fa-clock"></i> 2</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">摄影组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 27</span>
+                                <span><i class="fas fa-clock"></i> 4</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">后期组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 15</span>
+                                <span><i class="fas fa-clock"></i> 3</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">导演组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 12</span>
+                                <span><i class="fas fa-clock"></i> 2</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">宣传组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 20</span>
+                                <span><i class="fas fa-clock"></i> 1</span>
+                            </div>
+                        </div>
+                        <div class="group-stat-item">
+                            <div class="group-name">气氛组</div>
+                            <div class="group-numbers">
+                                <span><i class="fas fa-user"></i> 79</span>
+                                <span><i class="fas fa-clock"></i> 5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 待审核列表 -->
+                <div class="pending-list">
+                    <div class="pending-header">
+                        <h3 style="font-size: 16px;">待审核申请</h3>
+                        <a href="audit.html" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div class="pending-item">
+                        <div class="pending-avatar">李</div>
+                        <div class="pending-info">
+                            <div class="pending-name">李思思</div>
+                            <div class="pending-meta">
+                                <span>申请加入 配音组</span>
+                                <span>2小时前</span>
+                            </div>
+                        </div>
+                        <div class="pending-actions">
+                            <button class="approve-btn" onclick="alert('已通过')">通过</button>
+                            <button class="reject-btn" onclick="alert('已拒绝')">拒绝</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pending-item">
+                        <div class="pending-avatar">王</div>
+                        <div class="pending-info">
+                            <div class="pending-name">王小明</div>
+                            <div class="pending-meta">
+                                <span>申请加入 摄影组</span>
+                                <span>5小时前</span>
+                            </div>
+                        </div>
+                        <div class="pending-actions">
+                            <button class="approve-btn" onclick="alert('已通过')">通过</button>
+                            <button class="reject-btn" onclick="alert('已拒绝')">拒绝</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pending-item">
+                        <div class="pending-avatar">赵</div>
+                        <div class="pending-info">
+                            <div class="pending-name">赵天</div>
+                            <div class="pending-meta">
+                                <span>提交剧本《光遇之旅》</span>
+                                <span>昨天</span>
+                            </div>
+                        </div>
+                        <div class="pending-actions">
+                            <button class="approve-btn" onclick="alert('已通过')">通过</button>
+                            <button class="reject-btn" onclick="alert('已拒绝')">拒绝</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示当前登录的管理员
+        const adminName = localStorage.getItem('adminName') || '管理员';
+        document.getElementById('currentAdmin').textContent = adminName;
+        document.getElementById('welcomeName').textContent = adminName;
+        document.getElementById('adminAvatar').textContent = adminName.charAt(0);
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定退出登录吗？')) {
+                localStorage.removeItem('adminLogin');
+                localStorage.removeItem('adminName');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
 </body>
 </html>
