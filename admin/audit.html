@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>审核管理 · NINE剧组后台</title>
+    
+    <!-- 登录验证 -->
     <script>
-    if (localStorage.getItem('admin') !== 'yes') {
-        window.location.href = '/admin/index.html';  // 也改成绝对路径
-    }
-</script>
+        if (localStorage.getItem('adminLogin') !== 'yes') {
+            window.location.href = 'login.html';
+        }
+    </script>
     
     <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -106,6 +108,20 @@
         .back-to-site:hover {
             background: var(--white);
             color: var(--black);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.1);
         }
         
         /* 侧边栏 + 主内容布局 */
@@ -428,13 +444,19 @@
     <div class="admin-header">
         <div class="container header-content">
             <div class="admin-logo">
-                <i class="fas fa-film"></i> NINE剧组 · 管理后台
+                <i class="fas fa-crown" style="color: #ffd700;"></i> NINE剧组 · 管理后台
             </div>
             <div class="admin-user">
+                <span style="color: var(--white); margin-right: 5px;">
+                    <i class="fas fa-user-shield"></i> <span id="currentAdmin"></span>
+                </span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
                 <a href="/index.html" class="back-to-site">
                     <i class="fas fa-external-link-alt"></i> 返回网站
                 </a>
-                <div class="admin-avatar">张</div>
+                <div class="admin-avatar" id="adminAvatar"></div>
             </div>
         </div>
     </div>
@@ -528,6 +550,20 @@
     </div>
 
     <script>
+        // 显示当前登录的管理员
+        const adminName = localStorage.getItem('adminName') || '管理员';
+        document.getElementById('currentAdmin').textContent = adminName;
+        document.getElementById('adminAvatar').textContent = adminName.charAt(0);
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定退出登录吗？')) {
+                localStorage.removeItem('adminLogin');
+                localStorage.removeItem('adminName');
+                window.location.href = 'login.html';
+            }
+        }
+        
         // 模拟审核数据
         const auditData = [
             {
@@ -580,58 +616,6 @@
                 date: '2026-02-14',
                 desc: '剧本简介：《星海之约》续集，讲述多年后的重逢故事',
                 files: ['剧本文档.docx'],
-                hasFiles: true
-            },
-            {
-                id: 5,
-                type: 'work',
-                icon: '🎨',
-                title: '周杰 提交摄影作品',
-                group: '摄影组',
-                user: '周杰',
-                time: '3天前',
-                date: '2026-02-12',
-                desc: '作品名称：《光遇·暮土》，一组5张摄影作品',
-                files: ['作品1.jpg', '作品2.jpg', '作品3.jpg'],
-                hasFiles: true
-            },
-            {
-                id: 6,
-                type: 'work',
-                icon: '🎬',
-                title: '吴迪 提交后期作品',
-                group: '后期组',
-                user: '吴迪',
-                time: '3天前',
-                date: '2026-02-12',
-                desc: '作品名称：《剧组日常》剪辑视频，时长3分钟',
-                files: ['视频预览.mp4'],
-                hasFiles: true
-            },
-            {
-                id: 7,
-                type: 'promo',
-                icon: '📢',
-                title: '郑爽 提交宣传文案',
-                group: '宣传组',
-                user: '郑爽',
-                time: '1天前',
-                date: '2026-02-14',
-                desc: '宣传内容：《星海之约》活动宣传海报+文案',
-                files: ['海报设计.psd', '文案.txt'],
-                hasFiles: true
-            },
-            {
-                id: 8,
-                type: 'join',
-                icon: '👤',
-                title: '陈静 申请加入 后期组',
-                group: '后期组',
-                user: '陈静',
-                time: '1天前',
-                date: '2026-02-14',
-                desc: '光遇名：静静子，年龄：23岁，性别：女，有剪辑经验',
-                files: ['剪辑作品1', '剪辑作品2'],
                 hasFiles: true
             }
         ];
@@ -695,7 +679,6 @@
             const feedback = document.getElementById(`feedback-${id}`).value;
             const msg = feedback ? `已通过，意见：${feedback}` : '已通过';
             alert(msg);
-            // 这里可以添加实际的处理逻辑
         }
 
         function handleReject(id) {
