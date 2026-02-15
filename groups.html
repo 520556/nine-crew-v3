@@ -9,41 +9,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ===== 全局样式（和首页保持一致） ===== */
-        :root {
-            --black: #1a1a1a;
-            --dark-gray: #444444;
-            --medium-gray: #666666;
-            --light-gray: #999999;
-            --lighter-gray: #e5e5e5;
-            --lightest-gray: #f5f5f5;
-            --white: #ffffff;
-            
-            --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-xxl: 48px;
-            
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--white);
             color: var(--black);
-            line-height: 1.5;
-            min-height: 100vh;
             padding-bottom: 80px;
         }
         
@@ -56,22 +48,39 @@
         /* 顶部装饰带 */
         .header-decoration {
             height: 100px;
-            background: linear-gradient(135deg, 
-                rgba(0,0,0,0.02) 0%, 
-                rgba(0,0,0,0.05) 100%);
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05));
         }
         
-        .header-decoration::before {
-            content: "";
-            position: absolute;
+        /* 状态栏 - 带通知图标 */
+        .status-bar {
+            padding: 12px var(--space-md);
+            background: var(--white);
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" opacity="0.03"><path d="M0,100 Q200,50 400,100 T800,100" stroke="%23000000" fill="none"/><path d="M0,150 Q200,100 400,150 T800,150" stroke="%23000000" fill="none"/></svg>');
-            background-size: cover;
+            z-index: 100;
+        }
+        
+        .status-time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-icons i {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        
+        .status-icons .fa-bell {
+            color: var(--black);
+            margin-right: 4px;
         }
         
         /* 返回链接 */
@@ -82,24 +91,18 @@
             color: var(--medium-gray);
             text-decoration: none;
             font-size: 14px;
-            margin: var(--space-lg) 0;
-            padding: 8px 0;
-            transition: color 0.2s;
-        }
-        
-        .back-link:hover {
-            color: var(--black);
+            margin: 20px 0;
         }
         
         /* 页面标题 */
         .page-header {
-            margin: var(--space-xl) 0 var(--space-lg);
+            margin: 30px 0 20px;
         }
         
         .page-title {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: var(--space-xs);
+            margin-bottom: 5px;
         }
         
         .page-subtitle {
@@ -108,24 +111,23 @@
         }
         
         /* 统计卡片 */
-        .group-stats-overview {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-sm);
-            margin: var(--space-xl) 0;
+            gap: 10px;
+            margin: 30px 0;
         }
         
-        .stat-item {
+        .stat-card {
             background: var(--lightest-gray);
-            border-radius: var(--radius-md);
-            padding: var(--space-md);
+            border-radius: 12px;
+            padding: 15px;
             text-align: center;
         }
         
         .stat-number {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 4px;
         }
         
         .stat-label {
@@ -133,68 +135,35 @@
             color: var(--medium-gray);
         }
         
-        /* ===== 分组卡片样式 ===== */
-        .groups-list {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-            margin: var(--space-xl) 0;
-        }
-        
+        /* 分组卡片 */
         .group-card {
-            background: var(--white);
             border: 1px solid var(--lighter-gray);
-            border-radius: var(--radius-xl);
-            padding: var(--space-lg);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .group-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                transparent,
-                var(--black),
-                transparent);
-            opacity: 0.1;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
         }
         
         .group-card:hover {
-            transform: translateY(-4px);
             border-color: var(--medium-gray);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .group-header {
             display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            margin-bottom: var(--space-md);
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
         .group-icon {
             width: 60px;
             height: 60px;
             background: var(--lightest-gray);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            color: var(--dark-gray);
-            transition: all 0.3s ease;
-        }
-        
-        .group-card:hover .group-icon {
-            background: var(--black);
-            color: var(--white);
-            transform: scale(1.05);
+            font-size: 24px;
         }
         
         .group-title {
@@ -204,82 +173,48 @@
         .group-name {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .audit-badge {
-            background: var(--lightest-gray);
-            color: var(--medium-gray);
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: normal;
-            border: 1px solid var(--lighter-gray);
+            margin-bottom: 5px;
         }
         
         .group-meta {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
             color: var(--light-gray);
             font-size: 12px;
-        }
-        
-        .activity-indicator {
             display: flex;
-            align-items: center;
-            gap: 4px;
+            gap: 10px;
         }
         
         .activity-dot {
+            display: inline-block;
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            margin-right: 4px;
         }
         
-        .activity-dot.high { 
-            background: #22c55e; 
-            box-shadow: 0 0 0 2px rgba(34,197,94,0.2);
-        }
-        
-        .activity-dot.medium { 
-            background: #eab308; 
-            box-shadow: 0 0 0 2px rgba(234,179,8,0.2);
-        }
-        
-        .activity-dot.low { 
-            background: #ef4444; 
-            box-shadow: 0 0 0 2px rgba(239,68,68,0.2);
-        }
+        .dot-high { background: #22c55e; }
+        .dot-medium { background: #eab308; }
+        .dot-low { background: #ef4444; }
         
         .group-description {
             color: var(--medium-gray);
             font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-md);
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 1px solid var(--lighter-gray);
-        }
-        
-        .leaders-section {
-            margin-bottom: var(--space-md);
         }
         
         .leaders-title {
             font-size: 12px;
             color: var(--light-gray);
-            margin-bottom: var(--space-sm);
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         .leaders-list {
             display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: var(--space-sm);
+            margin-bottom: 15px;
         }
         
         .leader-item {
@@ -287,8 +222,9 @@
             align-items: center;
             gap: 8px;
             background: var(--lightest-gray);
-            padding: 6px 12px 6px 6px;
+            padding: 6px 12px;
             border-radius: 30px;
+            font-size: 13px;
             border: 1px solid var(--lighter-gray);
         }
         
@@ -301,31 +237,18 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            font-weight: 600;
             border: 1px solid var(--lighter-gray);
-        }
-        
-        .leader-name {
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .leader-role {
-            font-size: 11px;
-            color: var(--light-gray);
-            margin-left: 4px;
         }
         
         .tags-list {
             display: flex;
-            flex-wrap: wrap;
             gap: 6px;
-            margin: var(--space-md) 0;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
         }
         
         .tag {
             background: var(--lightest-gray);
-            color: var(--medium-gray);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
@@ -336,21 +259,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: var(--space-md);
-            padding-top: var(--space-md);
+            padding-top: 15px;
             border-top: 1px solid var(--lighter-gray);
         }
         
         .member-count {
-            display: flex;
-            align-items: center;
-            gap: 6px;
             color: var(--light-gray);
             font-size: 13px;
-        }
-        
-        .member-count i {
-            font-size: 14px;
         }
         
         .join-btn {
@@ -362,22 +277,15 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            text-decoration: none;
         }
         
         .join-btn:hover {
             background: var(--black);
             color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .join-btn i {
-            font-size: 12px;
         }
         
         /* 底部导航 */
@@ -398,7 +306,6 @@
             text-align: center;
             flex: 1;
             color: var(--light-gray);
-            cursor: pointer;
             text-decoration: none;
         }
         
@@ -414,28 +321,22 @@
         .nav-label {
             font-size: 10px;
         }
-        
-        /* 响应式 */
-        @media (max-width: 375px) {
-            .group-stats-overview {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .group-header {
-                flex-wrap: wrap;
-            }
-            
-            .group-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 22px;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- 顶部装饰带 -->
     <div class="header-decoration"></div>
+    
+    <!-- 状态栏 - 带通知图标 -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-bell" onclick="window.location.href='notifications.html'" style="cursor: pointer; margin-right: 4px;"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
     
     <div class="container">
         <!-- 返回链接 -->
@@ -449,505 +350,28 @@
             <p class="page-subtitle">8个专业小组，找到属于你的位置</p>
         </div>
         
-        <!-- 分组统计概览 -->
-        <div class="group-stats-overview">
-            <div class="stat-item">
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="stat-number">8</div>
                 <div class="stat-label">总分组</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-number">86</div>
                 <div class="stat-label">总成员</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-number">12</div>
                 <div class="stat-label">进行中</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-number">5</div>
                 <div class="stat-label">待审核</div>
             </div>
         </div>
         
-        <!-- 分组列表 - 静态8个分组 -->
-        <div class="groups-list">
-            
-            <!-- 1. 演员组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">演员组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 24人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    演绎角色灵魂，通过角色申请系统参与剧组活动，展示你的表演才华。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">张</div>
-                            <div>
-                                <span class="leader-name">张艺</span>
-                                <span class="leader-role">表演指导</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">陈</div>
-                            <div>
-                                <span class="leader-name">陈曦</span>
-                                <span class="leader-role">选角导演</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">角色扮演</span>
-                    <span class="tag">表演艺术</span>
-                    <span class="tag">试镜审核</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 4个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('加入演员组申请已提交'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 2. 配音组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">
-                            配音组
-                            <span class="audit-badge">需审核</span>
-                        </div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 18人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    用声音赋予角色生命，上传试音作品，参与配音角色申请。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">王</div>
-                            <div>
-                                <span class="leader-name">王磊</span>
-                                <span class="leader-role">配音指导</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">赵</div>
-                            <div>
-                                <span class="leader-name">赵晴</span>
-                                <span class="leader-role">音频总监</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">声音表演</span>
-                    <span class="tag">音频录制</span>
-                    <span class="tag">角色配音</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 3个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('配音组需要提交试音作品，请前往上传'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 3. 编剧组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-pen-fancy"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">编剧组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 12人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    用文字创造世界，专业剧本编辑器支持富文本创作、多格式文档上传。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">刘</div>
-                            <div>
-                                <span class="leader-name">刘畅</span>
-                                <span class="leader-role">主编剧</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">周</div>
-                            <div>
-                                <span class="leader-name">周明</span>
-                                <span class="leader-role">剧本指导</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">富文本编辑</span>
-                    <span class="tag">文档审核</span>
-                    <span class="tag">专业创作</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 3个进行中
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <a href="script-editor.html" class="join-btn" style="padding: 8px 16px;">
-                            开始创作 <i class="fas fa-pen"></i>
-                        </a>
-                        <a href="#" class="join-btn" onclick="alert('加入编剧组申请已提交'); return false;">
-                            加入
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 4. 后期组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-cut"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">
-                            后期组
-                            <span class="audit-badge">需审核</span>
-                        </div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 10人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot medium"></span>
-                                中等
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    视频剪辑、特效制作、音频处理，用技术为作品增添专业质感。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">吴</div>
-                            <div>
-                                <span class="leader-name">吴迪</span>
-                                <span class="leader-role">后期总监</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">郑</div>
-                            <div>
-                                <span class="leader-name">郑爽</span>
-                                <span class="leader-role">特效指导</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">视频剪辑</span>
-                    <span class="tag">特效制作</span>
-                    <span class="tag">音频处理</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 3个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('后期组需要提交作品审核'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 5. 摄影组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">摄影组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 15人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    镜头设计、画面构图、光影艺术，捕捉每一个精彩瞬间。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">孙</div>
-                            <div>
-                                <span class="leader-name">孙阳</span>
-                                <span class="leader-role">摄影指导</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">李</div>
-                            <div>
-                                <span class="leader-name">李娜</span>
-                                <span class="leader-role">灯光设计</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">镜头设计</span>
-                    <span class="tag">画面构图</span>
-                    <span class="tag">光影艺术</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 4个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('加入摄影组申请已提交'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 6. 宣传组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-bullhorn"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">宣传组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 8人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot medium"></span>
-                                中等
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    文案策划、海报设计、社群运营，让更多人看到我们的作品。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">徐</div>
-                            <div>
-                                <span class="leader-name">徐静</span>
-                                <span class="leader-role">宣传主管</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">高</div>
-                            <div>
-                                <span class="leader-name">高翔</span>
-                                <span class="leader-role">视觉设计</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">文案策划</span>
-                    <span class="tag">海报设计</span>
-                    <span class="tag">社群运营</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 2个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('加入宣传组申请已提交'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 7. 气氛组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">气氛组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 20人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    活跃气氛、活动组织、新人引导，让剧组更有温度。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">杨</div>
-                            <div>
-                                <span class="leader-name">杨欢</span>
-                                <span class="leader-role">气氛组长</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">林</div>
-                            <div>
-                                <span class="leader-name">林欣</span>
-                                <span class="leader-role">活动策划</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">活动组织</span>
-                    <span class="tag">新人引导</span>
-                    <span class="tag">氛围担当</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 5个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('加入气氛组申请已提交'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 8. 导演组 -->
-            <div class="group-card">
-                <div class="group-header">
-                    <div class="group-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="group-title">
-                        <div class="group-name">导演组</div>
-                        <div class="group-meta">
-                            <span><i class="far fa-user"></i> 8人</span>
-                            <span class="activity-indicator">
-                                <span class="activity-dot high"></span>
-                                活跃
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="group-description">
-                    现场指导、艺术把控、演员调度，掌控全局的创作核心。
-                </div>
-                
-                <div class="leaders-section">
-                    <div class="leaders-title">👥 组长团队</div>
-                    <div class="leaders-list">
-                        <div class="leader-item">
-                            <div class="leader-avatar">冯</div>
-                            <div>
-                                <span class="leader-name">冯导</span>
-                                <span class="leader-role">总导演</span>
-                            </div>
-                        </div>
-                        <div class="leader-item">
-                            <div class="leader-avatar">郭</div>
-                            <div>
-                                <span class="leader-name">郭导</span>
-                                <span class="leader-role">执行导演</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tags-list">
-                    <span class="tag">现场指导</span>
-                    <span class="tag">艺术把控</span>
-                    <span class="tag">演员调度</span>
-                </div>
-                
-                <div class="group-footer">
-                    <div class="member-count">
-                        <i class="far fa-clock"></i> 2个进行中
-                    </div>
-                    <a href="#" class="join-btn" onclick="alert('加入导演组申请已提交'); return false;">
-                        加入分组 <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
-        </div>
+        <!-- 分组列表 -->
+        <div class="groups-list" id="groupsList"></div>
     </div>
     
     <!-- 底部导航 -->
@@ -956,22 +380,105 @@
             <div class="nav-icon"><i class="fas fa-home"></i></div>
             <div class="nav-label">首页</div>
         </a>
-        <a href="groups.html" class="nav-item active">
-            <div class="nav-icon"><i class="fas fa-sitemap"></i></div>
-            <div class="nav-label">分组</div>
+        <a href="rank.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
         </a>
-        <a href="#" class="nav-item" onclick="alert('发布功能开发中'); return false;">
-            <div class="nav-icon"><i class="fas fa-plus"></i></div>
+        <a href="publish.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
             <div class="nav-label">发布</div>
         </a>
-        <a href="#" class="nav-item" onclick="alert('通知功能开发中'); return false;">
-            <div class="nav-icon"><i class="fas fa-bell"></i></div>
-            <div class="nav-label">通知</div>
+        <a href="groups.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">分组</div>
         </a>
-        <a href="#" class="nav-item" onclick="alert('个人中心开发中'); return false;">
+        <a href="profile.html" class="nav-item">
             <div class="nav-icon"><i class="fas fa-user"></i></div>
             <div class="nav-label">我的</div>
         </a>
     </nav>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        // 分组数据
+        const groups = [
+            { name:'演员组', icon:'fa-user', members:24, desc:'演绎角色灵魂，通过角色申请系统参与剧组活动', leaders:['张艺','陈曦'], tags:['角色扮演','表演艺术','试镜审核'], active:'high', inProgress:4 },
+            { name:'配音组', icon:'fa-microphone', members:18, desc:'用声音赋予角色生命，上传试音作品', leaders:['王磊','赵晴'], tags:['声音表演','音频录制','角色配音'], active:'high', audit:true, inProgress:3 },
+            { name:'编剧组', icon:'fa-pen-fancy', members:12, desc:'用文字创造世界，专业剧本编辑器', leaders:['刘畅','周明'], tags:['富文本编辑','文档审核','专业创作'], active:'high', inProgress:3 },
+            { name:'后期组', icon:'fa-cut', members:10, desc:'视频剪辑、特效制作、音频处理', leaders:['吴迪','郑爽'], tags:['视频剪辑','特效制作','音频处理'], active:'medium', audit:true, inProgress:3 },
+            { name:'摄影组', icon:'fa-camera', members:15, desc:'镜头设计、画面构图、光影艺术', leaders:['孙阳','李娜'], tags:['镜头设计','画面构图','光影艺术'], active:'high', inProgress:4 },
+            { name:'宣传组', icon:'fa-bullhorn', members:8, desc:'文案策划、海报设计、社群运营', leaders:['徐静','高翔'], tags:['文案策划','海报设计','社群运营'], active:'medium', inProgress:2 },
+            { name:'气氛组', icon:'fa-heart', members:20, desc:'活跃气氛、活动组织、新人引导', leaders:['杨欢','林欣'], tags:['活动组织','新人引导','氛围担当'], active:'high', inProgress:5 },
+            { name:'导演组', icon:'fa-video', members:8, desc:'现场指导、艺术把控、演员调度', leaders:['冯导','郭导'], tags:['现场指导','艺术把控','演员调度'], active:'high', inProgress:2 }
+        ];
+
+        function renderGroups() {
+            const list = document.getElementById('groupsList');
+            list.innerHTML = groups.map(g => {
+                const dotClass = g.active === 'high' ? 'dot-high' : (g.active === 'medium' ? 'dot-medium' : 'dot-low');
+                const activeText = g.active === 'high' ? '活跃' : (g.active === 'medium' ? '中等' : '较低');
+                
+                return `
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-icon"><i class="fas ${g.icon}"></i></div>
+                            <div class="group-title">
+                                <div class="group-name">
+                                    ${g.name}
+                                    ${g.audit ? '<span style="font-size:11px;color:var(--light-gray);margin-left:6px;">[需审核]</span>' : ''}
+                                </div>
+                                <div class="group-meta">
+                                    <span><i class="far fa-user"></i> ${g.members}人</span>
+                                    <span>
+                                        <span class="activity-dot ${dotClass}"></span>
+                                        ${activeText}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-description">${g.desc}</div>
+                        <div class="leaders-title">👥 组长团队</div>
+                        <div class="leaders-list">
+                            ${g.leaders.map(l => `
+                                <div class="leader-item">
+                                    <div class="leader-avatar">${l[0]}</div>
+                                    ${l}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="tags-list">
+                            ${g.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                        <div class="group-footer">
+                            <div class="member-count"><i class="far fa-clock"></i> ${g.inProgress}个进行中</div>
+                            <a href="#" class="join-btn" onclick="joinGroup('${g.name}'); return false;">
+                                加入分组 <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function joinGroup(groupName) {
+            const needAudit = ['配音组', '后期组', '摄影组'].includes(groupName);
+            if (needAudit) {
+                alert(`加入${groupName}需要提交作品审核，请前往上传`);
+            } else {
+                alert(`已提交加入${groupName}的申请，组长将通过审核`);
+            }
+        }
+        
+        renderGroups();
+    </script>
 </body>
 </html>
