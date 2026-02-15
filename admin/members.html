@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>成员管理 · NINE剧组后台</title>
+    
+    <!-- 登录验证 -->
     <script>
-    if (localStorage.getItem('admin') !== 'yes') {
-       window.location.href = '/admin/index.html'; 
-    }
-</script>
+        if (localStorage.getItem('adminLogin') !== 'yes') {
+            window.location.href = 'login.html';
+        }
+    </script>
     
     <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -106,6 +108,20 @@
         .back-to-site:hover {
             background: var(--white);
             color: var(--black);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.1);
         }
         
         /* 侧边栏 + 主内容布局 */
@@ -418,13 +434,19 @@
     <div class="admin-header">
         <div class="container header-content">
             <div class="admin-logo">
-                <i class="fas fa-film"></i> NINE剧组 · 管理后台
+                <i class="fas fa-crown" style="color: #ffd700;"></i> NINE剧组 · 管理后台
             </div>
             <div class="admin-user">
+                <span style="color: var(--white); margin-right: 5px;">
+                    <i class="fas fa-user-shield"></i> <span id="currentAdmin"></span>
+                </span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
                 <a href="/index.html" class="back-to-site">
                     <i class="fas fa-external-link-alt"></i> 返回网站
                 </a>
-                <div class="admin-avatar">张</div>
+                <div class="admin-avatar" id="adminAvatar"></div>
             </div>
         </div>
     </div>
@@ -523,7 +545,6 @@
                         <div>操作</div>
                     </div>
                     
-                    <!-- 成员1 - 组长 -->
                     <div class="member-row">
                         <div class="member-avatar">张</div>
                         <div class="member-info">
@@ -544,7 +565,6 @@
                         </div>
                     </div>
                     
-                    <!-- 成员2 - 副团 -->
                     <div class="member-row">
                         <div class="member-avatar">李</div>
                         <div class="member-info">
@@ -565,7 +585,6 @@
                         </div>
                     </div>
                     
-                    <!-- 成员3 - 普通成员 -->
                     <div class="member-row">
                         <div class="member-avatar">王</div>
                         <div class="member-info">
@@ -585,106 +604,6 @@
                             <span class="action-icon delete" onclick="if(confirm('确定移除该成员？')) alert('已移除')"><i class="fas fa-user-minus"></i></span>
                         </div>
                     </div>
-                    
-                    <!-- 成员4 - 配音组待审核 -->
-                    <div class="member-row">
-                        <div class="member-avatar">赵</div>
-                        <div class="member-info">
-                            <span class="member-name">赵天</span>
-                            <span class="member-username">@zhaotian</span>
-                        </div>
-                        <div class="member-groups">
-                            <span class="group-tag">配音组</span>
-                            <span class="group-tag" style="background:#fff3e0;color:#ff9800;">待审核</span>
-                        </div>
-                        <div><span class="level-badge">Lv.1</span></div>
-                        <div class="member-points">320</div>
-                        <div>2026-02-10</div>
-                        <div class="member-actions">
-                            <span class="action-icon" onclick="window.open('/profile.html', '_blank')"><i class="fas fa-eye"></i></span>
-                            <span class="action-icon" onclick="alert('编辑成员信息')"><i class="fas fa-edit"></i></span>
-                            <span class="action-icon delete" onclick="if(confirm('确定移除该成员？')) alert('已移除')"><i class="fas fa-user-minus"></i></span>
-                        </div>
-                    </div>
-                    
-                    <!-- 成员5 - 后期组 -->
-                    <div class="member-row">
-                        <div class="member-avatar">陈</div>
-                        <div class="member-info">
-                            <span class="member-name">陈静</span>
-                            <span class="member-username">@chenjing</span>
-                        </div>
-                        <div class="member-groups">
-                            <span class="group-tag">后期组</span>
-                        </div>
-                        <div><span class="level-badge">Lv.2</span></div>
-                        <div class="member-points">980</div>
-                        <div>2026-01-18</div>
-                        <div class="member-actions">
-                            <span class="action-icon" onclick="window.open('/profile.html', '_blank')"><i class="fas fa-eye"></i></span>
-                            <span class="action-icon" onclick="alert('编辑成员信息')"><i class="fas fa-edit"></i></span>
-                            <span class="action-icon delete" onclick="if(confirm('确定移除该成员？')) alert('已移除')"><i class="fas fa-user-minus"></i></span>
-                        </div>
-                    </div>
-                    
-                    <!-- 成员6 - 宣传组 -->
-                    <div class="member-row">
-                        <div class="member-avatar">孙</div>
-                        <div class="member-info">
-                            <span class="member-name">孙丽</span>
-                            <span class="member-username">@sunli</span>
-                        </div>
-                        <div class="member-groups">
-                            <span class="group-tag">宣传组</span>
-                        </div>
-                        <div><span class="level-badge">Lv.2</span></div>
-                        <div class="member-points">1,230</div>
-                        <div>2025-12-28</div>
-                        <div class="member-actions">
-                            <span class="action-icon" onclick="window.open('/profile.html', '_blank')"><i class="fas fa-eye"></i></span>
-                            <span class="action-icon" onclick="alert('编辑成员信息')"><i class="fas fa-edit"></i></span>
-                            <span class="action-icon delete" onclick="if(confirm('确定移除该成员？')) alert('已移除')"><i class="fas fa-user-minus"></i></span>
-                        </div>
-                    </div>
-                    
-                    <!-- 成员7 - 气氛组 -->
-                    <div class="member-row">
-                        <div class="member-avatar">周</div>
-                        <div class="member-info">
-                            <span class="member-name">周杰</span>
-                            <span class="member-username">@zhoujie</span>
-                        </div>
-                        <div class="member-groups">
-                            <span class="group-tag">气氛组</span>
-                            <span class="group-tag">演员组</span>
-                        </div>
-                        <div><span class="level-badge">Lv.2</span></div>
-                        <div class="member-points">1,450</div>
-                        <div>2026-01-02</div>
-                        <div class="member-actions">
-                            <span class="action-icon" onclick="window.open('/profile.html', '_blank')"><i class="fas fa-eye"></i></span>
-                            <span class="action-icon" onclick="alert('编辑成员信息')"><i class="fas fa-edit"></i></span>
-                            <span class="action-icon delete" onclick="if(confirm('确定移除该成员？')) alert('已移除')"><i class="fas fa-user-minus"></i></span>
-                        </div>
-                    </div>
-                    
-                    <!-- 成员8 - 已退出（灰色显示） -->
-                    <div class="member-row" style="opacity:0.6; background:var(--lightest-gray);">
-                        <div class="member-avatar">吴</div>
-                        <div class="member-info">
-                            <span class="member-name">吴迪 <span style="color:var(--light-gray); font-size:11px;">(已退出)</span></span>
-                            <span class="member-username">@wudi</span>
-                        </div>
-                        <div class="member-groups">
-                            <span class="group-tag">后期组</span>
-                        </div>
-                        <div><span class="level-badge">Lv.2</span></div>
-                        <div class="member-points">890</div>
-                        <div>2025-11-30</div>
-                        <div class="member-actions">
-                            <span class="action-icon" onclick="alert('已退出成员无法查看')"><i class="fas fa-eye-slash"></i></span>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- 分页 -->
@@ -700,18 +619,19 @@
     </div>
 
     <script>
-        // 搜索功能（模拟）
-        document.querySelector('.search-input').addEventListener('input', function(e) {
-            console.log('搜索:', e.target.value);
-            // 实际应用中这里会过滤成员列表
-        });
+        // 显示当前登录的管理员
+        const adminName = localStorage.getItem('adminName') || '管理员';
+        document.getElementById('currentAdmin').textContent = adminName;
+        document.getElementById('adminAvatar').textContent = adminName.charAt(0);
         
-        // 筛选功能（模拟）
-        document.querySelectorAll('.filter-select').forEach(select => {
-            select.addEventListener('change', function() {
-                console.log('筛选条件变更:', this.value);
-            });
-        });
+        // 退出登录
+        function logout() {
+            if (confirm('确定退出登录吗？')) {
+                localStorage.removeItem('adminLogin');
+                localStorage.removeItem('adminName');
+                window.location.href = 'login.html';
+            }
+        }
     </script>
 </body>
 </html>
