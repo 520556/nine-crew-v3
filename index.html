@@ -467,6 +467,7 @@
             flex: 1;
             color: var(--light-gray);
             cursor: pointer;
+            text-decoration: none;
         }
         
         .nav-item.active {
@@ -710,26 +711,26 @@
     
     <!-- 底部导航 -->
     <nav class="bottom-nav">
-        <div class="nav-item active">
+        <a href="index.html" class="nav-item active">
             <div class="nav-icon"><i class="fas fa-home"></i></div>
             <div class="nav-label">首页</div>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="groups.html" class="nav-item">
             <div class="nav-icon"><i class="fas fa-compass"></i></div>
             <div class="nav-label">发现</div>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="#" class="nav-item" onclick="alert('发布功能开发中'); return false;">
             <div class="nav-icon"><i class="fas fa-plus"></i></div>
             <div class="nav-label">发布</div>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="#" class="nav-item" onclick="alert('通知功能开发中'); return false;">
             <div class="nav-icon"><i class="fas fa-bell"></i></div>
             <div class="nav-label">通知</div>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="profile.html" class="nav-item">
             <div class="nav-icon"><i class="fas fa-user"></i></div>
             <div class="nav-label">我的</div>
-        </div>
+        </a>
     </nav>
     
     <!-- 申请弹窗 -->
@@ -876,15 +877,10 @@
             const referrerField = document.getElementById('referrerField');
             
             if (findMethod && referrerField) {
-                // 移除旧的监听器，避免重复
                 findMethod.removeEventListener('change', findMethod._handler);
-                
-                // 创建新监听器
                 const handler = function() {
                     referrerField.style.display = this.value === '剧组招人(有推荐人)' ? 'block' : 'none';
                 };
-                
-                // 保存引用以便移除
                 findMethod._handler = handler;
                 findMethod.addEventListener('change', handler);
             }
@@ -896,7 +892,6 @@
             setupReferrerField();
         };
         
-        // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('applicationModal');
             if (modal) {
@@ -910,7 +905,6 @@
             
             setupReferrerField();
             
-            // 表单提交
             const form = document.getElementById('nineApplicationForm');
             if (form) {
                 form.addEventListener('submit', function(e) {
@@ -920,7 +914,6 @@
                     submitBtn.disabled = true;
                     submitBtn.textContent = '提交中...';
                     
-                    // 模拟提交成功
                     setTimeout(() => {
                         document.getElementById('formMessage').innerHTML = '✅ 申请提交成功！';
                         document.getElementById('formMessage').style.color = '#00aa00';
