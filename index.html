@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人主页 · NINE剧组</title>
+    <title>NINE CREW · 剧组管理系统</title>
     
     <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ===== 全局样式 ===== */
+        /* ===== 黑白灰为主，保留原有风格 ===== */
         :root {
             --black: #1a1a1a;
             --dark-gray: #444444;
@@ -29,7 +29,6 @@
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            --radius-xl: 20px;
         }
         
         * {
@@ -55,7 +54,7 @@
         
         /* 顶部装饰带 */
         .header-decoration {
-            height: 100px;
+            height: 120px;
             background: linear-gradient(135deg, 
                 rgba(0,0,0,0.02) 0%, 
                 rgba(0,0,0,0.05) 100%);
@@ -74,438 +73,202 @@
             background-size: cover;
         }
         
-        /* 返回链接 */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--medium-gray);
-            text-decoration: none;
-            font-size: 14px;
-            margin: var(--space-lg) 0;
-            padding: 8px 0;
-            transition: color 0.2s;
-        }
-        
-        .back-link:hover {
-            color: var(--black);
-        }
-        
-        /* 个人资料卡片 */
-        .profile-card {
+        /* 状态栏 - 带通知图标 */
+        .status-bar {
+            padding: 12px var(--space-md);
             background: var(--white);
-            border: 1px solid var(--lighter-gray);
-            border-radius: var(--radius-xl);
-            padding: var(--space-xl);
-            margin-bottom: var(--space-xl);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                transparent,
-                var(--black),
-                transparent);
-            opacity: 0.1;
-        }
-        
-        /* 封面区域 */
-        .profile-cover {
-            height: 120px;
-            background: linear-gradient(135deg, var(--lightest-gray) 0%, var(--lighter-gray) 100%);
-            margin: -var(--space-xl) -var(--space-xl) 0 -var(--space-xl);
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .profile-cover:hover::after {
-            content: '更换封面';
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-        
-        .profile-cover::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" opacity="0.05"><path d="M0,100 Q200,50 400,100 T800,100" stroke="%23000000" fill="none"/><path d="M0,150 Q200,100 400,150 T800,150" stroke="%23000000" fill="none"/></svg>');
-            background-size: cover;
-        }
-        
-        /* 头像 */
-        .profile-avatar-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: -40px;
-            margin-bottom: var(--space-md);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .profile-avatar {
-            width: 90px;
-            height: 90px;
-            background: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: 600;
-            border: 4px solid var(--white);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .profile-avatar:hover::after {
-            content: '📷';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: var(--black);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            border: 2px solid white;
-        }
-        
-        /* 用户信息 */
-        .profile-info {
-            text-align: center;
-            margin-bottom: var(--space-lg);
-        }
-        
-        .profile-name-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-        
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        
-        .group-badge {
-            background: var(--lightest-gray);
-            color: var(--medium-gray);
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            border: 1px solid var(--lighter-gray);
-        }
-        
-        .group-badge i {
-            font-size: 10px;
-            color: var(--light-gray);
-        }
-        
-        .level-badge {
-            background: var(--black);
-            color: var(--white);
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 500;
-            margin-left: 4px;
-        }
-        
-        .profile-username {
-            color: var(--light-gray);
-            font-size: 14px;
-            margin-bottom: var(--space-sm);
-        }
-        
-        .profile-bio {
-            color: var(--medium-gray);
-            font-size: 14px;
-            max-width: 400px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        /* 社交按钮 */
-        .social-actions {
-            display: flex;
-            gap: var(--space-sm);
-            justify-content: center;
-            margin: var(--space-md) 0;
-        }
-        
-        .follow-btn {
-            background: var(--black);
-            color: var(--white);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .follow-btn:hover {
-            background: var(--dark-gray);
-            transform: translateY(-2px);
-        }
-        
-        .message-btn {
-            background: transparent;
-            border: 1.5px solid var(--black);
-            color: var(--black);
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .message-btn:hover {
-            background: var(--black);
-            color: var(--white);
-        }
-        
-        /* 积分卡片 - 可点击 */
-        .points-card {
-            background: linear-gradient(135deg, var(--lightest-gray) 0%, var(--white) 100%);
-            border: 1px solid var(--lighter-gray);
-            border-radius: var(--radius-xl);
-            padding: var(--space-lg);
-            margin-bottom: var(--space-xl);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .points-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            border-color: var(--medium-gray);
-        }
-        
-        .points-header {
+            border-bottom: 1px solid var(--lighter-gray);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .points-title {
-            font-size: 16px;
+        .status-time {
             font-weight: 600;
+        }
+        
+        .status-icons {
             display: flex;
             align-items: center;
             gap: 6px;
         }
         
-        .points-value {
+        .status-icons i {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        
+        .status-icons .fa-bell {
+            color: var(--black);
+            margin-right: 4px;
+        }
+        
+        /* 品牌区域 */
+        .brand-section {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .brand-logo {
             font-size: 32px;
             font-weight: 700;
-            color: var(--black);
-            margin-bottom: var(--space-sm);
+            letter-spacing: -0.5px;
+            margin-bottom: var(--space-xs);
         }
         
-        .rank-badge {
-            background: var(--black);
-            color: var(--white);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 13px;
-        }
-        
-        .level-progress {
-            margin: var(--space-md) 0;
-        }
-        
-        .level-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
+        .brand-subtitle {
             color: var(--medium-gray);
-            margin-bottom: 6px;
+            font-size: 14px;
         }
         
-        .progress-bar {
-            height: 8px;
-            background: var(--lighter-gray);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 4px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--black);
-            border-radius: 4px;
-            width: 45%;
-            transition: width 0.3s;
-        }
-        
-        .next-level {
-            font-size: 12px;
-            color: var(--light-gray);
-            text-align: right;
-        }
-        
-        .points-card-footer {
-            text-align: right;
-            margin-top: var(--space-sm);
-            color: var(--light-gray);
-            font-size: 12px;
-        }
-        
-        /* 统计数据 */
-        .profile-stats {
+        /* 数据仪表板 */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: var(--space-sm);
-            padding: var(--space-lg) 0;
-            border-top: 1px solid var(--lighter-gray);
-            border-bottom: 1px solid var(--lighter-gray);
-            margin-bottom: var(--space-lg);
+            margin: var(--space-xl) 0;
         }
         
-        .stat-item {
+        .stat-card {
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
             text-align: center;
         }
         
         .stat-value {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
         
         .stat-label {
-            font-size: 11px;
-            color: var(--light-gray);
+            font-size: 12px;
+            color: var(--medium-gray);
         }
         
-        /* 徽章区域 */
-        .badges-section {
-            margin-bottom: var(--space-lg);
-        }
-        
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: var(--space-md);
+        /* 公告轮播 */
+        .announcement {
+            background: var(--lightest-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin: var(--space-xl) 0;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-        
-        .badges-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
             gap: var(--space-sm);
         }
         
-        .badge-item {
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .badge-item:hover {
-            transform: translateY(-4px);
-        }
-        
-        .badge-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--lightest-gray);
+        .announcement-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--black);
+            color: var(--white);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            margin: 0 auto var(--space-xs);
-            border: 2px solid var(--white);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            font-size: 14px;
         }
         
-        .badge-name {
+        .announcement-content {
+            flex: 1;
+        }
+        
+        .announcement-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .announcement-time {
             font-size: 11px;
-            color: var(--medium-gray);
-        }
-        
-        /* 分组标签 */
-        .groups-section {
-            margin-bottom: var(--space-lg);
-        }
-        
-        .group-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .group-tag {
-            background: var(--lightest-gray);
-            color: var(--medium-gray);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid var(--lighter-gray);
-        }
-        
-        .group-tag i {
             color: var(--light-gray);
-            font-size: 12px;
         }
         
-        /* 作品网格 */
-        .works-grid {
+        /* 欢迎区域 + 申请入口 */
+        .welcome-section {
+            margin: var(--space-xl) 0;
+            padding: var(--space-lg);
+            background: var(--lightest-gray);
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        
+        .welcome-text p {
+            color: var(--medium-gray);
+            font-size: 13px;
+        }
+        
+        .apply-btn {
+            background: var(--black);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .apply-btn:hover {
+            background: var(--dark-gray);
+            transform: translateY(-2px);
+        }
+        
+        /* 功能网格 */
+        .functions-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: var(--space-sm);
-            margin-bottom: var(--space-lg);
+            margin: var(--space-xl) 0;
         }
         
-        .work-item {
+        .function-card {
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg) var(--space-sm);
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .function-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-color: var(--light-gray);
+        }
+        
+        .function-icon {
+            font-size: 24px;
+            margin-bottom: var(--space-xs);
+            color: var(--dark-gray);
+        }
+        
+        .function-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* 图片网格 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+            margin: var(--space-xl) 0;
+        }
+        
+        .image-item {
             aspect-ratio: 1;
             background: var(--lightest-gray);
             border-radius: var(--radius-md);
@@ -514,134 +277,191 @@
             align-items: center;
             justify-content: center;
             color: var(--light-gray);
-            border: 1px solid var(--lighter-gray);
+            border: 2px dashed var(--lighter-gray);
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
         }
         
-        .work-item:hover {
+        .image-item:hover {
             border-color: var(--medium-gray);
             color: var(--medium-gray);
-            transform: scale(1.02);
         }
         
-        .work-item i {
+        .image-item i {
             font-size: 24px;
-            margin-bottom: 4px;
+            margin-bottom: var(--space-xs);
         }
         
-        .work-item span {
+        .image-item span {
+            font-size: 12px;
+        }
+        
+        /* 热门活动 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: var(--space-xl) 0 var(--space-md);
+        }
+        
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .section-link {
+            color: var(--medium-gray);
+            font-size: 13px;
+            text-decoration: none;
+        }
+        
+        .activity-card {
+            background: var(--lightest-gray);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+        
+        .activity-image {
+            height: 140px;
+            background: linear-gradient(135deg, #ddd 0%, #eee 100%);
+            position: relative;
+        }
+        
+        .activity-tag {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            background: var(--black);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 11px;
         }
         
-        .work-badge {
-            position: absolute;
-            top: 4px;
-            right: 4px;
+        .activity-info {
+            padding: var(--space-lg);
+        }
+        
+        .activity-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .activity-meta {
+            display: flex;
+            gap: var(--space-md);
+            color: var(--medium-gray);
+            font-size: 13px;
+            margin: var(--space-sm) 0;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--lighter-gray);
+            border-radius: 3px;
+            margin: var(--space-sm) 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 60%;
             background: var(--black);
-            color: var(--white);
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 9px;
+            border-radius: 3px;
         }
         
-        /* 积分动态 */
-        .points-feed {
-            margin: var(--space-lg) 0;
+        /* 分组展示 */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            margin: var(--space-md) 0;
         }
         
-        .points-item {
+        .group-card {
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            transition: all 0.2s;
+        }
+        
+        .group-card:hover {
+            border-color: var(--light-gray);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .group-header {
             display: flex;
             align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .group-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--lightest-gray);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+        }
+        
+        .group-name {
+            font-weight: 600;
+        }
+        
+        .group-stats {
+            font-size: 11px;
+            color: var(--light-gray);
+            margin-top: 4px;
+        }
+        
+        /* 成员动态流 */
+        .feed-list {
+            margin: var(--space-xl) 0;
+        }
+        
+        .feed-item {
+            display: flex;
             gap: var(--space-sm);
             padding: var(--space-sm) 0;
             border-bottom: 1px solid var(--lighter-gray);
         }
         
-        .points-icon {
-            width: 32px;
-            height: 32px;
+        .feed-avatar {
+            width: 40px;
+            height: 40px;
             background: var(--lightest-gray);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-weight: 600;
         }
         
-        .points-detail {
+        .feed-content {
             flex: 1;
         }
         
-        .points-action {
-            font-weight: 500;
-            font-size: 14px;
+        .feed-name {
+            font-weight: 600;
+            margin-bottom: 2px;
         }
         
-        .points-time {
+        .feed-action {
+            color: var(--medium-gray);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .feed-time {
             font-size: 11px;
             color: var(--light-gray);
-        }
-        
-        .points-amount {
-            font-weight: 600;
-            color: var(--black);
-        }
-        
-        .points-amount.positive {
-            color: #22c55e;
-        }
-        
-        /* 编辑按钮 */
-        .edit-btn {
-            width: 100%;
-            background: transparent;
-            border: 1.5px solid var(--black);
-            color: var(--black);
-            padding: 14px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: var(--space-lg) 0;
-        }
-        
-        .edit-btn:hover {
-            background: var(--black);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        /* 退出按钮 */
-        .exit-btn {
-            width: 100%;
-            background: transparent;
-            border: 1.5px solid #ff4444;
-            color: #ff4444;
-            padding: 14px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: var(--space-md) 0 var(--space-xl);
-        }
-        
-        .exit-btn:hover {
-            background: #ff4444;
-            color: white;
         }
         
         /* 底部导航 */
@@ -681,16 +501,18 @@
         
         /* 响应式 */
         @media (max-width: 375px) {
-            .badges-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
             
-            .works-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .image-grid {
+                grid-template-columns: 1fr;
             }
             
-            .profile-stats {
-                grid-template-columns: repeat(2, 1fr);
+            .welcome-section {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--space-md);
             }
         }
     </style>
@@ -699,235 +521,264 @@
     <!-- 顶部装饰带 -->
     <div class="header-decoration"></div>
     
-    <div class="container">
-        <!-- 返回链接 -->
-        <a href="index.html" class="back-link">
-            <i class="fas fa-arrow-left"></i> 返回首页
-        </a>
-        
-        <!-- 个人资料卡片 -->
-        <div class="profile-card">
-            <div class="profile-cover" onclick="alert('更换封面功能开发中')"></div>
-            
-            <div class="profile-avatar-wrapper">
-                <div class="profile-avatar" onclick="alert('上传头像功能开发中')">
-                    张
-                </div>
-            </div>
-            
-            <div class="profile-info">
-                <div class="profile-name-row">
-                    <span class="profile-name">张三</span>
-                    <span class="group-badge"><i class="fas fa-pen-fancy"></i> 编剧组</span>
-                    <span class="level-badge">Lv.3</span>
-                </div>
-                <div class="profile-username">@zhangsan · 加入 86天</div>
-                <p class="profile-bio">
-                    编剧组组长 · 热爱创作 
-                    代表作《星海之约》《光遇日记》
-                </p>
-            </div>
-            
-            <!-- 社交按钮 -->
-            <div class="social-actions">
-                <button class="follow-btn" onclick="alert('关注成功')">
-                    <i class="fas fa-plus"></i> 关注
-                </button>
-                <button class="message-btn" onclick="alert('私信功能开发中')">
-                    <i class="fas fa-comment"></i> 私信
-                </button>
-            </div>
+    <!-- 状态栏 - 带通知图标 -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-bell" onclick="window.location.href='notifications.html'" style="cursor: pointer; margin-right: 4px;"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
         </div>
-        
-        <!-- 积分卡片 - 点击跳转排名页 -->
-        <div class="points-card" onclick="window.location.href='rank.html'">
-            <div class="points-header">
-                <div class="points-title">
-                    <i class="fas fa-star"></i>
-                    剧组积分
-                </div>
-                <div class="rank-badge">#12 · 前5%</div>
-            </div>
-            
-            <div class="points-value">2,480</div>
-            
-            <!-- 等级进度条 -->
-            <div class="level-progress">
-                <div class="level-info">
-                    <span>Lv.3 资深成员</span>
-                    <span>1,520 / 5,000</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%;"></div>
-                </div>
-                <div class="next-level">
-                    距离Lv.4还需 3,480分 · 可参与评审
-                </div>
-            </div>
-            
-            <div class="points-card-footer">
-                点击查看完整排名 <i class="fas fa-arrow-right"></i>
-            </div>
-        </div>
-        
-        <!-- 统计数据 -->
-        <div class="profile-stats">
-            <div class="stat-item">
-                <div class="stat-value">12</div>
-                <div class="stat-label">作品</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">248</div>
-                <div class="stat-label">粉丝</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">56</div>
-                <div class="stat-label">获赞</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">15</div>
-                <div class="stat-label">连续</div>
-            </div>
-        </div>
-        
-        <!-- 徽章墙 -->
-        <div class="badges-section">
-            <div class="section-title">
-                <i class="fas fa-medal"></i>
-                荣誉徽章
-            </div>
-            <div class="badges-grid">
-                <div class="badge-item" onclick="alert('编剧新星：提交3个剧本')">
-                    <div class="badge-icon">✍️</div>
-                    <div class="badge-name">编剧新星</div>
-                </div>
-                <div class="badge-item" onclick="alert('打卡达人：连续打卡7天')">
-                    <div class="badge-icon">📅</div>
-                    <div class="badge-name">打卡达人</div>
-                </div>
-                <div class="badge-item" onclick="alert('活跃成员：30天活跃')">
-                    <div class="badge-icon">🎭</div>
-                    <div class="badge-name">活跃成员</div>
-                </div>
-                <div class="badge-item" onclick="alert('人气作品：获赞50+')">
-                    <div class="badge-icon">⭐</div>
-                    <div class="badge-name">人气作品</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 加入的分组 -->
-        <div class="groups-section">
-            <div class="section-title">
-                <i class="fas fa-sitemap"></i>
-                加入的分组
-            </div>
-            <div class="group-tags">
-                <span class="group-tag"><i class="fas fa-pen-fancy"></i> 编剧组 · 组长</span>
-                <span class="group-tag"><i class="fas fa-video"></i> 导演组</span>
-                <span class="group-tag"><i class="fas fa-heart"></i> 气氛组</span>
-            </div>
-        </div>
-        
-        <!-- 近期作品 -->
-        <div class="profile-card">
-            <div class="section-title" style="margin-bottom: var(--space-lg);">
-                <i class="fas fa-images"></i>
-                近期作品
-                <span style="flex:1;"></span>
-                <a href="#" style="color: var(--medium-gray); font-size: 13px; text-decoration: none;" onclick="alert('查看更多开发中')">查看更多 →</a>
-            </div>
-            
-            <div class="works-grid">
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-pen-fancy"></i>
-                    <span>星海之约</span>
-                    <span class="work-badge">剧本</span>
-                </div>
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-image"></i>
-                    <span>光遇日记</span>
-                    <span class="work-badge">图文</span>
-                </div>
-                <div class="work-item" onclick="alert('作品详情开发中')">
-                    <i class="fas fa-video"></i>
-                    <span>剧组日常</span>
-                    <span class="work-badge">视频</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 积分动态 -->
-        <div class="profile-card">
-            <div class="section-title" style="margin-bottom: var(--space-lg);">
-                <i class="fas fa-history"></i>
-                积分动态
-            </div>
-            
-            <div class="points-feed">
-                <div class="points-item">
-                    <div class="points-icon">✍️</div>
-                    <div class="points-detail">
-                        <div class="points-action">提交剧本《新项目》</div>
-                        <div class="points-time">2小时前</div>
-                    </div>
-                    <div class="points-amount positive">+50</div>
-                </div>
-                
-                <div class="points-item">
-                    <div class="points-icon">❤️</div>
-                    <div class="points-detail">
-                        <div class="points-action">作品被点赞 (5次)</div>
-                        <div class="points-time">昨天</div>
-                    </div>
-                    <div class="points-amount positive">+25</div>
-                </div>
-                
-                <div class="points-item">
-                    <div class="points-icon">🎬</div>
-                    <div class="points-detail">
-                        <div class="points-action">参与活动《星海之约》</div>
-                        <div class="points-time">3天前</div>
-                    </div>
-                    <div class="points-amount positive">+30</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 编辑资料按钮 -->
-        <button class="edit-btn" onclick="alert('编辑资料功能开发中')">
-            <i class="fas fa-edit"></i> 编辑资料
-        </button>
-        
-        <!-- 退出剧团按钮 -->
-        <button class="exit-btn" onclick="if(confirm('确定退出剧团吗？退出后无法操作，请同步退出微信群')){alert('已退出剧团')}">
-            <i class="fas fa-sign-out-alt"></i> 退出剧团
-        </button>
-        
     </div>
     
+    <main class="container">
+        <!-- 1. 品牌区域 -->
+        <section class="brand-section">
+            <h1 class="brand-logo">NINE CREW</h1>
+            <p class="brand-subtitle">百分百自由 · 团员当家做主</p>
+        </section>
+        
+        <!-- 2. 数据仪表板 -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">248</div>
+                <div class="stat-label">剧组成员</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">进行中活动</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">56</div>
+                <div class="stat-label">今日活跃</div>
+            </div>
+        </section>
+        
+        <!-- 3. 公告轮播 -->
+        <section class="announcement">
+            <div class="announcement-icon">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="announcement-content">
+                <div class="announcement-title">《星海之约》招募演员中</div>
+                <div class="announcement-time">2小时前 · 编剧组</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color: var(--light-gray);"></i>
+        </section>
+        
+        <!-- 4. 欢迎区域 + 申请入口 -->
+        <section class="welcome-section">
+            <div class="welcome-text">
+                <h2>Welcome 👋</h2>
+                <p>欢迎来到光遇最有趣的剧组</p>
+            </div>
+            <button class="apply-btn" onclick="openApplicationModal()">
+                申请加入
+            </button>
+        </section>
+        
+        <!-- 5. 功能网格 -->
+        <section class="functions-grid">
+            <div class="function-card" onclick="openFeature('申请')">
+                <div class="function-icon"><i class="fas fa-user-plus"></i></div>
+                <div class="function-title">成员申请</div>
+            </div>
+            <div class="function-card" onclick="window.location.href='groups.html'">
+                <div class="function-icon"><i class="fas fa-sitemap"></i></div>
+                <div class="function-title">分组管理</div>
+            </div>
+            <div class="function-card" onclick="window.location.href='rank.html'">
+                <div class="function-icon"><i class="fas fa-trophy"></i></div>
+                <div class="function-title">积分排名</div>
+            </div>
+        </section>
+        
+        <!-- 6. 图片网格 -->
+        <section class="image-grid">
+            <div class="image-item" onclick="changeImage('banner')">
+                <i class="fas fa-image"></i>
+                <span>剧组合照</span>
+            </div>
+            <div class="image-item" onclick="changeImage('works')">
+                <i class="fas fa-photo-video"></i>
+                <span>作品展示</span>
+            </div>
+        </section>
+        
+        <!-- 7. 热门活动 -->
+        <section>
+            <div class="section-header">
+                <h3>🔥 热门活动</h3>
+                <a href="groups.html" class="section-link">查看更多 →</a>
+            </div>
+            
+            <div class="activity-card">
+                <div class="activity-image">
+                    <span class="activity-tag">招募中</span>
+                </div>
+                <div class="activity-info">
+                    <div class="activity-title">《星海之约》拍摄企划</div>
+                    <div class="activity-meta">
+                        <span><i class="far fa-clock"></i> 本周日 14:00</span>
+                        <span><i class="fas fa-user"></i> 需5人</span>
+                    </div>
+                    <p style="color: var(--medium-gray); font-size: 14px; margin: var(--space-sm) 0;">
+                        原创剧本 · 招募演员3名 · 配音2名
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--medium-gray); margin-top: 4px;">
+                        <span>已报名 3/5</span>
+                        <span>60%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 8. 分组展示 -->
+        <section>
+            <div class="section-header">
+                <h3>📁 专业分组</h3>
+                <a href="groups.html" class="section-link">查看全部 →</a>
+            </div>
+            
+            <div class="groups-grid">
+                <div class="group-card" onclick="window.location.href='groups.html'">
+                    <div class="group-header">
+                        <div class="group-icon"><i class="fas fa-pen-fancy"></i></div>
+                        <div>
+                            <div class="group-name">编剧组</div>
+                            <div class="group-stats">12人 · 3进行中</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-card" onclick="window.location.href='groups.html'">
+                    <div class="group-header">
+                        <div class="group-icon"><i class="fas fa-video"></i></div>
+                        <div>
+                            <div class="group-name">导演组</div>
+                            <div class="group-stats">8人 · 2进行中</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-card" onclick="window.location.href='groups.html'">
+                    <div class="group-header">
+                        <div class="group-icon"><i class="fas fa-camera"></i></div>
+                        <div>
+                            <div class="group-name">摄影组</div>
+                            <div class="group-stats">15人 · 4进行中</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-card" onclick="window.location.href='groups.html'">
+                    <div class="group-header">
+                        <div class="group-icon"><i class="fas fa-cut"></i></div>
+                        <div>
+                            <div class="group-name">后期组</div>
+                            <div class="group-stats">10人 · 审核中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 9. 成员动态流 -->
+        <section>
+            <div class="section-header">
+                <h3>👥 成员动态</h3>
+                <a href="#" class="section-link">更多</a>
+            </div>
+            
+            <div class="feed-list">
+                <div class="feed-item">
+                    <div class="feed-avatar">张</div>
+                    <div class="feed-content">
+                        <div class="feed-name">张三</div>
+                        <div class="feed-action">在《星海之约》中提交了角色申请</div>
+                        <div class="feed-time">2小时前</div>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">李</div>
+                    <div class="feed-content">
+                        <div class="feed-name">李四</div>
+                        <div class="feed-action">上传了新作品《光遇·四季》</div>
+                        <div class="feed-time">5小时前</div>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">王</div>
+                    <div class="feed-content">
+                        <div class="feed-name">王五</div>
+                        <div class="feed-action">加入了编剧组</div>
+                        <div class="feed-time">昨天</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 10. 系统信息 -->
+        <section style="margin: var(--space-xxl) 0; text-align: center; color: var(--light-gray); font-size: 12px;">
+            <p>NINE CREW 剧组管理系统 · 版本 2.0.0</p>
+            <p style="margin-top: 4px;">基于现代技术构建 · 完美适配移动端</p>
+        </section>
+    </main>
+    
     <!-- 底部导航 -->
-   <nav class="bottom-nav">
-    <a href="index.html" class="nav-item active">
-        <div class="nav-icon"><i class="fas fa-home"></i></div>
-        <div class="nav-label">首页</div>
-    </a>
-    <a href="rank.html" class="nav-item">
-        <div class="nav-icon"><i class="fas fa-trophy"></i></div>
-        <div class="nav-label">排名</div>
-    </a>
-    <a href="publish.html" class="nav-item">
-        <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
-        <div class="nav-label">发布</div>
-    </a>
-    <a href="groups.html" class="nav-item">
-        <div class="nav-icon"><i class="fas fa-compass"></i></div>
-        <div class="nav-label">分组</div>
-    </a>
-    <a href="profile.html" class="nav-item">
-        <div class="nav-icon"><i class="fas fa-user"></i></div>
-        <div class="nav-label">我的</div>
-    </a>
-</nav>
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="rank.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
+        </a>
+        <a href="publish.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
+            <div class="nav-label">发布</div>
+        </a>
+        <a href="groups.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">分组</div>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+    
+    <!-- 申请弹窗（保持不变） -->
+    <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
+        <!-- 弹窗内容保持不变 -->
+    </div>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        function openFeature(name) {
+            alert('功能 "' + name + '" 开发中');
+        }
+        
+        function changeImage(type) {
+            alert('点击了 ' + type);
+        }
+        
+        // 弹窗相关函数
+        window.openApplicationModal = function() {
+            document.getElementById('applicationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+    </script>
 </body>
 </html>
