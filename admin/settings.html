@@ -621,3 +621,152 @@
                         </tr>
                     </table>
                 </div>
+                <!-- 功能开关 -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-toggle-on"></i></div>
+                        <div>
+                            <div class="card-title">功能开关</div>
+                            <div class="card-subtitle">开启/关闭各项功能</div>
+                        </div>
+                    </div>
+                    
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-title">成员申请功能</div>
+                            <div class="switch-desc">允许新用户申请加入剧组</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-title">积分系统</div>
+                            <div class="switch-desc">开启积分获取和排名功能</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-title">打卡功能</div>
+                            <div class="switch-desc">允许成员每日打卡赚积分</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-title">剧本审核</div>
+                            <div class="switch-desc">编剧组提交剧本需组长审核</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-title">作品审核</div>
+                            <div class="switch-desc">配音/摄影/后期需审核加入</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- 权限管理 -->
+                <div class="settings-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fas fa-user-shield"></i></div>
+                        <div>
+                            <div class="card-title">权限管理</div>
+                            <div class="card-subtitle">设置管理员和组长权限</div>
+                        </div>
+                    </div>
+                    
+                    <div class="role-list">
+                        <div class="role-item">
+                            <div class="role-avatar">张</div>
+                            <div class="role-info">
+                                <div class="role-name">张三</div>
+                                <div class="role-desc">编剧组组长 · 超级管理员</div>
+                            </div>
+                            <select class="role-select">
+                                <option>超级管理员</option>
+                                <option>副团</option>
+                                <option>组长</option>
+                                <option>成员</option>
+                            </select>
+                        </div>
+                        
+                        <div class="role-item">
+                            <div class="role-avatar">李</div>
+                            <div class="role-info">
+                                <div class="role-name">李思思</div>
+                                <div class="role-desc">导演组组长 · 副团</div>
+                            </div>
+                            <select class="role-select">
+                                <option>超级管理员</option>
+                                <option selected>副团</option>
+                                <option>组长</option>
+                                <option>成员</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="save-btn" style="display: inline-block; padding: 8px 20px;" onclick="alert('添加管理员')">
+                            <i class="fas fa-plus"></i> 添加管理员
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 危险区域 -->
+                <div class="danger-zone">
+                    <div class="danger-title">
+                        <i class="fas fa-exclamation-triangle"></i> 危险操作区
+                    </div>
+                    <p style="color: var(--medium-gray); font-size: 14px; margin-bottom: 20px;">以下操作不可逆，请谨慎使用</p>
+                    <div style="display: flex; gap: 16px;">
+                        <button class="danger-btn" onclick="if(confirm('确定清空所有数据？')) alert('已清空')">
+                            <i class="fas fa-trash-alt"></i> 清空所有数据
+                        </button>
+                        <button class="danger-btn" onclick="if(confirm('确定重置系统？')) alert('已重置')">
+                            <i class="fas fa-undo-alt"></i> 重置系统
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示当前登录的管理员
+        const adminName = localStorage.getItem('adminName') || '管理员';
+        document.getElementById('currentAdmin').textContent = adminName;
+        document.getElementById('adminAvatar').textContent = adminName.charAt(0);
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定退出登录吗？')) {
+                localStorage.removeItem('adminLogin');
+                localStorage.removeItem('adminName');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
