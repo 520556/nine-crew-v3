@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>系统设置 · NINE剧组后台</title>
+    <script>
+    if (localStorage.getItem('admin') !== 'yes') {
+        window.location.href = 'login.html';
+    }
+    </script>
     
     <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
