@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>积分排名 · NINE剧组</title>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --radius-lg: 16px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部装饰带 */
+        .header-decoration {
+            height: 100px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05));
+        }
+        
+        /* 返回链接 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            margin: 30px 0 20px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .page-subtitle {
+            color: var(--medium-gray);
+            font-size: 14px;
+        }
+        
+        /* 我的排名卡片 */
+        .my-rank-card {
+            background: var(--lightest-gray);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .my-rank-number {
+            width: 50px;
+            height: 50px;
+            background: var(--black);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .my-rank-info {
+            flex: 1;
+        }
+        
+        .my-rank-label {
+            color: var(--medium-gray);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .my-rank-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .my-rank-points {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .my-rank-change {
+            background: rgba(34,197,94,0.1);
+            color: #22c55e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        
+        /* 排名切换标签 */
+        .rank-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .rank-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: var(--lightest-gray);
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .rank-tab.active {
+            background: var(--black);
+            color: white;
+            border-color: var(--black);
+        }
+        
+        /* 分组筛选 */
+        .group-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tag {
+            padding: 6px 16px;
+            background: var(--lightest-gray);
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid var(--lighter-gray);
+        }
+        
+        .filter-tag.active {
+            background: var(--black);
+            color: white;
+        }
+        
+        /* 排名列表 */
+        .rank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+        
+        .rank-item:hover {
+            border-color: var(--light-gray);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .rank-number {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .rank-number.top1 {
+            color: #ffd700;
+            font-size: 22px;
+        }
+        
+        .rank-number.top2 {
+            color: #c0c0c0;
+            font-size: 20px;
+        }
+        
+        .rank-number.top3 {
+            color: #cd7f32;
+            font-size: 20px;
+        }
+        
+        .rank-avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--lightest-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid var(--white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .rank-info {
+            flex: 1;
+        }
+        
+        .rank-name-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        
+        .rank-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .rank-group {
+            font-size: 11px;
+            color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .rank-points {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .rank-change {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        
+        .rank-change.up {
+            background: rgba(34,197,94,0.1);
+            color: #22c55e;
+        }
+        
+        .rank-change.down {
+            background: rgba(239,68,68,0.1);
+            color: #ef4444;
+        }
+        
+        .rank-change.new {
+            background: rgba(106,17,203,0.1);
+            color: #6a11cb;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            flex: 1;
+            color: var(--light-gray);
+            text-decoration: none;
+        }
+        
+        .nav-item.active {
+            color: var(--black);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-decoration"></div>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+        
+        <div class="page-header">
+            <h1 class="page-title">🏆 积分排名</h1>
+            <p class="page-subtitle">看看谁是剧组之星</p>
+        </div>
+        
+        <!-- 我的排名卡片 -->
+        <div class="my-rank-card">
+            <div class="my-rank-number">12</div>
+            <div class="my-rank-info">
+                <div class="my-rank-label">我的排名</div>
+                <div class="my-rank-name">张三 · 编剧组</div>
+                <div class="my-rank-points">2,480分</div>
+            </div>
+            <div class="my-rank-change">↑ 较昨日+3</div>
+        </div>
+        
+        <!-- 排名切换 -->
+        <div class="rank-tabs">
+            <div class="rank-tab active" onclick="switchTab('total')">总榜</div>
+            <div class="rank-tab" onclick="switchTab('week')">周榜</div>
+            <div class="rank-tab" onclick="switchTab('month')">月榜</div>
+        </div>
+        
+        <!-- 分组筛选 -->
+        <div class="group-filter" id="groupFilter">
+            <span class="filter-tag active" onclick="filterGroup('all')">全部</span>
+            <span class="filter-tag" onclick="filterGroup('编剧组')">编剧组</span>
+            <span class="filter-tag" onclick="filterGroup('导演组')">导演组</span>
+            <span class="filter-tag" onclick="filterGroup('演员组')">演员组</span>
+            <span class="filter-tag" onclick="filterGroup('配音组')">配音组</span>
+            <span class="filter-tag" onclick="filterGroup('摄影组')">摄影组</span>
+            <span class="filter-tag" onclick="filterGroup('后期组')">后期组</span>
+            <span class="filter-tag" onclick="filterGroup('宣传组')">宣传组</span>
+            <span class="filter-tag" onclick="filterGroup('气氛组')">气氛组</span>
+        </div>
+        
+        <!-- 排名列表 -->
+        <div class="rank-list" id="rankList"></div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="groups.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">发现</div>
+        </a>
+        <a href="rank.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
+        </a>
+        <a href="#" class="nav-item" onclick="alert('通知开发中');return false;">
+            <div class="nav-icon"><i class="fas fa-bell"></i></div>
+            <div class="nav-label">通知</div>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+
+    <script>
+        // 模拟排名数据
+        const rankData = [
+            { rank:1, name:'王小明', group:'编剧组', points:8560, change:'up', changeVal:2, avatar:'王' },
+            { rank:2, name:'李思思', group:'导演组', points:7230, change:'up', changeVal:1, avatar:'李' },
+            { rank:3, name:'张伟', group:'摄影组', points:6890, change:'down', changeVal:2, avatar:'张' },
+            { rank:4, name:'刘洋', group:'配音组', points:5450, change:'same', changeVal:0, avatar:'刘' },
+            { rank:5, name:'陈静', group:'后期组', points:4890, change:'up', changeVal:3, avatar:'陈' },
+            { rank:6, name:'赵天', group:'宣传组', points:4230, change:'down', changeVal:1, avatar:'赵' },
+            { rank:7, name:'周杰', group:'气氛组', points:3870, change:'up', changeVal:2, avatar:'周' },
+            { rank:8, name:'吴迪', group:'演员组', points:3560, change:'new', changeVal:0, avatar:'吴' },
+            { rank:9, name:'郑爽', group:'后期组', points:3240, change:'down', changeVal:4, avatar:'郑' },
+            { rank:10, name:'张三', group:'编剧组', points:2480, change:'up', changeVal:2, avatar:'张' },
+            { rank:11, name:'王芳', group:'演员组', points:2350, change:'up', changeVal:1, avatar:'王' },
+            { rank:12, name:'李强', group:'摄影组', points:2210, change:'down', changeVal:2, avatar:'李' },
+            { rank:13, name:'赵敏', group:'配音组', points:1980, change:'same', changeVal:0, avatar:'赵' },
+            { rank:14, name:'孙丽', group:'宣传组', points:1850, change:'up', changeVal:3, avatar:'孙' },
+            { rank:15, name:'周涛', group:'气氛组', points:1720, change:'down', changeVal:1, avatar:'周' },
+        ];
+
+        let currentTab = 'total';
+        let currentGroup = 'all';
+
+        function renderRank() {
+            const list = document.getElementById('rankList');
+            
+            // 筛选数据
+            let filtered = currentGroup === 'all' 
+                ? rankData 
+                : rankData.filter(item => item.group === currentGroup);
+            
+            // 根据榜单类型排序（这里简化处理，实际应该有不同的数据源）
+            if (currentTab === 'week') {
+                filtered = [...filtered].sort((a,b) => b.points - a.points);
+            } else if (currentTab === 'month') {
+                filtered = [...filtered].sort((a,b) => b.points - a.points);
+            }
+            
+            list.innerHTML = filtered.map(item => {
+                const changeClass = {
+                    'up': 'up',
+                    'down': 'down',
+                    'new': 'new',
+                    'same': ''
+                }[item.change];
+                
+                const changeText = {
+                    'up': `↑ ${item.changeVal}`,
+                    'down': `↓ ${item.changeVal}`,
+                    'new': 'NEW',
+                    'same': '-'
+                }[item.change];
+                
+                const rankClass = item.rank === 1 ? 'top1' : (item.rank === 2 ? 'top2' : (item.rank === 3 ? 'top3' : ''));
+                
+                return `
+                    <div class="rank-item" onclick="window.location.href='profile.html'">
+                        <div class="rank-number ${rankClass}">${item.rank === 1 ? '👑' : item.rank}</div>
+                        <div class="rank-avatar">${item.avatar}</div>
+                        <div class="rank-info">
+                            <div class="rank-name-row">
+                                <span class="rank-name">${item.name}</span>
+                                <span class="rank-group">${item.group}</span>
+                            </div>
+                            <div class="rank-points">${item.points.toLocaleString()}分</div>
+                        </div>
+                        ${item.change !== 'same' ? `<div class="rank-change ${changeClass}">${changeText}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.rank-tab').forEach((el, i) => {
+                el.classList.toggle('active', i === (tab === 'total' ? 0 : tab === 'week' ? 1 : 2));
+            });
+            renderRank();
+        }
+
+        function filterGroup(group) {
+            currentGroup = group;
+            document.querySelectorAll('.filter-tag').forEach(el => {
+                el.classList.toggle('active', el.textContent === (group === 'all' ? '全部' : group));
+            });
+            renderRank();
+        }
+
+        // 初始化渲染
+        renderRank();
+    </script>
+</body>
+</html>
