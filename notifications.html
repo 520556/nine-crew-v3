@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知中心 · NINE剧组</title>
+    
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #1a1a1a;
+            --dark-gray: #444;
+            --medium-gray: #666;
+            --light-gray: #999;
+            --lighter-gray: #e5e5e5;
+            --lightest-gray: #f5f5f5;
+            --white: #fff;
+            --space-sm: 12px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 顶部装饰带 */
+        .header-decoration {
+            height: 100px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            padding: 12px var(--space-md);
+            background: var(--white);
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .status-time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-icons i {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+        
+        .status-icons .fa-bell {
+            color: var(--black);
+        }
+        
+        /* 返回链接 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            margin: 30px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .mark-read-btn {
+            background: transparent;
+            border: 1.5px solid var(--black);
+            color: var(--black);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mark-read-btn:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        /* 通知分类标签 */
+        .notification-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: var(--lightest-gray);
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid var(--lighter-gray);
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            background: var(--black);
+            color: white;
+            border-color: var(--black);
+        }
+        
+        /* 通知列表 */
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: var(--space-xl) 0;
+        }
+        
+        .notification-item {
+            display: flex;
+            gap: 15px;
+            padding: 16px;
+            background: var(--white);
+            border: 1px solid var(--lighter-gray);
+            border-radius: var(--radius-lg);
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .notification-item.unread {
+            background: var(--lightest-gray);
+            border-left: 4px solid var(--black);
+        }
+        
+        .notification-item:hover {
+            border-color: var(--medium-gray);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .notification-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--lightest-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--dark-gray);
+            flex-shrink: 0;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .notification-badge {
+            background: var(--black);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        .notification-desc {
+            color: var(--medium-gray);
+            font-size: 13px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .notification-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--light-gray);
+        }
+        
+        .notification-meta i {
+            font-size: 10px;
+            margin-right: 2px;
+        }
+        
+        .notification-action {
+            margin-top: 10px;
+        }
+        
+        .action-btn {
+            background: transparent;
+            border: 1.5px solid var(--black);
+            color: var(--black);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .action-btn:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--light-gray);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-hint {
+            font-size: 13px;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            flex: 1;
+            color: var(--light-gray);
+            text-decoration: none;
+        }
+        
+        .nav-item.active {
+            color: var(--black);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部装饰带 -->
+    <div class="header-decoration"></div>
+    
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">9:41</div>
+        <div class="status-icons">
+            <i class="fas fa-bell" style="color: var(--black);"></i>
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 返回链接 -->
+        <a href="javascript:history.back()" class="back-link">
+            <i class="fas fa-arrow-left"></i> 返回
+        </a>
+        
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">通知中心</h1>
+            <button class="mark-read-btn" onclick="markAllRead()">全部已读</button>
+        </div>
+        
+        <!-- 通知分类 -->
+        <div class="notification-tabs">
+            <div class="tab active" onclick="switchTab('all')">全部</div>
+            <div class="tab" onclick="switchTab('audit')">审核</div>
+            <div class="tab" onclick="switchTab('activity')">活动</div>
+            <div class="tab" onclick="switchTab('system')">系统</div>
+        </div>
+        
+        <!-- 通知列表 -->
+        <div class="notification-list" id="notificationList"></div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="rank.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+            <div class="nav-label">排名</div>
+        </a>
+        <a href="publish.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
+            <div class="nav-label">发布</div>
+        </a>
+        <a href="groups.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-compass"></i></div>
+            <div class="nav-label">分组</div>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </nav>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2,'0') + ':' + 
+                now.getMinutes().toString().padStart(2,'0');
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+        
+        // 模拟通知数据
+        const notifications = [
+            {
+                id: 1,
+                type: 'audit',
+                icon: '✍️',
+                title: '剧本审核结果',
+                badge: '编剧组',
+                desc: '您的剧本《星海之约》已通过审核，可发起活动',
+                time: '5分钟前',
+                date: '2026-02-15',
+                unread: true,
+                action: '查看剧本',
+                link: 'script-editor.html'
+            },
+            {
+                id: 2,
+                type: 'audit',
+                icon: '🎭',
+                title: '入团申请通过',
+                badge: '系统',
+                desc: '欢迎加入NINE剧组！请加入微信群解锁全部功能',
+                time: '2小时前',
+                date: '2026-02-15',
+                unread: true,
+                action: '查看群码',
+                link: '#'
+            },
+            {
+                id: 3,
+                type: 'activity',
+                icon: '🎬',
+                title: '活动入选通知',
+                badge: '演员组',
+                desc: '您已被选为《星海之约》男主角，请确认参与',
+                time: '昨天',
+                date: '2026-02-14',
+                unread: false,
+                action: '确认参与',
+                link: '#'
+            },
+            {
+                id: 4,
+                type: 'activity',
+                icon: '🎤',
+                title: '配音试音结果',
+                badge: '配音组',
+                desc: '您的试音未入选，感谢参与，下次继续努力',
+                time: '昨天',
+                date: '2026-02-14',
+                unread: false,
+                action: '查看详情'
+            },
+            {
+                id: 5,
+                type: 'system',
+                icon: '⭐',
+                title: '积分变动',
+                badge: '系统',
+                desc: '您获得50积分：提交剧本《新项目》',
+                time: '3天前',
+                date: '2026-02-12',
+                unread: false,
+                action: '查看积分',
+                link: 'profile.html'
+            },
+            {
+                id: 6,
+                type: 'system',
+                icon: '📅',
+                title: '打卡提醒',
+                badge: '系统',
+                desc: '您已连续打卡15天，获得15积分',
+                time: '5天前',
+                date: '2026-02-10',
+                unread: false
+            },
+            {
+                id: 7,
+                type: 'audit',
+                icon: '📷',
+                title: '摄影组审核结果',
+                badge: '摄影组',
+                desc: '您的摄影作品已通过审核，欢迎加入摄影组',
+                time: '1周前',
+                date: '2026-02-08',
+                unread: false,
+                action: '进入分组',
+                link: 'groups.html'
+            },
+            {
+                id: 8,
+                type: 'activity',
+                icon: '🎉',
+                title: '活动即将开始',
+                badge: '气氛组',
+                desc: '《元宵剧组团建》今晚8点开始，请准时参加',
+                time: '1周前',
+                date: '2026-02-08',
+                unread: false,
+                action: '查看详情'
+            }
+        ];
+
+        let currentTab = 'all';
+        let unreadCount = notifications.filter(n => n.unread).length;
+
+        function renderNotifications() {
+            const list = document.getElementById('notificationList');
+            
+            // 筛选数据
+            let filtered = currentTab === 'all' 
+                ? notifications 
+                : notifications.filter(n => n.type === currentTab);
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-text">暂无通知</div>
+                        <div class="empty-hint">有新消息时会在这里显示</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = filtered.map(item => `
+                <div class="notification-item ${item.unread ? 'unread' : ''}">
+                    <div class="notification-icon">${item.icon}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">
+                            ${item.title}
+                            ${item.badge ? `<span class="notification-badge">${item.badge}</span>` : ''}
+                        </div>
+                        <div class="notification-desc">${item.desc}</div>
+                        <div class="notification-meta">
+                            <span><i class="far fa-clock"></i> ${item.time}</span>
+                            <span><i class="far fa-calendar"></i> ${item.date}</span>
+                        </div>
+                        ${item.action ? `
+                            <div class="notification-action">
+                                <a href="${item.link || '#'}" class="action-btn" onclick="markAsRead(${item.id})">${item.action}</a>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach((el, i) => {
+                const tabs = ['all', 'audit', 'activity', 'system'];
+                el.classList.toggle('active', tabs[i] === tab);
+            });
+            renderNotifications();
+        }
+
+        function markAsRead(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification && notification.unread) {
+                notification.unread = false;
+                renderNotifications();
+            }
+        }
+
+        function markAllRead() {
+            notifications.forEach(n => n.unread = false);
+            renderNotifications();
+            alert('所有通知已标记为已读');
+        }
+
+        // 初始化渲染
+        renderNotifications();
+    </script>
+</body>
+</html>
