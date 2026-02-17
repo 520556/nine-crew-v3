@@ -4,21 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NINE CREW · 剧组管理系统</title>
-    
-    <!-- 字体图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase JS -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    
     <style>
-        /* ===== 完整样式 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        /* ===== 黑白灰为主，保留原有风格 ===== */
         :root {
             --black: #1a1a1a;
             --dark-gray: #444444;
@@ -27,17 +16,21 @@
             --lighter-gray: #e5e5e5;
             --lightest-gray: #f5f5f5;
             --white: #ffffff;
-            
             --space-xs: 8px;
             --space-sm: 12px;
             --space-md: 16px;
             --space-lg: 24px;
             --space-xl: 32px;
             --space-xxl: 48px;
-            
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
@@ -124,12 +117,6 @@
         .brand-subtitle {
             color: var(--medium-gray);
             font-size: 14px;
-        }
-        
-        .brand-est {
-            font-size: 12px;
-            color: var(--light-gray);
-            letter-spacing: 0.5px;
         }
         
         /* 数据仪表板 */
@@ -223,9 +210,10 @@
             border-radius: 30px;
             font-size: 14px;
             font-weight: 500;
-            border: none;
-            cursor: pointer;
+            text-decoration: none;
             transition: all 0.2s;
+            cursor: pointer;
+            border: none;
         }
         
         .apply-btn:hover {
@@ -302,13 +290,6 @@
         
         .image-item span {
             font-size: 12px;
-        }
-        
-        .image-hint {
-            font-size: 11px;
-            color: var(--light-gray);
-            margin-top: var(--space-xs);
-            text-align: center;
         }
         
         /* 热门活动 */
@@ -388,10 +369,6 @@
         }
         
         /* 分组展示 */
-        .groups-section {
-            margin: var(--space-xl) 0;
-        }
-        
         .groups-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -405,7 +382,6 @@
             border-radius: var(--radius-md);
             padding: var(--space-md);
             transition: all 0.2s;
-            cursor: pointer;
         }
         
         .group-card:hover {
@@ -484,14 +460,6 @@
             color: var(--light-gray);
         }
         
-        /* 系统信息 */
-        .system-info {
-            margin: var(--space-xxl) 0;
-            text-align: center;
-            color: var(--light-gray);
-            font-size: 12px;
-        }
-        
         /* 底部导航 */
         .bottom-nav {
             position: fixed;
@@ -527,131 +495,7 @@
             font-size: 10px;
         }
         
-        /* 弹窗样式 */
-        #applicationModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: #fff;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 2px solid #333;
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        .modal-title {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #000;
-        }
-        
-        .modal-subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-        }
-        
-        .gender-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .gender-label {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .gender-label.selected {
-            border-color: #000;
-            background: #f5f5f5;
-        }
-        
-        .groups-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        
-        .group-label {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .group-label.selected {
-            border-color: #000;
-            background: #f5f5f5;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: #000;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .form-message {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
-        
+        /* 响应式 */
         @media (max-width: 375px) {
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -677,7 +521,7 @@
     <div class="status-bar">
         <div class="status-time" id="currentTime">9:41</div>
         <div class="status-icons">
-            <i class="fas fa-bell" onclick="window.location.href='notifications.html'"></i>
+            <i class="fas fa-bell" onclick="window.location.href='notifications.html'" style="cursor: pointer; margin-right: 4px;"></i>
             <i class="fas fa-signal"></i>
             <i class="fas fa-wifi"></i>
             <i class="fas fa-battery-three-quarters"></i>
@@ -689,7 +533,6 @@
         <section class="brand-section">
             <h1 class="brand-logo">NINE CREW</h1>
             <p class="brand-subtitle">百分百自由 · 团员当家做主</p>
-            <p class="brand-est">剧组是大家的，共同维护Nine大家庭</p>
         </section>
         
         <!-- 2. 数据仪表板 -->
@@ -719,19 +562,20 @@
             </div>
             <i class="fas fa-chevron-right" style="color: var(--light-gray);"></i>
         </section>
-        
         <!-- 4. 欢迎区域 + 申请入口 -->
         <section class="welcome-section">
             <div class="welcome-text">
                 <h2>Welcome 👋</h2>
                 <p>欢迎来到光遇最有趣的剧组</p>
             </div>
-            <button class="apply-btn" id="applyBtn">申请加入</button>
+            <button class="apply-btn" onclick="openApplicationModal()">
+                申请加入
+            </button>
         </section>
         
         <!-- 5. 功能网格 -->
         <section class="functions-grid">
-            <div class="function-card" onclick="alert('功能开发中')">
+            <div class="function-card" onclick="openFeature('申请')">
                 <div class="function-icon"><i class="fas fa-user-plus"></i></div>
                 <div class="function-title">成员申请</div>
             </div>
@@ -747,16 +591,15 @@
         
         <!-- 6. 图片网格 -->
         <section class="image-grid">
-            <div class="image-item" onclick="alert('点击剧组合照')">
+            <div class="image-item" onclick="changeImage('banner')">
                 <i class="fas fa-image"></i>
                 <span>剧组合照</span>
             </div>
-            <div class="image-item" onclick="alert('点击作品展示')">
+            <div class="image-item" onclick="changeImage('works')">
                 <i class="fas fa-photo-video"></i>
                 <span>作品展示</span>
             </div>
         </section>
-        <p class="image-hint">持续更新，组织拍摄优秀作品都有概率入选！</p>
         
         <!-- 7. 热门活动 -->
         <section>
@@ -790,7 +633,7 @@
         </section>
         
         <!-- 8. 分组展示 -->
-        <section class="groups-section">
+        <section>
             <div class="section-header">
                 <h3>📁 专业分组</h3>
                 <a href="groups.html" class="section-link">查看全部 →</a>
@@ -840,7 +683,7 @@
         <section>
             <div class="section-header">
                 <h3>👥 成员动态</h3>
-                <a href="#" class="section-link" onclick="alert('更多动态开发中')">更多</a>
+                <a href="#" class="section-link">更多</a>
             </div>
             
             <div class="feed-list">
@@ -872,7 +715,7 @@
         </section>
         
         <!-- 10. 系统信息 -->
-        <section class="system-info">
+        <section style="margin: var(--space-xxl) 0; text-align: center; color: var(--light-gray); font-size: 12px;">
             <p>NINE CREW 剧组管理系统 · 版本 2.0.0</p>
             <p style="margin-top: 4px;">基于现代技术构建 · 完美适配移动端</p>
         </section>
@@ -902,81 +745,103 @@
         </a>
     </nav>
     
-    <!-- 申请弹窗 -->
-    <div id="applicationModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">×</button>
-            <h2 class="modal-title">🎬 加入NINE剧组</h2>
-            <p class="modal-subtitle">填写信息，开启你的剧组之旅</p>
+    <!-- ===== 申请弹窗 ===== -->
+    <div id="applicationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
+        <div style="background:#fff; width:90%; max-width:500px; border-radius:20px; padding:30px; position:relative; max-height:85vh; overflow-y:auto; border:2px solid #333;">
+            <!-- 关闭按钮 -->
+            <button onclick="document.getElementById('applicationModal').style.display='none'; document.body.style.overflow='auto';" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:28px; color:#666; cursor:pointer;">×</button>
             
-            <form id="applicationForm">
+            <!-- 标题 -->
+            <h2 style="text-align:center; margin-bottom:10px; color:#000;">🎬 加入NINE剧组</h2>
+            <p style="text-align:center; color:#666; margin-bottom:25px; font-size:14px;">填写信息，开启你的剧组之旅</p>
+            
+            <!-- 表单 -->
+            <form id="nineApplicationForm">
                 <!-- 光遇名 -->
-                <div class="form-group">
-                    <label>光遇名 *</label>
-                    <input type="text" id="skyName" class="form-control" required placeholder="你的光遇游戏昵称">
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">光遇名 *</label>
+                    <input type="text" id="skyName" name="skyName" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="你的光遇游戏昵称">
                 </div>
                 
                 <!-- 性别 -->
-                <div class="form-group">
-                    <label>性别 *</label>
-                    <div class="gender-group">
-                        <div class="gender-label" onclick="selectGender('男', this)">男生</div>
-                        <div class="gender-label" onclick="selectGender('女', this)">女生</div>
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">性别 *</label>
+                    <div style="display:flex; gap:10px;">
+                        <label id="genderMale" style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="selectGender('男')">
+                            <input type="radio" name="gender" value="男" required style="display:none;"> 男生
+                        </label>
+                        <label id="genderFemale" style="flex:1; padding:12px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="selectGender('女')">
+                            <input type="radio" name="gender" value="女" required style="display:none;"> 女生
+                        </label>
                     </div>
-                    <input type="hidden" id="gender" value="">
                 </div>
                 
                 <!-- 年龄 -->
-                <div class="form-group">
-                    <label>年龄 *</label>
-                    <input type="text" id="age" class="form-control" required placeholder="例如：18-25岁">
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">年龄 *</label>
+                    <input type="text" id="age" name="age" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="例如：18-25岁">
                 </div>
                 
-                <!-- 意向分组 -->
-                <div class="form-group">
-                    <label>意向分组（可多选）</label>
-                    <div class="groups-grid">
-                        <div class="group-label" onclick="toggleGroup(this, '演员组')">演员组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '配音组')">配音组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '编剧组')">编剧组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '后期组')">后期组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '摄影组')">摄影组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '宣传组')">宣传组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '气氛组')">气氛组</div>
-                        <div class="group-label" onclick="toggleGroup(this, '导演组')">导演组</div>
+                <!-- 意向分组（8个分组） -->
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">意向分组（可多选）</label>
+                    <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
+                        <label id="groupActor" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('演员组', this)">
+                            <input type="checkbox" name="interestGroups" value="演员组" style="display:none;"> 演员组
+                        </label>
+                        <label id="groupVoice" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('配音组', this)">
+                            <input type="checkbox" name="interestGroups" value="配音组" style="display:none;"> 配音组
+                        </label>
+                        <label id="groupScript" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('编剧组', this)">
+                            <input type="checkbox" name="interestGroups" value="编剧组" style="display:none;"> 编剧组
+                        </label>
+                        <label id="groupPost" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('后期组', this)">
+                            <input type="checkbox" name="interestGroups" value="后期组" style="display:none;"> 后期组
+                        </label>
+                        <label id="groupPhoto" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('摄影组', this)">
+                            <input type="checkbox" name="interestGroups" value="摄影组" style="display:none;"> 摄影组
+                        </label>
+                        <label id="groupPromo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('宣传组', this)">
+                            <input type="checkbox" name="interestGroups" value="宣传组" style="display:none;"> 宣传组
+                        </label>
+                        <label id="groupAtmo" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('气氛组', this)">
+                            <input type="checkbox" name="interestGroups" value="气氛组" style="display:none;"> 气氛组
+                        </label>
+                        <label id="groupDirector" style="padding:10px; border:2px solid #ddd; border-radius:10px; text-align:center; cursor:pointer;" onclick="toggleGroup('导演组', this)">
+                            <input type="checkbox" name="interestGroups" value="导演组" style="display:none;"> 导演组
+                        </label>
                     </div>
-                    <input type="hidden" id="selectedGroups" value="">
                 </div>
                 
                 <!-- 如何找到我们 -->
-                <div class="form-group">
-                    <label>如何找到我们 *</label>
-                    <select id="findMethod" class="form-control" required>
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">如何找到我们 *</label>
+                    <select id="findMethod" name="findMethod" required style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;">
                         <option value="">请选择...</option>
                         <option value="剧组招人(有推荐人)">剧组招人(有推荐人)</option>
                         <option value="通过团长视频了解">通过团长视频了解</option>
-                        <option value="其他">其他</option>
+                        <option value="其他(如剧组变动调整)">其他(如剧组变动调整)</option>
                     </select>
                 </div>
                 
-                <!-- 推荐人 -->
-                <div id="referrerField" style="margin-bottom:20px; display:none;">
-                    <label style="display:block; margin-bottom:8px; font-weight:bold;">我是由 ___ 招入Nine</label>
-                    <input type="text" id="referrerName" class="form-control" placeholder="推荐人的光遇名">
+                <!-- 推荐人（动态显示） -->
+                <div id="referrerField" style="margin-bottom:25px; display:none;">
+                    <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">我是由 ___ 招入Nine</label>
+                    <p style="font-size:12px; color:#666; margin:4px 0 8px 0;">可以询问找你的人，他的ID</p>
+                    <input type="text" id="referrerName" name="referrerName" style="width:100%; padding:12px; border:2px solid #ddd; border-radius:10px; font-size:16px;" placeholder="推荐人的光遇名或昵称">
                 </div>
                 
                 <!-- 提交按钮 -->
-                <button type="submit" class="submit-btn" id="submitBtn">提交申请</button>
-                <div id="formMessage" class="form-message"></div>
+                <button type="submit" id="submitBtn" style="width:100%; padding:15px; background:#000; color:#fff; border:none; border-radius:10px; font-size:18px; font-weight:bold; cursor:pointer;">提交申请</button>
+                <div id="formMessage" style="margin-top:15px; text-align:center; font-size:14px;"></div>
             </form>
         </div>
     </div>
 
     <script>
-        // ==================== Supabase 配置（已修复）====================
+        // ==================== Supabase 配置（你的数据库，已修复）====================
         const SUPABASE_URL = 'https://jaonikzrspdsraqlfngy.supabase.co';
-        // ⚠️ 这是你之前给我的正确的 anon key，不是 publishable key
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imphb25pa3pyc3Bkc3JhcWxmbmd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwNzY4MDAsImV4cCI6MjA1NTY1MjgwMH0.8ZzQ7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q7Q';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imphb25pa3pyc3Bkc3JhcWxmbmd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzNjkxMDgsImV4cCI6MjA4Mzk0NTEwOH0.ZisijJO-1-F9Tob1bcA8ILW4C4sVJoZAtsWVi7rUldc';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
         // 测试 Supabase 连接
@@ -999,7 +864,6 @@
         function changeImage(type) {
             alert('点击了 ' + type);
         }
-        
         // ==================== 弹窗表单交互函数 ====================
         function selectGender(gender) {
             document.getElementById('genderMale').style.borderColor = '#ddd';
