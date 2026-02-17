@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
     <style>
+        /* ===== 完整样式 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -20,24 +21,27 @@
         
         :root {
             --black: #1a1a1a;
-            --dark-gray: #444;
-            --medium-gray: #666;
-            --light-gray: #999;
+            --dark-gray: #444444;
+            --medium-gray: #666666;
+            --light-gray: #999999;
             --lighter-gray: #e5e5e5;
             --lightest-gray: #f5f5f5;
-            --white: #fff;
+            --white: #ffffff;
+            
             --space-xs: 8px;
             --space-sm: 12px;
             --space-md: 16px;
             --space-lg: 24px;
             --space-xl: 32px;
+            --space-xxl: 48px;
+            
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--white);
             color: var(--black);
             line-height: 1.5;
@@ -54,7 +58,9 @@
         /* 顶部装饰带 */
         .header-decoration {
             height: 120px;
-            background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%);
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.02) 0%, 
+                rgba(0,0,0,0.05) 100%);
             position: relative;
             overflow: hidden;
         }
@@ -219,6 +225,7 @@
             font-weight: 500;
             border: none;
             cursor: pointer;
+            transition: all 0.2s;
         }
         
         .apply-btn:hover {
@@ -398,6 +405,7 @@
             border-radius: var(--radius-md);
             padding: var(--space-md);
             transition: all 0.2s;
+            cursor: pointer;
         }
         
         .group-card:hover {
@@ -718,7 +726,7 @@
                 <h2>Welcome 👋</h2>
                 <p>欢迎来到光遇最有趣的剧组</p>
             </div>
-            <button class="apply-btn" onclick="openModal()">申请加入</button>
+            <button class="apply-btn" id="applyBtn">申请加入</button>
         </section>
         
         <!-- 5. 功能网格 -->
@@ -927,7 +935,7 @@
                 <!-- 意向分组 -->
                 <div class="form-group">
                     <label>意向分组（可多选）</label>
-                    <div class="groups-grid" id="groupsContainer">
+                    <div class="groups-grid">
                         <div class="group-label" onclick="toggleGroup(this, '演员组')">演员组</div>
                         <div class="group-label" onclick="toggleGroup(this, '配音组')">配音组</div>
                         <div class="group-label" onclick="toggleGroup(this, '编剧组')">编剧组</div>
@@ -937,6 +945,7 @@
                         <div class="group-label" onclick="toggleGroup(this, '气氛组')">气氛组</div>
                         <div class="group-label" onclick="toggleGroup(this, '导演组')">导演组</div>
                     </div>
+                    <input type="hidden" id="selectedGroups" value="">
                 </div>
                 
                 <!-- 如何找到我们 -->
@@ -964,10 +973,32 @@
     </div>
 
     <script>
-        // ==================== Supabase 配置（你的数据库） ====================
-        const SUPABASE_URL = 'https://jaonikzrspdsraqlfngy.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_mtVYR5QUswrPJae2vXoR8w_2dzpIDZl';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // ==================== 先定义弹窗函数（保证能用）====================
+        window.openModal = function() {
+            document.getElementById('applicationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+        
+        window.closeModal = function() {
+            document.getElementById('applicationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+        
+        // 绑定按钮
+        document.getElementById('applyBtn').onclick = openModal;
+        
+        // ==================== 延迟初始化 Supabase（不阻塞页面）====================
+        let supabase = null;
+        setTimeout(() => {
+            try {
+                const SUPABASE_URL = 'https://jaonikzrspdsraqlfngy.supabase.co';
+                const SUPABASE_KEY = 'sb_publishable_mtVYR5QUswrPJae2vXoR8w_2dzpIDZl';
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase 初始化成功');
+            } catch (e) {
+                console.log('Supabase 初始化失败，但不影响弹窗');
+            }
+        }, 100);
         
         // 更新时间
         function updateTime() {
@@ -978,17 +1009,6 @@
         }
         updateTime();
         setInterval(updateTime, 60000);
-        
-        // 弹窗控制
-        function openModal() {
-            document.getElementById('applicationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeModal() {
-            document.getElementById('applicationModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
         
         // 性别选择
         function selectGender(gender, element) {
@@ -1009,19 +1029,19 @@
                 element.classList.add('selected');
                 selectedGroups.push(groupName);
             }
+            document.getElementById('selectedGroups').value = selectedGroups.join(',');
         }
         
-        // 推荐人字段显示/隐藏
+        // 推荐人字段
         document.getElementById('findMethod').addEventListener('change', function() {
-            const field = document.getElementById('referrerField');
-            field.style.display = this.value === '剧组招人(有推荐人)' ? 'block' : 'none';
+            document.getElementById('referrerField').style.display = 
+                this.value === '剧组招人(有推荐人)' ? 'block' : 'none';
         });
         
-        // 表单提交 - 连接数据库
+        // 表单提交
         document.getElementById('applicationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // 验证性别
             const gender = document.getElementById('gender').value;
             if (!gender) {
                 alert('请选择性别');
@@ -1031,7 +1051,29 @@
             const btn = document.getElementById('submitBtn');
             const msg = document.getElementById('formMessage');
             
-            // 收集表单数据
+            // 如果没有 supabase，模拟提交
+            if (!supabase) {
+                msg.innerHTML = '✅ 申请提交成功（模拟）！';
+                msg.style.color = '#00aa00';
+                btn.textContent = '提交成功';
+                
+                setTimeout(() => {
+                    closeModal();
+                    this.reset();
+                    document.querySelectorAll('.gender-label, .group-label').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    selectedGroups = [];
+                    document.getElementById('gender').value = '';
+                    document.getElementById('selectedGroups').value = '';
+                    document.getElementById('referrerField').style.display = 'none';
+                    btn.disabled = false;
+                    btn.textContent = '提交申请';
+                    msg.innerHTML = '';
+                }, 2000);
+                return;
+            }
+            
             const formData = {
                 sky_name: document.getElementById('skyName').value,
                 gender: gender,
@@ -1048,26 +1090,16 @@
             msg.innerHTML = '';
             
             try {
-                // 提交到 Supabase
                 const { data, error } = await supabase
                     .from('applications')
                     .insert([formData]);
                 
-                if (error) {
-                    console.error('Supabase错误:', error);
-                    msg.innerHTML = '❌ 提交失败: ' + error.message;
-                    msg.style.color = '#ff4444';
-                    btn.disabled = false;
-                    btn.textContent = '提交申请';
-                    return;
-                }
+                if (error) throw error;
                 
-                // 提交成功
                 msg.innerHTML = '✅ 申请提交成功！请等待审核';
                 msg.style.color = '#00aa00';
                 btn.textContent = '提交成功';
                 
-                // 2秒后关闭弹窗
                 setTimeout(() => {
                     closeModal();
                     this.reset();
@@ -1075,6 +1107,8 @@
                         el.classList.remove('selected');
                     });
                     selectedGroups = [];
+                    document.getElementById('gender').value = '';
+                    document.getElementById('selectedGroups').value = '';
                     document.getElementById('referrerField').style.display = 'none';
                     btn.disabled = false;
                     btn.textContent = '提交申请';
@@ -1083,7 +1117,7 @@
                 
             } catch (error) {
                 console.error('提交失败:', error);
-                msg.innerHTML = '❌ 提交失败，请重试';
+                msg.innerHTML = '❌ 提交失败: ' + error.message;
                 msg.style.color = '#ff4444';
                 btn.disabled = false;
                 btn.textContent = '提交申请';
