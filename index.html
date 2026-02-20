@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NINE CREW · 剧组管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- 腾讯云云开发 SDK -->
+    <script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/1.12.2/cloudbase.full.js"></script>
     <style>
         /* ===== 黑白灰为主，保留原有风格 ===== */
         :root {
@@ -718,7 +719,7 @@
         <!-- 10. 系统信息 -->
         <section style="margin: var(--space-xxl) 0; text-align: center; color: var(--light-gray); font-size: 12px;">
             <p>NINE CREW 剧组管理系统 · 版本 2.0.0</p>
-            <p style="margin-top: 4px;">基于现代技术构建 · 完美适配移动端</p>
+            <p style="margin-top: 4px;">基于腾讯云云开发构建 · 完美适配移动端</p>
         </section>
     </main>
     
@@ -878,18 +879,21 @@
             }
         }
         
-        // 打开申请弹窗 - 这是最核心的函数（先定义！）
+        // 打开申请弹窗 - 这是最核心的函数
         window.openApplicationModal = function() {
             document.getElementById('applicationModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
             setupReferrerField();
         };
 
-        // ===== 数据库连接（用 window.supabaseClient 避免重复声明）=====
-        const SUPABASE_URL = 'https://wiuzqdnndcxuabbksvtf.functions.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdXpxZG5uZGN4YXViYmtzdnRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMTU4ODAsImV4cCI6MjA4Njg5MTg4MH0.hDKQAUESXPR5pH4hJ2pLiRXNUFXIbk29IBkk8LKnHV4';
-        window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log('✅ 数据库客户端创建成功');
+        // ===== 腾讯云云开发连接 =====
+        const app = cloudbase.init({
+            env: 'nine-crew-9gvvatykda68e6ca'
+        });
+        
+        // 获取数据库引用
+        const db = app.database();
+        console.log('✅ 腾讯云云开发连接成功');
         
         // 点击背景关闭
         document.getElementById('applicationModal').addEventListener('click', function(e) {
@@ -921,7 +925,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupReferrerField();
             
-            // 表单提交（真实数据库）
+            // 表单提交
             const form = document.getElementById('nineApplicationForm');
             if (form) {
                 form.addEventListener('submit', async function(e) {
@@ -957,57 +961,49 @@
                     formMessage.innerHTML = '';
                     
                     try {
-    console.log('准备提交的数据:', formData);
-    
-    const { data, error } = await window.supabaseClient
-        .from('applications')
-        .insert([formData]);
-    
-    if (error) {
-        console.error('❌ Supabase 返回错误:', error);
-        console.error('错误代码:', error.code);
-        console.error('错误消息:', error.message);
-        console.error('错误详情:', error.details);
-        throw error;
-    }
-    
-    console.log('✅ 提交成功，返回数据:', data);
-    
-    // 成功提示
-    formMessage.innerHTML = '✅ 申请提交成功！';
-    formMessage.style.color = '#00aa00';
-    submitBtn.textContent = '提交成功';
-    
-    setTimeout(() => {
-        document.getElementById('applicationModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = '提交申请';
-        formMessage.innerHTML = '';
-        
-        document.querySelectorAll('[id^="group"]').forEach(el => {
-            if (el.id !== 'genderMale' && el.id !== 'genderFemale') {
-                el.style.borderColor = '#ddd';
-                el.style.background = '#fff';
+                        console.log('准备提交的数据:', formData);
+                        
+                        // 插入到云开发数据库
+                        const res = await db.collection('applications').add(formData);
+                        
+                        console.log('✅ 提交成功，返回数据:', res);
+                        
+                        // 成功提示
+                        formMessage.innerHTML = '✅ 申请提交成功！';
+                        formMessage.style.color = '#00aa00';
+                        submitBtn.textContent = '提交成功';
+                        
+                        setTimeout(() => {
+                            document.getElementById('applicationModal').style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                            form.reset();
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = '提交申请';
+                            formMessage.innerHTML = '';
+                            
+                            // 重置分组样式
+                            document.querySelectorAll('[id^="group"]').forEach(el => {
+                                if (el.id !== 'genderMale' && el.id !== 'genderFemale') {
+                                    el.style.borderColor = '#ddd';
+                                    el.style.background = '#fff';
+                                }
+                            });
+                            document.getElementById('genderMale').style.borderColor = '#ddd';
+                            document.getElementById('genderMale').style.background = '#fff';
+                            document.getElementById('genderFemale').style.borderColor = '#ddd';
+                            document.getElementById('genderFemale').style.background = '#fff';
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('❌ 提交失败:', error);
+                        formMessage.innerHTML = '❌ 提交失败：' + (error.message || '未知错误，请查看控制台');
+                        formMessage.style.color = '#ff4444';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = '提交申请';
+                    }
+                });
             }
         });
-        document.getElementById('genderMale').style.borderColor = '#ddd';
-        document.getElementById('genderMale').style.background = '#fff';
-        document.getElementById('genderFemale').style.borderColor = '#ddd';
-        document.getElementById('genderFemale').style.background = '#fff';
-    }, 2000);
-    
-} catch (error) {
-    console.error('❌ 捕获到错误:', error);
-    formMessage.innerHTML = '❌ 提交失败：' + (error.message || '未知错误，请查看控制台');
-    formMessage.style.color = '#ff4444';
-    submitBtn.disabled = false;
-    submitBtn.textContent = '提交申请';
-}
- });  // 结束 form.addEventListener
-    }   // 结束 if (form)
-});  // 结束 DOMContentLoaded
-</script>
+    </script>
 </body>
 </html>
