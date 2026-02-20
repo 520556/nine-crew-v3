@@ -887,9 +887,9 @@
         };
 
         // ===== 腾讯云云开发连接 =====
-        const app = cloudbase.init({
-            env: 'nine-crew-9gvvatykda68e6ca'
-        });
+const app = window.CloudBase.init({
+    env: 'nine-crew-9gvvatykda68e6ca'
+});
         
         // 获取数据库引用
         const db = app.database();
