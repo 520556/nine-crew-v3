@@ -963,6 +963,9 @@ if (form) {
             
             if (error) throw error;
             
+            console.log('✅ 进入成功分支');
+console.log('formMessage元素:', document.getElementById('formMessage'));
+            
             // 成功提示
             formMessage.innerHTML = '✅ 申请提交成功！';
             formMessage.style.color = '#00aa00';
