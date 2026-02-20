@@ -886,7 +886,7 @@
         };
 
         // ===== 数据库连接（用 window.supabaseClient 避免重复声明）=====
-        const SUPABASE_URL = 'https://wiuzqdnndcxuabbksvtf.public.supabase.co';
+        const SUPABASE_URL = 'https://wiuzqdnndcxuabbksvtf.functions.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdXpxZG5uZGN4YXViYmtzdnRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMTU4ODAsImV4cCI6MjA4Njg5MTg4MH0.hDKQAUESXPR5pH4hJ2pLiRXNUFXIbk29IBkk8LKnHV4';
         window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         console.log('✅ 数据库客户端创建成功');
