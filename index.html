@@ -877,16 +877,12 @@
             }
         }
         
-       // ===== 安全版数据库连接 =====
-let supabase = null;
-try {
-    const SUPABASE_URL = 'https://wiuzqdnndcxuabbksvtf.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdXpxZG5uZGN4YXViYmtzdnRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMTU4ODAsImV4cCI6MjA4Njg5MTg4MH0.hDKQAUESXPR5pH4hJ2pLiRXNUFXIbk29IBkk8LKnHV4';
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('✅ 数据库客户端创建成功');
-} catch (e) {
-    console.error('❌ 数据库初始化失败:', e);
-}
+       // ===== 数据库连接（非安全模式）=====
+const SUPABASE_URL = 'https://wiuzqdnndcxuabbksvtf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdXpxZG5uZGN4YXViYmtzdnRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzMTU4ODAsImV4cCI6MjA4Njg5MTg4MH0.hDKQAUESXPR5pH4hJ2pLiRXNUFXIbk29IBkk8LKnHV4';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+console.log('✅ 数据库客户端创建成功');
+
         // 打开申请弹窗 - 这是最核心的函数
         window.openApplicationModal = function() {
             document.getElementById('applicationModal').style.display = 'flex';
